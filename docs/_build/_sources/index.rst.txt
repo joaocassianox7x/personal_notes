@@ -1,0 +1,30 @@
+Personal Notes
+==============
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Introduction
+
+   intro
+   aboutme
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Physics and Computational Physics
+
+   physics/pppm_ewald
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Math
+
+   math/functions
+   math/limits
+
+.. toctree::
+   :maxdepth: 1
+   :caption: DS, ML, and AI
+
+   ds_ai/python
+   ds_ai/linear_regression
+   ds_ai/bias_variance

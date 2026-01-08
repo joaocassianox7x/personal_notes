@@ -1,0 +1,330 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python for Data Science &mdash; Personal Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Linear Regression" href="linear_regression.html" />
+    <link rel="prev" title="Limits" href="../math/limits.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Personal Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction of Material</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">About Me</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../physics/pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Math</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Python for Data Science</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#development-environment">Development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#variables-types-and-scope">Variables, types, and scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-packages-and-imports">Basic packages and imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conditional-logic-and-boolean-expressions">Conditional logic and boolean expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sequences-lists-tuples-and-matrices">Sequences: lists, tuples, and matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loops">Loops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#file-i-o">File I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lambda-and-comprehensions">Lambda and comprehensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numerical-methods-in-pure-python">Numerical methods in pure Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scientific-python-stack">Scientific Python stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#matplotlib">Matplotlib</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#numpy">NumPy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scipy">SciPy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#python-updates-since-2020">Python updates since 2020</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="linear_regression.html">Linear Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bias_variance.html">Bias - Variance Decomposition</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Personal Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Python for Data Science</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/ds_ai/python.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="python-for-data-science">
+<h1>Python for Data Science<a class="headerlink" href="#python-for-data-science" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Python is a concise, readable language with a large scientific ecosystem. This
+section mirrors the book’s progression: core syntax, data structures, control
+flow, functions, file I/O, then numerical methods and the scientific stack.</p>
+</section>
+<section id="development-environment">
+<h2>Development environment<a class="headerlink" href="#development-environment" title="Link to this heading"></a></h2>
+<p>The original material uses Spyder because it bundles the main scientific
+packages and is lightweight. Spyder is still a good choice, but Jupyter and
+VS Code are common alternatives. Prefer Python 3.10+ (3.11+ is faster), and
+keep dependencies isolated with <cite>venv</cite> or <cite>conda</cite>.</p>
+</section>
+<section id="variables-types-and-scope">
+<h2>Variables, types, and scope<a class="headerlink" href="#variables-types-and-scope" title="Link to this heading"></a></h2>
+<p>Python is dynamically typed: the value determines the type.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>        <span class="c1"># int</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mf">3.1415</span>   <span class="c1"># float</span>
+<span class="n">c</span> <span class="o">=</span> <span class="s2">&quot;python&quot;</span> <span class="c1"># str</span>
+<span class="n">d</span> <span class="o">=</span> <span class="kc">True</span>     <span class="c1"># bool</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">c</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">d</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Scope matters: variables defined inside a block are local to that block.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">if</span> <span class="n">flag</span><span class="p">:</span>
+    <span class="n">local_value</span> <span class="o">=</span> <span class="s2">&quot;ok&quot;</span>
+<span class="c1"># local_value is undefined if flag is False</span>
+</pre></div>
+</div>
+</section>
+<section id="basic-packages-and-imports">
+<h2>Basic packages and imports<a class="headerlink" href="#basic-packages-and-imports" title="Link to this heading"></a></h2>
+<p>The book introduces the standard library modules <cite>random</cite> and <cite>time</cite>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>  <span class="c1"># float in [0, 1)</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>      <span class="c1"># epoch time in seconds</span>
+</pre></div>
+</div>
+</section>
+<section id="conditional-logic-and-boolean-expressions">
+<h2>Conditional logic and boolean expressions<a class="headerlink" href="#conditional-logic-and-boolean-expressions" title="Link to this heading"></a></h2>
+<p>Use <cite>if</cite>, <cite>elif</cite>, and <cite>else</cite> with boolean expressions. Combine conditions with
+<cite>and</cite>, <cite>or</cite>, and <cite>not</cite>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">age</span> <span class="o">=</span> <span class="mi">26</span>
+<span class="k">if</span> <span class="n">age</span> <span class="o">&lt;</span> <span class="mi">18</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;under 18&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">age</span> <span class="o">==</span> <span class="mi">18</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;exactly 18&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;over 18&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="sequences-lists-tuples-and-matrices">
+<h2>Sequences: lists, tuples, and matrices<a class="headerlink" href="#sequences-lists-tuples-and-matrices" title="Link to this heading"></a></h2>
+<p>Lists are mutable, tuples are immutable, and both are ordered sequences with
+0-based indexing.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">25</span><span class="p">]</span>
+<span class="n">letters</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">]</span>
+<span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">values</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">values</span><span class="p">),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">coords</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># tuple</span>
+</pre></div>
+</div>
+<p>Matrices are often represented as lists of lists (later, NumPy arrays).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">])</span>  <span class="c1"># 3</span>
+</pre></div>
+</div>
+</section>
+<section id="loops">
+<h2>Loops<a class="headerlink" href="#loops" title="Link to this heading"></a></h2>
+<p><cite>while</cite> repeats while a condition is true; <cite>for</cite> iterates over iterables.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">num</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">while</span> <span class="n">num</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+    <span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">for</span> <span class="n">letter</span> <span class="ow">in</span> <span class="s2">&quot;data&quot;</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">letter</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Nested <cite>for</cite> loops are a direct way to traverse matrices.</p>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading"></a></h2>
+<p>Define functions with <cite>def</cite>, optionally with default parameters.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">power</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">**</span> <span class="n">p</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">square</span><span class="p">(</span><span class="mi">7</span><span class="p">),</span> <span class="n">power</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">power</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Functions can be combined with random sampling, as in simple simulations.</p>
+</section>
+<section id="file-i-o">
+<h2>File I/O<a class="headerlink" href="#file-i-o" title="Link to this heading"></a></h2>
+<p>Use <cite>open()</cite> with modes <cite>r</cite>, <cite>w</cite>, and <cite>a</cite>, or prefer a context manager to
+auto-close files.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;texto.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;line 1</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;line 2</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;texto.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Relative paths write to the current directory; absolute paths specify the full
+location. For portable paths, use <cite>pathlib.Path</cite>.</p>
+</section>
+<section id="lambda-and-comprehensions">
+<h2>Lambda and comprehensions<a class="headerlink" href="#lambda-and-comprehensions" title="Link to this heading"></a></h2>
+<p>Lambda functions are small anonymous functions; comprehensions build lists (or
+sets/dicts) concisely.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">calc</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">calc</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+
+<span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<span class="n">evens</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nums</span> <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">squares</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="numerical-methods-in-pure-python">
+<h2>Numerical methods in pure Python<a class="headerlink" href="#numerical-methods-in-pure-python" title="Link to this heading"></a></h2>
+<p>The book implements classic numerical methods without external libraries:</p>
+<ul class="simple">
+<li><p>Trapezoidal rule for integrals, useful for 1D problems.</p></li>
+<li><p>Monte Carlo integration, especially effective in higher dimensions.</p></li>
+<li><p>ODE solvers: Euler (second-order form), Runge-Kutta 4, and Verlet.</p></li>
+<li><p>Discrete Fourier transform (DFT) for frequency analysis.</p></li>
+</ul>
+<p>These serve as a conceptual baseline before switching to optimized libraries.</p>
+</section>
+<section id="scientific-python-stack">
+<h2>Scientific Python stack<a class="headerlink" href="#scientific-python-stack" title="Link to this heading"></a></h2>
+<section id="matplotlib">
+<h3>Matplotlib<a class="headerlink" href="#matplotlib" title="Link to this heading"></a></h3>
+<p><cite>matplotlib.pyplot</cite> is used for plotting lines, scatter plots, subplots, and
+saving figures. Common calls include <cite>plot</cite>, <cite>legend</cite>, <cite>grid</cite>, <cite>subplot</cite>, and
+<cite>savefig</cite>. Labels can include LaTeX with raw strings, for example <cite>r”$e^x$”</cite>.</p>
+</section>
+<section id="numpy">
+<h3>NumPy<a class="headerlink" href="#numpy" title="Link to this heading"></a></h3>
+<p>NumPy arrays are faster and more memory-efficient than Python lists for numeric
+data. Core tools include <cite>np.arange</cite>, <cite>np.linspace</cite>, <cite>np.zeros</cite>, vectorized
+math, <cite>np.random</cite>, <cite>np.fft</cite>, and <cite>numpy.linalg</cite> (solve, eig, inv, det, dot,
+inner, outer). Prefer vectorized operations over Python loops when possible.</p>
+</section>
+<section id="scipy">
+<h3>SciPy<a class="headerlink" href="#scipy" title="Link to this heading"></a></h3>
+<p>SciPy builds on NumPy and provides optimized routines for ODEs and integration.
+The recommended ODE interface is <cite>scipy.integrate.solve_ivp</cite>, and numerical
+integration can be done with <cite>trapz</cite>, <cite>simps</cite>, <cite>quad</cite>, <cite>dblquad</cite>, and <cite>tplquad</cite>.</p>
+</section>
+</section>
+<section id="python-updates-since-2020">
+<h2>Python updates since 2020<a class="headerlink" href="#python-updates-since-2020" title="Link to this heading"></a></h2>
+<p>The core ideas above remain the same, but Python itself has added useful
+features:</p>
+<ul class="simple">
+<li><p><cite>match</cite>/<cite>case</cite> (3.10) for structured conditional logic.</p></li>
+<li><p>Dictionary merge and update with <cite>|</cite> and <cite>|=</cite> (3.9).</p></li>
+<li><p>F-string debug syntax <cite>f”{var=}”</cite> (3.8).</p></li>
+<li><p>Built-in generic type hints like <cite>list[str]</cite> (3.9) and union types
+<cite>int | None</cite> (3.10).</p></li>
+<li><p><cite>tomllib</cite> (3.11) for reading TOML configuration files.</p></li>
+<li><p>Interpreter performance improvements in 3.11+ that make numeric code faster
+even before NumPy.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../math/limits.html" class="btn btn-neutral float-left" title="Limits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="linear_regression.html" class="btn btn-neutral float-right" title="Linear Regression" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright J. V. V. Cassiano.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

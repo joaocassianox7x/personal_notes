@@ -1,28 +1,30 @@
 Personal Notes
 ==============
 
-Welcome! This index links to each chapter. Every chapter lives in its own folder.
-
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
    :caption: Introduction
 
+   aboutme
    intro
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
    :caption: Physics and Computational Physics
 
-   physics/index
+   physics/pppm_ewald
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 1
    :caption: Math
 
-   math/index
+   math/functions
+   math/limits
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: DS, ML, and AI
 
-   ds_ai/index
+   ds_ai/python
+   ds_ai/linear_regression
+   ds_ai/bias_variance

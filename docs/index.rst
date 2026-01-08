@@ -13,6 +13,8 @@ Personal Notes
    :caption: Physics and Computational Physics
 
    physics/pppm_ewald
+   physics/double_pendulum
+   physics/computational_derivatives
 
 .. toctree::
    :maxdepth: 1
@@ -28,3 +30,4 @@ Personal Notes
    ds_ai/python
    ds_ai/linear_regression
    ds_ai/bias_variance
+   ds_ai/backpropagation

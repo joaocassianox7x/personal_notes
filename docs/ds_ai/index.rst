@@ -9,3 +9,4 @@ Data Science, Machine Learning, and AI
    python
    linear_regression
    bias_variance
+   backpropagation

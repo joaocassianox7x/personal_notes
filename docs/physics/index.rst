@@ -7,3 +7,5 @@ Physics and Computational Physics
    :maxdepth: 2
 
    pppm_ewald
+   double_pendulum
+   computational_derivatives

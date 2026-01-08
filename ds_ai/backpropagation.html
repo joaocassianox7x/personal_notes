@@ -1,0 +1,284 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Backpropagation &mdash; Personal Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Bias - Variance Decomposition" href="bias_variance.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Personal Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">About Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction of Material</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../physics/pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/computational_derivatives.html">Computational Derivatives</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Math</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="python.html">Python for Data Science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_regression.html">Linear Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Backpropagation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#goal">Goal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setup-two-layer-mlp">Setup: two-layer MLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#chain-rule-scalar-view">Chain rule (scalar view)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-signals-and-shapes">Error signals and shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gradient-flow-intuition">Gradient flow intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numerical-stability-tips">Numerical stability tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numpy-reference-implementation">NumPy reference implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#figures">Figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reproduce-the-figures">Reproduce the figures</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Personal Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Backpropagation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/ds_ai/backpropagation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="backpropagation">
+<h1>Backpropagation<a class="headerlink" href="#backpropagation" title="Link to this heading"></a></h1>
+<section id="goal">
+<h2>Goal<a class="headerlink" href="#goal" title="Link to this heading"></a></h2>
+<p>Explain the backpropagation algorithm for feed-forward neural networks, derive gradients via the chain rule, and provide a NumPy reference implementation with illustrative figures.</p>
+</section>
+<section id="setup-two-layer-mlp">
+<h2>Setup: two-layer MLP<a class="headerlink" href="#setup-two-layer-mlp" title="Link to this heading"></a></h2>
+<p>Given inputs <span class="math notranslate nohighlight">\(X \in \mathbb{R}^{n \times d}\)</span> and targets <span class="math notranslate nohighlight">\(y \in \{0,1\}\)</span> for binary classification, with hidden width <span class="math notranslate nohighlight">\(h\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}z_1 = X W_1 + \mathbf{1} b_1^T, \quad a_1 = \phi(z_1)\\z_2 = a_1 W_2 + \mathbf{1} b_2^T, \quad \hat{y} = \sigma(z_2)\end{aligned}\end{align} \]</div>
+<ul>
+<li><p><span class="math notranslate nohighlight">\(W_1 \in \mathbb{R}^{d \times h}\)</span>, <span class="math notranslate nohighlight">\(b_1 \in \mathbb{R}^{h}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(W_2 \in \mathbb{R}^{h \times 1}\)</span>, <span class="math notranslate nohighlight">\(b_2 \in \mathbb{R}\)</span></p></li>
+<li><p>Activation <span class="math notranslate nohighlight">\(\phi\)</span> (e.g., <span class="math notranslate nohighlight">\(\tanh\)</span> or ReLU), sigmoid output <span class="math notranslate nohighlight">\(\sigma(z) = 1/(1+e^{-z})\)</span>.</p></li>
+<li><p>Loss (binary cross-entropy):</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{L} = - \frac{1}{n} \sum_{i=1}^n \left[ y_i \log \hat{y}_i + (1-y_i) \log (1-\hat{y}_i) \right].\]</div>
+</li>
+</ul>
+</section>
+<section id="chain-rule-scalar-view">
+<h2>Chain rule (scalar view)<a class="headerlink" href="#chain-rule-scalar-view" title="Link to this heading"></a></h2>
+<p>For a single sample, backprop flows gradients from output to parameters:</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\delta_2 = \frac{\partial \mathcal{L}}{\partial z_2} = \hat{y} - y\\\frac{\partial \mathcal{L}}{\partial W_2} = a_1^T \delta_2, \quad \frac{\partial \mathcal{L}}{\partial b_2} = \delta_2\\\delta_1 = (\delta_2 W_2^T) \odot \phi'(z_1)\\\frac{\partial \mathcal{L}}{\partial W_1} = X^T \delta_1, \quad \frac{\partial \mathcal{L}}{\partial b_1} = \delta_1.\end{aligned}\end{align} \]</div>
+<p>Vectorized over the batch, replace transposes with matrix multiplies as above and scale by <span class="math notranslate nohighlight">\(1/n\)</span>.</p>
+</section>
+<section id="error-signals-and-shapes">
+<h2>Error signals and shapes<a class="headerlink" href="#error-signals-and-shapes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\delta_2 \in \mathbb{R}^{n \times 1}\)</span> matches <span class="math notranslate nohighlight">\(z_2\)</span>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\delta_1 \in \mathbb{R}^{n \times h}\)</span> matches <span class="math notranslate nohighlight">\(z_1\)</span>.</p></li>
+<li><p>Parameter gradients share the shape of their parameters: <span class="math notranslate nohighlight">\(\nabla W_2 \in \mathbb{R}^{h \times 1}\)</span>, <span class="math notranslate nohighlight">\(\nabla b_2 \in \mathbb{R}\)</span>, <span class="math notranslate nohighlight">\(\nabla W_1 \in \mathbb{R}^{d \times h}\)</span>, <span class="math notranslate nohighlight">\(\nabla b_1 \in \mathbb{R}^h\)</span>.</p></li>
+</ul>
+</section>
+<section id="gradient-flow-intuition">
+<h2>Gradient flow intuition<a class="headerlink" href="#gradient-flow-intuition" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Output error <span class="math notranslate nohighlight">\(\delta_2\)</span> scales with prediction mismatch <span class="math notranslate nohighlight">\(\hat{y}-y\)</span>.</p></li>
+<li><p>Hidden error <span class="math notranslate nohighlight">\(\delta_1\)</span> gates through both the upstream weights <span class="math notranslate nohighlight">\(W_2\)</span> and activation slope <span class="math notranslate nohighlight">\(\phi'(z_1)\)</span>.</p></li>
+<li><p>Vanishing/exploding arise when repeated multiplication by activation slopes and weights drives signals to 0 or large magnitudes.</p></li>
+</ul>
+</section>
+<section id="numerical-stability-tips">
+<h2>Numerical stability tips<a class="headerlink" href="#numerical-stability-tips" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Use <span class="math notranslate nohighlight">\(\tanh\)</span> or ReLU; avoid saturating sigmoids in hidden layers.</p></li>
+<li><p>Clip logits when computing cross-entropy to avoid log of 0.</p></li>
+<li><p>Initialize with small random weights (e.g., Xavier/Glorot for tanh: variance <span class="math notranslate nohighlight">\(1/d\)</span>).</p></li>
+<li><p>Add <span class="math notranslate nohighlight">\(L_2\)</span> penalty to weights to reduce overfitting.</p></li>
+</ul>
+</section>
+<section id="numpy-reference-implementation">
+<h2>NumPy reference implementation<a class="headerlink" href="#numpy-reference-implementation" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">sigmoid_grad</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">s</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">s</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">tanh_grad</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">t</span><span class="o">**</span><span class="mi">2</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">):</span>
+    <span class="n">W1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">W2</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="n">z1</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">W1</span> <span class="o">+</span> <span class="n">b1</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="n">activation</span><span class="p">(</span><span class="n">z1</span><span class="p">)</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="n">a1</span> <span class="o">@</span> <span class="n">W2</span> <span class="o">+</span> <span class="n">b2</span>
+    <span class="n">y_hat</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">)</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">z2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">cache</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">loss_and_grads</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">tanh</span><span class="p">,</span> <span class="n">activation_grad</span><span class="o">=</span><span class="n">tanh_grad</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+    <span class="n">W1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">W2</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="n">y_hat</span><span class="p">,</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">a1</span><span class="p">,</span> <span class="n">z2</span><span class="p">)</span> <span class="o">=</span> <span class="n">forward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="n">activation</span><span class="p">)</span>
+
+    <span class="c1"># Binary cross-entropy</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-9</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_hat</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y_hat</span> <span class="o">+</span> <span class="n">eps</span><span class="p">))</span>
+
+    <span class="n">delta2</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_hat</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="n">n</span>  <span class="c1"># shape (n,1)</span>
+    <span class="n">grad_W2</span> <span class="o">=</span> <span class="n">a1</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">delta2</span>
+    <span class="n">grad_b2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">delta1</span> <span class="o">=</span> <span class="p">(</span><span class="n">delta2</span> <span class="o">@</span> <span class="n">W2</span><span class="o">.</span><span class="n">T</span><span class="p">)</span> <span class="o">*</span> <span class="n">activation_grad</span><span class="p">(</span><span class="n">z1</span><span class="p">)</span>
+    <span class="n">grad_W1</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">delta1</span>
+    <span class="n">grad_b1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta1</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">grads</span> <span class="o">=</span> <span class="p">(</span><span class="n">grad_W1</span><span class="p">,</span> <span class="n">grad_b1</span><span class="p">,</span> <span class="n">grad_W2</span><span class="p">,</span> <span class="n">grad_b2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">grads</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">grads</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="n">W1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">W2</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">params</span>
+    <span class="n">gW1</span><span class="p">,</span> <span class="n">gb1</span><span class="p">,</span> <span class="n">gW2</span><span class="p">,</span> <span class="n">gb2</span> <span class="o">=</span> <span class="n">grads</span>
+    <span class="n">W1</span> <span class="o">=</span> <span class="n">W1</span> <span class="o">-</span> <span class="n">lr</span> <span class="o">*</span> <span class="p">(</span><span class="n">gW1</span> <span class="o">+</span> <span class="n">weight_decay</span> <span class="o">*</span> <span class="n">W1</span><span class="p">)</span>
+    <span class="n">b1</span> <span class="o">=</span> <span class="n">b1</span> <span class="o">-</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">gb1</span>
+    <span class="n">W2</span> <span class="o">=</span> <span class="n">W2</span> <span class="o">-</span> <span class="n">lr</span> <span class="o">*</span> <span class="p">(</span><span class="n">gW2</span> <span class="o">+</span> <span class="n">weight_decay</span> <span class="o">*</span> <span class="n">W2</span><span class="p">)</span>
+    <span class="n">b2</span> <span class="o">=</span> <span class="n">b2</span> <span class="o">-</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">gb2</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">W1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">W2</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span>
+
+<span class="c1"># Toy XOR data</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">h</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">W1</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+<span class="n">b1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+<span class="n">W2</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">h</span><span class="p">),</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">b2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">W1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">W2</span><span class="p">,</span> <span class="n">b2</span><span class="p">)</span>
+
+<span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="n">loss</span><span class="p">,</span> <span class="n">grads</span> <span class="o">=</span> <span class="n">loss_and_grads</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">update</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">grads</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">)</span>
+    <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final loss:&quot;</span><span class="p">,</span> <span class="n">losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+<section id="figures">
+<h2>Figures<a class="headerlink" href="#figures" title="Link to this heading"></a></h2>
+<p>The accompanying script generates:</p>
+<ul class="simple">
+<li><p>Training loss curve (convergence on XOR)</p></li>
+<li><p>Decision boundary over the unit square</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/backprop_loss.png"><img alt="Training loss curve for XOR MLP" class="align-center" src="../_images/backprop_loss.png" style="width: 100%;" />
+</a>
+<a class="reference internal image-reference" href="../_images/backprop_boundary.png"><img alt="Decision boundary learned by 2-layer MLP on XOR" class="align-center" src="../_images/backprop_boundary.png" style="width: 100%;" />
+</a>
+</section>
+<section id="reproduce-the-figures">
+<h2>Reproduce the figures<a class="headerlink" href="#reproduce-the-figures" title="Link to this heading"></a></h2>
+<p>Run the generator script after edits:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>docs/_static_files/codes/backpropagation.py
+</pre></div>
+</div>
+<p>It will write the PNGs under <code class="docutils literal notranslate"><span class="pre">docs/_static_files/images</span></code> and print the final loss for sanity checking.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bias_variance.html" class="btn btn-neutral float-left" title="Bias - Variance Decomposition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright J. V. V. Cassiano.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

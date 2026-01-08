@@ -20,7 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Data Science, Machine Learning, and AI" href="index.html" /> 
+    <link rel="next" title="Bias - Variance Decomposition" href="bias_variance.html" />
+    <link rel="prev" title="Python for Data Science" href="python.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,29 +45,38 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">About Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction of Material</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../physics/index.html">Physics and Computational Physics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/computational_derivatives.html">Computational Derivatives</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Math</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../math/index.html">Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">Data Science, Machine Learning, and AI</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Linear Regression</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#core-idea">Core idea</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#model">Model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#objective">Objective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#classical-assumptions">Classical assumptions</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#diagnostics">Diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="python.html">Python for Data Science</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Linear Regression</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#core-idea">Core idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#model-and-loss">Model and loss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#normal-equations-closed-form">Normal equations (closed form)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ridge-l2-regularized-solution">Ridge (L2-regularized) solution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#gradient-descent-update">Gradient descent update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#under-the-hood-probabilistic-view">Under the hood: probabilistic view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#diagnostics">Diagnostics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numpy-implementation">NumPy implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visuals">Visuals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reproducibility-of-figures">Reproducibility of figures</a></li>
 </ul>
 </li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backpropagation.html">Backpropagation</a></li>
 </ul>
 
         </div>
@@ -83,7 +93,6 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="index.html">Data Science, Machine Learning, and AI</a></li>
       <li class="breadcrumb-item active">Linear Regression</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/ds_ai/linear_regression.rst.txt" rel="nofollow"> View page source</a>
@@ -100,38 +109,44 @@
 <h2>Core idea<a class="headerlink" href="#core-idea" title="Link to this heading"></a></h2>
 <p>Fit a linear relationship between features and a target: <span class="math notranslate nohighlight">\(y \approx X\beta + \varepsilon\)</span>.</p>
 </section>
-<section id="model">
-<h2>Model<a class="headerlink" href="#model" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>Hypothesis: <span class="math notranslate nohighlight">\(\hat{y} = \beta_0 + \sum_{j=1}^p \beta_j x_j\)</span> (can include interaction or polynomial terms).</p></li>
+<section id="model-and-loss">
+<h2>Model and loss<a class="headerlink" href="#model-and-loss" title="Link to this heading"></a></h2>
+<ul>
+<li><p>Hypothesis: <span class="math notranslate nohighlight">\(\hat{y} = \beta_0 + \sum_{j=1}^p \beta_j x_j\)</span>.</p></li>
 <li><p>Matrix form: <span class="math notranslate nohighlight">\(\hat{\mathbf{y}} = \mathbf{X}\boldsymbol{\beta}\)</span>.</p></li>
+<li><p>Squared loss over <span class="math notranslate nohighlight">\(n\)</span> samples:</p>
+<div class="math notranslate nohighlight">
+\[J(\boldsymbol{\beta}) = \|\mathbf{y} - \mathbf{X}\boldsymbol{\beta}\|_2^2 = (\mathbf{y}-\mathbf{X}\boldsymbol{\beta})^\top (\mathbf{y}-\mathbf{X}\boldsymbol{\beta}).\]</div>
+</li>
 </ul>
 </section>
-<section id="objective">
-<h2>Objective<a class="headerlink" href="#objective" title="Link to this heading"></a></h2>
-<p>Minimize squared error:</p>
+<section id="normal-equations-closed-form">
+<h2>Normal equations (closed form)<a class="headerlink" href="#normal-equations-closed-form" title="Link to this heading"></a></h2>
+<p>Set gradient to zero:</p>
 <div class="math notranslate nohighlight">
-\[\min_{\boldsymbol{\beta}} \left\| \mathbf{y} - \mathbf{X}\boldsymbol{\beta} \right\|_2^2.\]</div>
-<ul>
-<li><p>Closed form (when <span class="math notranslate nohighlight">\(\mathbf{X}^\top\mathbf{X}\)</span> is invertible):</p>
+\[\nabla_{\boldsymbol{\beta}} J = -2\mathbf{X}^\top (\mathbf{y}-\mathbf{X}\boldsymbol{\beta}) = 0 \quad \Rightarrow \quad \mathbf{X}^\top \mathbf{X} \hat{\boldsymbol{\beta}} = \mathbf{X}^\top \mathbf{y}.\]</div>
+<p>Solution when <span class="math notranslate nohighlight">\(\mathbf{X}^\top\mathbf{X}\)</span> is full rank:</p>
 <div class="math notranslate nohighlight">
 \[\hat{\boldsymbol{\beta}} = \left(\mathbf{X}^\top \mathbf{X}\right)^{-1}\mathbf{X}^\top \mathbf{y}.\]</div>
-</li>
-<li><p>With <span class="math notranslate nohighlight">\(L_2\)</span> regularization (Ridge):</p>
-<div class="math notranslate nohighlight">
-\[\hat{\boldsymbol{\beta}} = \left(\mathbf{X}^\top \mathbf{X} + \lambda \mathbf{I}\right)^{-1}\mathbf{X}^\top \mathbf{y}.\]</div>
-</li>
-</ul>
 </section>
-<section id="classical-assumptions">
-<h2>Classical assumptions<a class="headerlink" href="#classical-assumptions" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p>Linearity of the relationship between predictors and target.</p></li>
-<li><p>Independent errors.</p></li>
-<li><p>Homoscedasticity (constant error variance).</p></li>
-<li><p>No multicollinearity among predictors.</p></li>
-<li><p>Errors are normally distributed with mean <span class="math notranslate nohighlight">\(0\)</span> and variance <span class="math notranslate nohighlight">\(\sigma^2\)</span> (for inference).</p></li>
-</ul>
+<section id="ridge-l2-regularized-solution">
+<h2>Ridge (L2-regularized) solution<a class="headerlink" href="#ridge-l2-regularized-solution" title="Link to this heading"></a></h2>
+<p>Adds <span class="math notranslate nohighlight">\(\lambda \|\boldsymbol{\beta}\|_2^2\)</span> to discourage large weights:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\boldsymbol{\beta}}_{\text{ridge}} = \left(\mathbf{X}^\top \mathbf{X} + \lambda \mathbf{I}\right)^{-1}\mathbf{X}^\top \mathbf{y}.\]</div>
+</section>
+<section id="gradient-descent-update">
+<h2>Gradient descent update<a class="headerlink" href="#gradient-descent-update" title="Link to this heading"></a></h2>
+<p>Starting from <span class="math notranslate nohighlight">\(\boldsymbol{\beta}^{(0)}\)</span> and learning rate <span class="math notranslate nohighlight">\(\eta\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\boldsymbol{\beta}^{(t+1)} = \boldsymbol{\beta}^{(t)} - \eta \, \nabla_{\boldsymbol{\beta}} J = \boldsymbol{\beta}^{(t)} + 2\eta \, \mathbf{X}^\top (\mathbf{y}-\mathbf{X}\boldsymbol{\beta}^{(t)}).\]</div>
+</section>
+<section id="under-the-hood-probabilistic-view">
+<h2>Under the hood: probabilistic view<a class="headerlink" href="#under-the-hood-probabilistic-view" title="Link to this heading"></a></h2>
+<p>Assuming i.i.d. Gaussian noise <span class="math notranslate nohighlight">\(\varepsilon \sim \mathcal{N}(0, \sigma^2 I)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[p(\mathbf{y}\mid \mathbf{X}, \boldsymbol{\beta}, \sigma^2) = \mathcal{N}(\mathbf{X}\boldsymbol{\beta}, \sigma^2 I) \quad \Rightarrow \quad \text{MLE of } \boldsymbol{\beta} = \hat{\boldsymbol{\beta}}_{\text{OLS}}.\]</div>
+<p>The ridge solution corresponds to a Gaussian prior <span class="math notranslate nohighlight">\(\boldsymbol{\beta} \sim \mathcal{N}(0, \tau^2 I)\)</span> (MAP estimator).</p>
 </section>
 <section id="diagnostics">
 <h2>Diagnostics<a class="headerlink" href="#diagnostics" title="Link to this heading"></a></h2>
@@ -142,13 +157,71 @@
 <li><p>Train/validation split or cross-validation to assess generalization.</p></li>
 </ul>
 </section>
+<section id="numpy-implementation">
+<h2>NumPy implementation<a class="headerlink" href="#numpy-implementation" title="Link to this heading"></a></h2>
+<p>Below is a minimal NumPy implementation for ordinary least squares and ridge, plus prediction and diagnostics.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fit_ols</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="c1"># Adds intercept and solves normal equations</span>
+    <span class="n">X_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span> <span class="n">X</span><span class="p">]</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X_</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X_</span><span class="p">)</span> <span class="o">@</span> <span class="n">X_</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span>
+    <span class="k">return</span> <span class="n">beta</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fit_ridge</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">1e-1</span><span class="p">):</span>
+    <span class="n">X_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span> <span class="n">X</span><span class="p">]</span>
+    <span class="n">n_features</span> <span class="o">=</span> <span class="n">X_</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">X_</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X_</span> <span class="o">+</span> <span class="n">lam</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">n_features</span><span class="p">))</span> <span class="o">@</span> <span class="n">X_</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span>
+    <span class="k">return</span> <span class="n">beta</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">beta</span><span class="p">):</span>
+    <span class="n">X_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)),</span> <span class="n">X</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">X_</span> <span class="o">@</span> <span class="n">beta</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">r2_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+    <span class="n">ss_res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">ss_tot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">y</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span><span class="p">))</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">ss_res</span> <span class="o">/</span> <span class="n">ss_tot</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
+
+<span class="n">beta_ols</span> <span class="o">=</span> <span class="n">fit_ols</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">beta_ridge</span> <span class="o">=</span> <span class="n">fit_ridge</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">y_hat_ols</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">beta_ols</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;OLS beta:&quot;</span><span class="p">,</span> <span class="n">beta_ols</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ridge beta:&quot;</span><span class="p">,</span> <span class="n">beta_ridge</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;R^2 (OLS):&quot;</span><span class="p">,</span> <span class="n">r2_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat_ols</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="visuals">
+<h2>Visuals<a class="headerlink" href="#visuals" title="Link to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/linear_regression_fit.png"><img alt="Linear regression fit versus ground truth with noise" class="align-center" src="../_images/linear_regression_fit.png" style="width: 100%;" />
+</a>
+<a class="reference internal image-reference" href="../_images/linear_regression_residuals.png"><img alt="Residuals versus predictions" class="align-center" src="../_images/linear_regression_residuals.png" style="width: 100%;" />
+</a>
+<a class="reference internal image-reference" href="../_images/linear_regression_ridge_path.png"><img alt="Ridge coefficients shrink with increasing lambda" class="align-center" src="../_images/linear_regression_ridge_path.png" style="width: 100%;" />
+</a>
+</section>
+<section id="reproducibility-of-figures">
+<h2>Reproducibility of figures<a class="headerlink" href="#reproducibility-of-figures" title="Link to this heading"></a></h2>
+<p>The figures above are generated by <code class="docutils literal notranslate"><span class="pre">docs/_static_files/codes/linear_regression.py</span></code>. Run it to refresh images after edits.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>docs/_static_files/codes/linear_regression.py
+</pre></div>
+</div>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="Data Science, Machine Learning, and AI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="python.html" class="btn btn-neutral float-left" title="Python for Data Science" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bias_variance.html" class="btn btn-neutral float-right" title="Bias - Variance Decomposition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

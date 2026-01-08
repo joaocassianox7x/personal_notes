@@ -1,4 +1,4 @@
-Introduction
+Introduction of Material
 ============
 
 These notes collect summaries across physics, math, and data science. Each chapter is a folder with its own sections:

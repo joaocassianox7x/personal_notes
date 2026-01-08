@@ -1,0 +1,210 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Double Pendulum via Lagrangian Mechanics &mdash; Personal Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Computational Derivatives" href="computational_derivatives.html" />
+    <link rel="prev" title="PPPM vs Ewald (Long-Range Coulomb)" href="pppm_ewald.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Personal Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">About Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction of Material</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Double Pendulum via Lagrangian Mechanics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#geometry-and-coordinates">Geometry and coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#kinetic-and-potential-energy">Kinetic and potential energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#equations-of-motion-standard-form">Equations of motion (standard form)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numerical-simulation-recipe">Numerical simulation recipe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visualization-results">Visualization results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-reproduce-the-figures">How to reproduce the figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#key-points-from-the-script">Key points from the script</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="computational_derivatives.html">Computational Derivatives</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Math</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/python.html">Python for Data Science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/linear_regression.html">Linear Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/backpropagation.html">Backpropagation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Personal Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Double Pendulum via Lagrangian Mechanics</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/physics/double_pendulum.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="double-pendulum-via-lagrangian-mechanics">
+<h1>Double Pendulum via Lagrangian Mechanics<a class="headerlink" href="#double-pendulum-via-lagrangian-mechanics" title="Link to this heading"></a></h1>
+<p>Goal: derive the equations of motion with the Lagrangian, then simulate two nearly identical initial conditions to show chaotic divergence.</p>
+<section id="geometry-and-coordinates">
+<h2>Geometry and coordinates<a class="headerlink" href="#geometry-and-coordinates" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Two point masses <span class="math notranslate nohighlight">\(m_1, m_2\)</span> on massless rods of lengths <span class="math notranslate nohighlight">\(\ell_1, \ell_2\)</span>.</p></li>
+<li><p>Generalized coordinates: angles <span class="math notranslate nohighlight">\(\theta_1, \theta_2\)</span> measured from the vertical.</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/double_pendulum_geometry.png"><img alt="Geometry of the double pendulum showing angles and link lengths" class="align-center" src="../_images/double_pendulum_geometry.png" style="width: 80%;" />
+</a>
+<p>Positions (taking the pivot as the origin, downward is negative <span class="math notranslate nohighlight">\(y\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}x_1 = \ell_1 \sin \theta_1, \quad y_1 = -\ell_1 \cos \theta_1 \\
+x_2 = x_1 + \ell_2 \sin \theta_2, \quad y_2 = y_1 - \ell_2 \cos \theta_2\end{split}\]</div>
+<p>Velocities:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\dot{x}_1 = \ell_1 \dot{\theta}_1 \cos \theta_1, \quad \dot{y}_1 = \ell_1 \dot{\theta}_1 \sin \theta_1 \\
+\dot{x}_2 = \dot{x}_1 + \ell_2 \dot{\theta}_2 \cos \theta_2, \quad \dot{y}_2 = \dot{y}_1 + \ell_2 \dot{\theta}_2 \sin \theta_2\end{split}\]</div>
+</section>
+<section id="kinetic-and-potential-energy">
+<h2>Kinetic and potential energy<a class="headerlink" href="#kinetic-and-potential-energy" title="Link to this heading"></a></h2>
+<div class="math notranslate nohighlight">
+\[T = \tfrac{1}{2} m_1 (\dot{x}_1^2 + \dot{y}_1^2) + \tfrac{1}{2} m_2 (\dot{x}_2^2 + \dot{y}_2^2)\]</div>
+<div class="math notranslate nohighlight">
+\[V = m_1 g y_1 + m_2 g y_2 = - m_1 g \ell_1 \cos\theta_1 - m_2 g (\ell_1 \cos\theta_1 + \ell_2 \cos\theta_2)\]</div>
+<p>The Lagrangian is <span class="math notranslate nohighlight">\(\mathcal{L} = T - V\)</span>.</p>
+</section>
+<section id="equations-of-motion-standard-form">
+<h2>Equations of motion (standard form)<a class="headerlink" href="#equations-of-motion-standard-form" title="Link to this heading"></a></h2>
+<p>After simplifying Euler–Lagrange equations for <span class="math notranslate nohighlight">\(\theta_1, \theta_2\)</span> and defining <span class="math notranslate nohighlight">\(\omega_1 = \dot{\theta}_1\)</span>, <span class="math notranslate nohighlight">\(\omega_2 = \dot{\theta}_2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\dot{\theta}_1 = \omega_1, \qquad \dot{\theta}_2 = \omega_2\]</div>
+<div class="math notranslate nohighlight">
+\[\dot{\omega}_1 = \frac{-g (2 m_1 + m_2) \sin\theta_1 - m_2 g \sin(\theta_1 - 2\theta_2) - 2 \sin(\theta_1 - \theta_2) m_2 (\omega_2^2 \ell_2 + \omega_1^2 \ell_1 \cos(\theta_1 - \theta_2))}{\ell_1 (2 m_1 + m_2 - m_2 \cos(2\theta_1 - 2\theta_2))}\]</div>
+<div class="math notranslate nohighlight">
+\[\dot{\omega}_2 = \frac{2 \sin(\theta_1 - \theta_2) (\omega_1^2 \ell_1 (m_1+m_2) + g (m_1 + m_2) \cos\theta_1 + \omega_2^2 \ell_2 m_2 \cos(\theta_1 - \theta_2))}{\ell_2 (2 m_1 + m_2 - m_2 \cos(2\theta_1 - 2\theta_2))}\]</div>
+<p>These ODEs are stiff when the denominator approaches zero; a small time step and stable integrator (e.g., RK4) keeps the simulation stable for moderate times.</p>
+</section>
+<section id="numerical-simulation-recipe">
+<h2>Numerical simulation recipe<a class="headerlink" href="#numerical-simulation-recipe" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Integrate <span class="math notranslate nohighlight">\([\theta_1, \theta_2, \omega_1, \omega_2]\)</span> with RK4.</p></li>
+<li><p>Use two initial states that differ by a tiny perturbation to expose sensitivity.</p></li>
+<li><p>Render both pendulums on the same plot and export to GIF.</p></li>
+</ol>
+</section>
+<section id="visualization-results">
+<h2>Visualization results<a class="headerlink" href="#visualization-results" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Both runs start with <span class="math notranslate nohighlight">\(\theta_1 = \pi/2\)</span>, <span class="math notranslate nohighlight">\(\theta_2 = \pi/2 + 0.01\)</span>, and the second run perturbs <span class="math notranslate nohighlight">\(\theta_2\)</span> by an extra <span class="math notranslate nohighlight">\(10^{-3}\)</span>.</p></li>
+<li><p>Despite near-identical starts, trajectories quickly diverge.</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/double_pendulum_divergence.png"><img alt="Angle divergence between two nearly identical initial conditions" class="align-center" src="../_images/double_pendulum_divergence.png" style="width: 100%;" />
+</a>
+<a class="reference internal image-reference" href="../_images/double_pendulum.gif"><img alt="Double pendulum animation showing two trajectories diverging" class="align-center" src="../_images/double_pendulum.gif" style="width: 100%;" />
+</a>
+</section>
+<section id="how-to-reproduce-the-figures">
+<h2>How to reproduce the figures<a class="headerlink" href="#how-to-reproduce-the-figures" title="Link to this heading"></a></h2>
+<p>Run the script that integrates the ODEs and builds the GIF and PNG:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>docs/_static_files/codes/double_pendulum.py
+</pre></div>
+</div>
+</section>
+<section id="key-points-from-the-script">
+<h2>Key points from the script<a class="headerlink" href="#key-points-from-the-script" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Uses RK4 with <span class="math notranslate nohighlight">\(\Delta t = 0.005\)</span> over 20 seconds.</p></li>
+<li><p>Converts angles to Cartesian coordinates for plotting rods and masses.</p></li>
+<li><p>Uses <code class="docutils literal notranslate"><span class="pre">matplotlib.animation.PillowWriter</span></code> to emit <code class="docutils literal notranslate"><span class="pre">double_pendulum.gif</span></code>.</p></li>
+<li><p>Also plots the angle differences <span class="math notranslate nohighlight">\(|\theta_1^{(A)}-\theta_1^{(B)}|\)</span> and <span class="math notranslate nohighlight">\(|\theta_2^{(A)}-\theta_2^{(B)}|\)</span> over time.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pppm_ewald.html" class="btn btn-neutral float-left" title="PPPM vs Ewald (Long-Range Coulomb)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="computational_derivatives.html" class="btn btn-neutral float-right" title="Computational Derivatives" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright J. V. V. Cassiano.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

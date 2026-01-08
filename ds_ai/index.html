@@ -18,9 +18,7 @@
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Linear Regression" href="linear_regression.html" />
-    <link rel="prev" title="Limits" href="../math/limits.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,22 +42,26 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">About Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction of Material</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../physics/index.html">Physics and Computational Physics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/computational_derivatives.html">Computational Derivatives</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Math</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../math/index.html">Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Data Science, Machine Learning, and AI</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="linear_regression.html">Linear Regression</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="python.html">Python for Data Science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_regression.html">Linear Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backpropagation.html">Backpropagation</a></li>
 </ul>
 
         </div>
@@ -88,15 +90,73 @@
              
   <section id="data-science-machine-learning-and-ai">
 <h1>Data Science, Machine Learning, and AI<a class="headerlink" href="#data-science-machine-learning-and-ai" title="Link to this heading"></a></h1>
-<p>This chapter holds the DS/ML/AI topics. Each section below links to its own page.</p>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="python.html">Python for Data Science</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="python.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#development-environment">Development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#variables-types-and-scope">Variables, types, and scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#basic-packages-and-imports">Basic packages and imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#conditional-logic-and-boolean-expressions">Conditional logic and boolean expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#sequences-lists-tuples-and-matrices">Sequences: lists, tuples, and matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#loops">Loops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#file-i-o">File I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#lambda-and-comprehensions">Lambda and comprehensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#numerical-methods-in-pure-python">Numerical methods in pure Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#scientific-python-stack">Scientific Python stack</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#python-updates-since-2020">Python updates since 2020</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="linear_regression.html">Linear Regression</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="linear_regression.html#core-idea">Core idea</a></li>
-<li class="toctree-l2"><a class="reference internal" href="linear_regression.html#model">Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="linear_regression.html#objective">Objective</a></li>
-<li class="toctree-l2"><a class="reference internal" href="linear_regression.html#classical-assumptions">Classical assumptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear_regression.html#model-and-loss">Model and loss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear_regression.html#normal-equations-closed-form">Normal equations (closed form)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear_regression.html#ridge-l2-regularized-solution">Ridge (L2-regularized) solution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear_regression.html#gradient-descent-update">Gradient descent update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear_regression.html#under-the-hood-probabilistic-view">Under the hood: probabilistic view</a></li>
 <li class="toctree-l2"><a class="reference internal" href="linear_regression.html#diagnostics">Diagnostics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear_regression.html#numpy-implementation">NumPy implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear_regression.html#visuals">Visuals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear_regression.html#reproducibility-of-figures">Reproducibility of figures</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bias_variance.html">Bias - Variance Decomposition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#expected-prediction-error">Expected Prediction Error</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#expected-squared-error">Expected Squared Error</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#the-fundamental-bias-variance-decomposition">The Fundamental Bias-Variance Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#expected-test-error-integrated">Expected Test Error (Integrated)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#detailed-analysis-of-bias-and-variance">Detailed Analysis of Bias and Variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#bias-definition-and-interpretation">Bias: Definition and Interpretation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#variance-definition-and-interpretation">Variance: Definition and Interpretation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#relationship-between-bias-and-variance">Relationship Between Bias and Variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#bias-variance-in-different-contexts">Bias-Variance in Different Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#linear-regression">Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#regularized-regression">Regularized Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#decision-trees-and-ensemble-methods">Decision Trees and Ensemble Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#cross-validation-and-bias-variance">Cross-Validation and Bias-Variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#leave-one-out-cross-validation-loocv">Leave-One-Out Cross-Validation (LOOCV)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#k-fold-cross-validation">K-Fold Cross-Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#learning-curves-diagnosing-bias-variance-problems">Learning Curves: Diagnosing Bias-Variance Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#model-complexity-examples">Model Complexity Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#practical-strategies-to-control-bias-variance">Practical Strategies to Control Bias-Variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#reducing-bias-model-is-too-simple">Reducing Bias (Model is Too Simple)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#reducing-variance-model-is-too-complex">Reducing Variance (Model is Too Complex)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#the-bayes-error-ultimate-lower-bound">The Bayes Error: Ultimate Lower Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#bias-variance-in-classification">Bias-Variance in Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#summary-table">Summary Table</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backpropagation.html">Backpropagation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="backpropagation.html#goal">Goal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backpropagation.html#setup-two-layer-mlp">Setup: two-layer MLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backpropagation.html#chain-rule-scalar-view">Chain rule (scalar view)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backpropagation.html#error-signals-and-shapes">Error signals and shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backpropagation.html#gradient-flow-intuition">Gradient flow intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backpropagation.html#numerical-stability-tips">Numerical stability tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backpropagation.html#numpy-reference-implementation">NumPy reference implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backpropagation.html#figures">Figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backpropagation.html#reproduce-the-figures">Reproduce the figures</a></li>
 </ul>
 </li>
 </ul>
@@ -106,10 +166,7 @@
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../math/limits.html" class="btn btn-neutral float-left" title="Limits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="linear_regression.html" class="btn btn-neutral float-right" title="Linear Regression" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

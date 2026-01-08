@@ -1,0 +1,229 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Computational Derivatives &mdash; Personal Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Functions and Domains" href="../math/functions.html" />
+    <link rel="prev" title="Double Pendulum via Lagrangian Mechanics" href="double_pendulum.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Personal Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">About Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction of Material</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Computational Derivatives</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#goal">Goal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#finite-differences-1d">Finite differences (1D)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-order-derivation-sketch">Error order derivation (sketch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-central-differences-are-better">Why central differences are better</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#second-derivatives">Second derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#error-sources">Error sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#optimal-step-size-central-2nd-order">Optimal step size (central, 2nd order)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#practical-guidance">Practical guidance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numpy-snippet-central-difference">NumPy snippet (central difference)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extending-to-gradients">Extending to gradients</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Math</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/python.html">Python for Data Science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/linear_regression.html">Linear Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/backpropagation.html">Backpropagation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Personal Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Computational Derivatives</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/physics/computational_derivatives.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="computational-derivatives">
+<h1>Computational Derivatives<a class="headerlink" href="#computational-derivatives" title="Link to this heading"></a></h1>
+<section id="goal">
+<h2>Goal<a class="headerlink" href="#goal" title="Link to this heading"></a></h2>
+<p>Summarize common finite-difference formulas, emphasize the advantages of central differences, and discuss truncation error, roundoff error, and error propagation.</p>
+</section>
+<section id="finite-differences-1d">
+<h2>Finite differences (1D)<a class="headerlink" href="#finite-differences-1d" title="Link to this heading"></a></h2>
+<p>For a smooth function <span class="math notranslate nohighlight">\(f(x)\)</span>, step <span class="math notranslate nohighlight">\(h\)</span>:</p>
+<ul class="simple">
+<li><p>Forward: <span class="math notranslate nohighlight">\(f'(x) \approx \dfrac{f(x+h)-f(x)}{h}\)</span> with truncation error <span class="math notranslate nohighlight">\(\mathcal{O}(h)\)</span>.</p></li>
+<li><p>Backward: <span class="math notranslate nohighlight">\(f'(x) \approx \dfrac{f(x)-f(x-h)}{h}\)</span> with truncation error <span class="math notranslate nohighlight">\(\mathcal{O}(h)\)</span>.</p></li>
+<li><p>Central: <span class="math notranslate nohighlight">\(f'(x) \approx \dfrac{f(x+h)-f(x-h)}{2h}\)</span> with truncation error <span class="math notranslate nohighlight">\(\mathcal{O}(h^2)\)</span>.</p></li>
+</ul>
+</section>
+<section id="error-order-derivation-sketch">
+<h2>Error order derivation (sketch)<a class="headerlink" href="#error-order-derivation-sketch" title="Link to this heading"></a></h2>
+<p>Taylor-expand around <span class="math notranslate nohighlight">\(x\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[f(x \pm h) = f(x) \pm h f'(x) + \tfrac{h^2}{2} f''(x) \pm \tfrac{h^3}{6} f^{(3)}(x) + \mathcal{O}(h^4).\]</div>
+<ul class="simple">
+<li><p>Forward: subtract <span class="math notranslate nohighlight">\(f(x)\)</span> and divide by <span class="math notranslate nohighlight">\(h\)</span> (Rightarrow f’(x) + tfrac{h}{2} f’’(x) + mathcal{O}(h^2)). Leading error <span class="math notranslate nohighlight">\(\propto h\)</span>.</p></li>
+<li><p>Backward: analogous, leading error <span class="math notranslate nohighlight">\(-\tfrac{h}{2} f''(x)\)</span> (mathcal{O}(h)).</p></li>
+<li><p>Central: subtract the backward from forward and divide by <span class="math notranslate nohighlight">\(2h\)</span> (Rightarrow f’(x) + tfrac{h^2}{6} f^{(3)}(x) + mathcal{O}(h^4)). Leading error <span class="math notranslate nohighlight">\(\propto h^2\)</span>.</p></li>
+</ul>
+</section>
+<section id="why-central-differences-are-better">
+<h2>Why central differences are better<a class="headerlink" href="#why-central-differences-are-better" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Higher accuracy:</strong> symmetric cancellation yields second-order accuracy for the same step size <span class="math notranslate nohighlight">\(h\)</span>.</p></li>
+<li><p><strong>Reduced phase error:</strong> for oscillatory signals, central schemes preserve phase better than one-sided stencils.</p></li>
+<li><p><strong>Balanced bias:</strong> forward/backward introduce directional bias; central is unbiased to leading order.</p></li>
+</ul>
+</section>
+<section id="second-derivatives">
+<h2>Second derivatives<a class="headerlink" href="#second-derivatives" title="Link to this heading"></a></h2>
+<div class="math notranslate nohighlight">
+\[f''(x) \approx \frac{f(x+h) - 2 f(x) + f(x-h)}{h^2} + \mathcal{O}(h^2).\]</div>
+<p>Sketch: combine the Taylor expansions above; the <span class="math notranslate nohighlight">\(h\)</span> terms cancel, leaving <span class="math notranslate nohighlight">\(f''(x) + \tfrac{h^2}{12} f^{(4)}(x) + \mathcal{O}(h^4)\)</span>.</p>
+</section>
+<section id="error-sources">
+<h2>Error sources<a class="headerlink" href="#error-sources" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Truncation error:</strong> comes from omitting higher-order terms in the Taylor expansion. For central first derivative: <span class="math notranslate nohighlight">\(E_T \approx \tfrac{h^2}{6} f^{(3)}(\xi)\)</span>.</p></li>
+<li><p><strong>Roundoff error:</strong> subtractive cancellation when <span class="math notranslate nohighlight">\(h\)</span> is very small; scales roughly like <span class="math notranslate nohighlight">\(\varepsilon_{\text{mach}}/h\)</span>.</p></li>
+<li><p><strong>Total error tradeoff:</strong> choose <span class="math notranslate nohighlight">\(h\)</span> to balance truncation (<span class="math notranslate nohighlight">\(\propto h^2\)</span>) and roundoff (<span class="math notranslate nohighlight">\(\propto 1/h\)</span>).</p></li>
+</ul>
+</section>
+<section id="optimal-step-size-central-2nd-order">
+<h2>Optimal step size (central, 2nd order)<a class="headerlink" href="#optimal-step-size-central-2nd-order" title="Link to this heading"></a></h2>
+<p>Model total error magnitude as <span class="math notranslate nohighlight">\(E(h) \approx C_T h^2 + C_R \varepsilon_{\text{mach}}/h\)</span>.
+Setting <span class="math notranslate nohighlight">\(\partial E / \partial h = 0\)</span> yields</p>
+<div class="math notranslate nohighlight">
+\[h_\star = \left(\frac{C_R \varepsilon_{\text{mach}}}{2 C_T}\right)^{1/3} \approx (\varepsilon_{\text{mach}})^{1/3} \times \text{(problem scale)}.\]</div>
+<p>In double precision ((varepsilon_{text{mach}} approx 2times10^{-16})), <span class="math notranslate nohighlight">\(h_\star\)</span> is typically <span class="math notranslate nohighlight">\(\mathcal{O}(10^{-5} - 10^{-4})\)</span> times the scale of <span class="math notranslate nohighlight">\(x\)</span>.
+- <strong>Error propagation:</strong> in multi-step computations (e.g., time integration), local derivative error can amplify; monitor with refinement studies.</p>
+</section>
+<section id="practical-guidance">
+<h2>Practical guidance<a class="headerlink" href="#practical-guidance" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Use central differences for interior points; fall back to one-sided stencils only at boundaries.</p></li>
+<li><p>Pick <span class="math notranslate nohighlight">\(h\)</span> relative to scale: <span class="math notranslate nohighlight">\(h = \alpha \max(|x|, 1)\sqrt[3]{\varepsilon_{\text{mach}}}\)</span> with <span class="math notranslate nohighlight">\(\alpha \in [10, 100]\)</span> often works in double precision.</p></li>
+<li><p>For noisy data, avoid very small <span class="math notranslate nohighlight">\(h\)</span>; denoise or fit a smooth surrogate first.</p></li>
+<li><p>Validate with step-halving: compute derivative with <span class="math notranslate nohighlight">\(h\)</span> and <span class="math notranslate nohighlight">\(h/2\)</span>; second-order schemes should improve by factor <span class="math notranslate nohighlight">\(\approx 4\)</span>.</p></li>
+</ol>
+</section>
+<section id="numpy-snippet-central-difference">
+<h2>NumPy snippet (central difference)<a class="headerlink" href="#numpy-snippet-central-difference" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">central_diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># Choose h based on magnitude of x and machine epsilon</span>
+    <span class="k">if</span> <span class="n">h</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">eps</span> <span class="o">**</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span> <span class="o">-</span> <span class="n">f</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">h</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">h</span><span class="p">)</span>
+
+<span class="c1"># Example: derivative of sin at x=1.0</span>
+<span class="n">val</span> <span class="o">=</span> <span class="n">central_diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>  <span class="c1"># ~cos(1.0)</span>
+</pre></div>
+</div>
+</section>
+<section id="extending-to-gradients">
+<h2>Extending to gradients<a class="headerlink" href="#extending-to-gradients" title="Link to this heading"></a></h2>
+<p>For <span class="math notranslate nohighlight">\(f: \mathbb{R}^n \to \mathbb{R}\)</span>, apply central differences per dimension:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial f}{\partial x_i}(\mathbf{x}) \approx \frac{f(\mathbf{x} + h \mathbf{e}_i) - f(\mathbf{x} - h \mathbf{e}_i)}{2h}.\]</div>
+<p>Use the same <span class="math notranslate nohighlight">\(h\)</span> balancing logic and beware correlated roundoff when dimensions are large.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="double_pendulum.html" class="btn btn-neutral float-left" title="Double Pendulum via Lagrangian Mechanics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../math/functions.html" class="btn btn-neutral float-right" title="Functions and Domains" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright J. V. V. Cassiano.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

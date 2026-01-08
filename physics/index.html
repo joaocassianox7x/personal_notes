@@ -18,9 +18,7 @@
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PPPM vs. Ewald (Long-Range Coulomb)" href="pppm_ewald.html" />
-    <link rel="prev" title="Introduction" href="../intro.html" /> 
+    <link rel="search" title="Search" href="../search.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,22 +42,26 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">About Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction of Material</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Physics and Computational Physics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html">PPPM vs. Ewald (Long-Range Coulomb)</a></li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="computational_derivatives.html">Computational Derivatives</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Math</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../math/index.html">Math</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../ds_ai/index.html">Data Science, Machine Learning, and AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/python.html">Python for Data Science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/linear_regression.html">Linear Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/backpropagation.html">Backpropagation</a></li>
 </ul>
 
         </div>
@@ -88,14 +90,45 @@
              
   <section id="physics-and-computational-physics">
 <h1>Physics and Computational Physics<a class="headerlink" href="#physics-and-computational-physics" title="Link to this heading"></a></h1>
-<p>This chapter collects physics topics. PPPM and Ewald are included below.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pppm_ewald.html">PPPM vs. Ewald (Long-Range Coulomb)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#goal">Goal</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#classical-ewald-summation">Classical Ewald summation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#classical-ewald-summation">Classical Ewald Summation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#potential-decomposition">Potential Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#computational-cost">Computational Cost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#forces">Forces</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#pppm-particleparticle-particlemesh">PPPM (Particle–Particle Particle–Mesh)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#practical-comparison">Practical comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#decomposition-strategy">Decomposition Strategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#mesh-based-long-range-calculation">Mesh-based Long-Range Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#id1">Computational Cost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#accuracy-control">Accuracy Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#practical-comparison">Practical Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#ewald-summation">Ewald Summation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#pppm-method">PPPM Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#summary-table">Summary Table</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#geometry-and-coordinates">Geometry and coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#kinetic-and-potential-energy">Kinetic and potential energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#equations-of-motion-standard-form">Equations of motion (standard form)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#numerical-simulation-recipe">Numerical simulation recipe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#visualization-results">Visualization results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#how-to-reproduce-the-figures">How to reproduce the figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#key-points-from-the-script">Key points from the script</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="computational_derivatives.html">Computational Derivatives</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#goal">Goal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#finite-differences-1d">Finite differences (1D)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#error-order-derivation-sketch">Error order derivation (sketch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#why-central-differences-are-better">Why central differences are better</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#second-derivatives">Second derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#error-sources">Error sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#optimal-step-size-central-2nd-order">Optimal step size (central, 2nd order)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#practical-guidance">Practical guidance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#numpy-snippet-central-difference">NumPy snippet (central difference)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#extending-to-gradients">Extending to gradients</a></li>
 </ul>
 </li>
 </ul>
@@ -105,10 +138,7 @@
 
            </div>
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pppm_ewald.html" class="btn btn-neutral float-right" title="PPPM vs. Ewald (Long-Range Coulomb)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-    </div>
+          <footer>
 
   <hr/>
 

@@ -5,38 +5,55 @@ Core idea
 ---------
 Fit a linear relationship between features and a target: :math:`y \approx X\beta + \varepsilon`.
 
-Model
------
-- Hypothesis: :math:`\hat{y} = \beta_0 + \sum_{j=1}^p \beta_j x_j` (can include interaction or polynomial terms).
+Model and loss
+--------------
+- Hypothesis: :math:`\hat{y} = \beta_0 + \sum_{j=1}^p \beta_j x_j`.
 - Matrix form: :math:`\hat{\mathbf{y}} = \mathbf{X}\boldsymbol{\beta}`.
+- Squared loss over :math:`n` samples:
 
-Objective
----------
-Minimize squared error:
+  .. math::
+
+     J(\boldsymbol{\beta}) = \|\mathbf{y} - \mathbf{X}\boldsymbol{\beta}\|_2^2 = (\mathbf{y}-\mathbf{X}\boldsymbol{\beta})^\top (\mathbf{y}-\mathbf{X}\boldsymbol{\beta}).
+
+Normal equations (closed form)
+------------------------------
+Set gradient to zero:
 
 .. math::
 
-   \min_{\boldsymbol{\beta}} \left\| \mathbf{y} - \mathbf{X}\boldsymbol{\beta} \right\|_2^2.
+   \nabla_{\boldsymbol{\beta}} J = -2\mathbf{X}^\top (\mathbf{y}-\mathbf{X}\boldsymbol{\beta}) = 0 \quad \Rightarrow \quad \mathbf{X}^\top \mathbf{X} \hat{\boldsymbol{\beta}} = \mathbf{X}^\top \mathbf{y}.
 
-- Closed form (when :math:`\mathbf{X}^\top\mathbf{X}` is invertible):
+Solution when :math:`\mathbf{X}^\top\mathbf{X}` is full rank:
 
-  .. math::
+.. math::
 
-     \hat{\boldsymbol{\beta}} = \left(\mathbf{X}^\top \mathbf{X}\right)^{-1}\mathbf{X}^\top \mathbf{y}.
+   \hat{\boldsymbol{\beta}} = \left(\mathbf{X}^\top \mathbf{X}\right)^{-1}\mathbf{X}^\top \mathbf{y}.
 
-- With :math:`L_2` regularization (Ridge):
+Ridge (L2-regularized) solution
+-------------------------------
+Adds :math:`\lambda \|\boldsymbol{\beta}\|_2^2` to discourage large weights:
 
-  .. math::
+.. math::
 
-     \hat{\boldsymbol{\beta}} = \left(\mathbf{X}^\top \mathbf{X} + \lambda \mathbf{I}\right)^{-1}\mathbf{X}^\top \mathbf{y}.
+   \hat{\boldsymbol{\beta}}_{\text{ridge}} = \left(\mathbf{X}^\top \mathbf{X} + \lambda \mathbf{I}\right)^{-1}\mathbf{X}^\top \mathbf{y}.
 
-Classical assumptions
----------------------
-- Linearity of the relationship between predictors and target.
-- Independent errors.
-- Homoscedasticity (constant error variance).
-- No multicollinearity among predictors.
-- Errors are normally distributed with mean :math:`0` and variance :math:`\sigma^2` (for inference).
+Gradient descent update
+-----------------------
+Starting from :math:`\boldsymbol{\beta}^{(0)}` and learning rate :math:`\eta`:
+
+.. math::
+
+   \boldsymbol{\beta}^{(t+1)} = \boldsymbol{\beta}^{(t)} - \eta \, \nabla_{\boldsymbol{\beta}} J = \boldsymbol{\beta}^{(t)} + 2\eta \, \mathbf{X}^\top (\mathbf{y}-\mathbf{X}\boldsymbol{\beta}^{(t)}).
+
+Under the hood: probabilistic view
+----------------------------------
+Assuming i.i.d. Gaussian noise :math:`\varepsilon \sim \mathcal{N}(0, \sigma^2 I)`:
+
+.. math::
+
+   p(\mathbf{y}\mid \mathbf{X}, \boldsymbol{\beta}, \sigma^2) = \mathcal{N}(\mathbf{X}\boldsymbol{\beta}, \sigma^2 I) \quad \Rightarrow \quad \text{MLE of } \boldsymbol{\beta} = \hat{\boldsymbol{\beta}}_{\text{OLS}}.
+
+The ridge solution corresponds to a Gaussian prior :math:`\boldsymbol{\beta} \sim \mathcal{N}(0, \tau^2 I)` (MAP estimator).
 
 Diagnostics
 -----------
@@ -44,3 +61,71 @@ Diagnostics
 - Residual plots for heteroscedasticity or nonlinearity.
 - Variance Inflation Factor (VIF) for multicollinearity.
 - Train/validation split or cross-validation to assess generalization.
+
+NumPy implementation
+--------------------
+Below is a minimal NumPy implementation for ordinary least squares and ridge, plus prediction and diagnostics.
+
+.. code-block:: python
+
+   import numpy as np
+
+   def fit_ols(X, y):
+       # Adds intercept and solves normal equations
+       X_ = np.c_[np.ones(len(X)), X]
+       beta = np.linalg.inv(X_.T @ X_) @ X_.T @ y
+       return beta
+
+   def fit_ridge(X, y, lam=1e-1):
+       X_ = np.c_[np.ones(len(X)), X]
+       n_features = X_.shape[1]
+       beta = np.linalg.inv(X_.T @ X_ + lam * np.eye(n_features)) @ X_.T @ y
+       return beta
+
+   def predict(X, beta):
+       X_ = np.c_[np.ones(len(X)), X]
+       return X_ @ beta
+
+   def r2_score(y, y_pred):
+       ss_res = np.sum((y - y_pred) ** 2)
+       ss_tot = np.sum((y - np.mean(y)) ** 2)
+       return 1 - ss_res / ss_tot
+
+   # Example usage
+   rng = np.random.default_rng(0)
+   X = rng.uniform(-2, 2, size=(80, 1))
+   y = 1.5 + 2.0 * X[:, 0] + rng.normal(scale=0.8, size=80)
+
+   beta_ols = fit_ols(X, y)
+   beta_ridge = fit_ridge(X, y, lam=1.0)
+   y_hat_ols = predict(X, beta_ols)
+
+   print("OLS beta:", beta_ols)
+   print("Ridge beta:", beta_ridge)
+   print("R^2 (OLS):", r2_score(y, y_hat_ols))
+
+Visuals
+-------
+
+.. image:: ../_static_files/images/linear_regression_fit.png
+   :alt: Linear regression fit versus ground truth with noise
+   :width: 100%
+   :align: center
+
+.. image:: ../_static_files/images/linear_regression_residuals.png
+   :alt: Residuals versus predictions
+   :width: 100%
+   :align: center
+
+.. image:: ../_static_files/images/linear_regression_ridge_path.png
+   :alt: Ridge coefficients shrink with increasing lambda
+   :width: 100%
+   :align: center
+
+Reproducibility of figures
+--------------------------
+The figures above are generated by ``docs/_static_files/codes/linear_regression.py``. Run it to refresh images after edits.
+
+.. code-block:: bash
+
+   python docs/_static_files/codes/linear_regression.py

@@ -10,3 +10,4 @@ Data Science, Machine Learning, and AI
    linear_regression
    bias_variance
    backpropagation
+   pca

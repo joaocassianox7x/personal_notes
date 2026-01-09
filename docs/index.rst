@@ -15,6 +15,7 @@ Personal Notes
    physics/pppm_ewald
    physics/double_pendulum
    physics/computational_derivatives
+   physics/force_fields
 
 .. toctree::
    :maxdepth: 1
@@ -31,3 +32,4 @@ Personal Notes
    ds_ai/linear_regression
    ds_ai/bias_variance
    ds_ai/backpropagation
+   ds_ai/pca

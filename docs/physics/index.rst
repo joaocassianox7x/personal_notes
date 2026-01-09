@@ -9,3 +9,4 @@ Physics and Computational Physics
    pppm_ewald
    double_pendulum
    computational_derivatives
+   force_fields

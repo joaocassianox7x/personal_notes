@@ -1,0 +1,798 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Force Fields : Water &mdash; Personal Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Functions and Domains" href="../math/functions.html" />
+    <link rel="prev" title="Computational Derivatives" href="computational_derivatives.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Personal Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">About Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction of Material</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="computational_derivatives.html">Computational Derivatives</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Force Fields : Water</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#intermolecular-interactions-general-principles">Intermolecular Interactions: General Principles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#water-models-overview">Water Models Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#detailed-water-model-comparison">Detailed Water Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spc-simple-point-charge">1. SPC (Simple Point Charge)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spc-e-spc-extended">2. SPC/E (SPC Extended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tip3p-transferable-intermolecular-potential-3-site">3. TIP3P (Transferable Intermolecular Potential, 3-site)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tip4p-transferable-intermolecular-potential-4-site">4. TIP4P (Transferable Intermolecular Potential, 4-site)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tip4p-2005-tip4p-refined-2005">5. TIP4P/2005 (TIP4P Refined, 2005)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tip4p-ice">6. TIP4P/Ice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tip4p-ew-tip4p-with-ewald-summation">7. TIP4P/Ew (TIP4P with Ewald summation)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#spc-fw-spc-flexible-water">8. SPC/Fw (SPC Flexible Water)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#q-tip4p-f-quantum-tip4p-f">9. q-TIP4P/f (Quantum TIP4P/f)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#comparative-summary-table">Comparative Summary Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hydrogen-bonding-in-water-models">Hydrogen Bonding in Water Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choosing-a-water-model-for-your-simulation">Choosing a Water Model for Your Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extensions-and-modern-developments">Extensions and Modern Developments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Math</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/python.html">Python for Data Science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/linear_regression.html">Linear Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/backpropagation.html">Backpropagation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/pca.html">Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/pca.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Personal Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Force Fields : Water</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/physics/force_fields.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="force-fields-water">
+<h1>Force Fields : Water<a class="headerlink" href="#force-fields-water" title="Link to this heading"></a></h1>
+<p><strong>Overview</strong></p>
+<p>A molecular force field is a set of mathematical functions and parameters that define the potential energy of a system as a function of atomic coordinates. Force fields enable:</p>
+<ul class="simple">
+<li><p>Simulation of molecular dynamics and structural properties</p></li>
+<li><p>Calculation of thermodynamic properties (density, heat capacity, diffusion)</p></li>
+<li><p>Prediction of spectroscopic properties (IR, Raman, neutron scattering)</p></li>
+<li><p>Efficient exploration of conformational space via molecular dynamics (MD)</p></li>
+</ul>
+<p>In this section, we focus on <strong>intermolecular interactions</strong> and popular water models, which dominate simulations in biochemistry, materials science, and environmental science.</p>
+<section id="intermolecular-interactions-general-principles">
+<h2>Intermolecular Interactions: General Principles<a class="headerlink" href="#intermolecular-interactions-general-principles" title="Link to this heading"></a></h2>
+<p><strong>Long-Range Interactions</strong></p>
+<p>Long-range interactions decay slowly with distance and must be evaluated over many molecules. Common long-range forces:</p>
+<ol class="arabic">
+<li><p><strong>Coulombic (Electrostatic) Interactions</strong></p>
+<p>Two point charges <span class="math notranslate nohighlight">\(q_i\)</span> and <span class="math notranslate nohighlight">\(q_j\)</span> separated by distance <span class="math notranslate nohighlight">\(r_{ij}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[V_{\text{elec}}(r_{ij}) = k_e \frac{q_i q_j}{r_{ij}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(k_e = 8.988 \times 10^9 \, \text{N·m}^2\text{·C}^{-2}\)</span> (in vacuum) or <span class="math notranslate nohighlight">\(k_e = 1389.4 \, \text{kcal·Å·mol}^{-1}\text{·e}^{-2}\)</span> (chemistry units).</p>
+<ul class="simple">
+<li><p>Range: <span class="math notranslate nohighlight">\(\sim 1/r\)</span> → extends to ~20 Å with noticeable effects</p></li>
+<li><p>Crucial for ions, charged residues, dipolar molecules (like water)</p></li>
+<li><p>Often computed via Ewald summation or PME (Particle Mesh Ewald) for periodic systems</p></li>
+</ul>
+</li>
+<li><p><strong>Dispersion (Van der Waals) Interactions</strong></p>
+<p>Induced dipole attractions from quantum fluctuations:</p>
+<div class="math notranslate nohighlight">
+\[V_{\text{disp}}(r_{ij}) = -\frac{C_6}{r_{ij}^6}\]</div>
+<ul class="simple">
+<li><p>Range: <span class="math notranslate nohighlight">\(\sim 1/r^6\)</span> → decays faster than Coulomb</p></li>
+<li><p>Typically combined with short-range repulsion to form Lennard-Jones or similar potentials</p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Close-Range Interactions (Short-Range)</strong></p>
+<p>Short-range interactions dominate at small separations and are often treated with pair potentials evaluated up to a cutoff (~12 Å).</p>
+<ol class="arabic">
+<li><p><strong>Repulsive (Pauli) Interactions</strong></p>
+<p>Born repulsion due to orbital overlap and Pauli exclusion:</p>
+<div class="math notranslate nohighlight">
+\[V_{\text{rep}}(r_{ij}) = A \exp\left(-\frac{r_{ij}}{\rho}\right) \quad \text{or} \quad \frac{B}{r_{ij}^{12}}\]</div>
+<ul class="simple">
+<li><p>Dominates at <span class="math notranslate nohighlight">\(r &lt; 3\)</span> Å</p></li>
+<li><p>Often modeled as <span class="math notranslate nohighlight">\(1/r^{12}\)</span> (Lennard-Jones 12-6)</p></li>
+</ul>
+</li>
+<li><p><strong>Lennard-Jones (LJ) Potential</strong></p>
+<p>The <strong>12-6 LJ</strong> potential combines repulsion and dispersion:</p>
+<div class="math notranslate nohighlight">
+\[V_{\text{LJ}}(r_{ij}) = 4\varepsilon_{ij} \left[ \left(\frac{\sigma_{ij}}{r_{ij}}\right)^{12} - \left(\frac{\sigma_{ij}}{r_{ij}}\right)^{6} \right]\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\varepsilon_{ij}\)</span> = well depth (attraction strength)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma_{ij}\)</span> = collision diameter (where <span class="math notranslate nohighlight">\(V = 0\)</span>)</p></li>
+<li><p><span class="math notranslate nohighlight">\(r_{\min} = 2^{1/6}\sigma_{ij} \approx 1.122 \sigma_{ij}\)</span> (equilibrium distance)</p></li>
+</ul>
+</li>
+<li><p><strong>Combining Rules</strong></p>
+<p>For unlike pairs (atom types <span class="math notranslate nohighlight">\(i \neq j\)</span>):</p>
+<ul class="simple">
+<li><p><strong>Arithmetic mean (Lorentz rule):</strong> <span class="math notranslate nohighlight">\(\sigma_{ij} = \frac{1}{2}(\sigma_i + \sigma_j)\)</span></p></li>
+<li><p><strong>Geometric mean (Berthelot rule):</strong> <span class="math notranslate nohighlight">\(\varepsilon_{ij} = \sqrt{\varepsilon_i \varepsilon_j}\)</span></p></li>
+</ul>
+</li>
+</ol>
+<p><strong>Intramolecular Terms</strong> (brief overview)</p>
+<p>While this section focuses on intermolecular interactions, many force fields also include:</p>
+<ul class="simple">
+<li><p><strong>Bond stretching:</strong> <span class="math notranslate nohighlight">\(V_b = k_b(r - r_0)^2\)</span></p></li>
+<li><p><strong>Angle bending:</strong> <span class="math notranslate nohighlight">\(V_\theta = k_\theta(\theta - \theta_0)^2\)</span></p></li>
+<li><p><strong>Dihedral torsions:</strong> <span class="math notranslate nohighlight">\(V_\phi = \sum_n V_n [1 + \cos(n\phi - \gamma_n)]\)</span></p></li>
+</ul>
+<p>These are critical for molecular structure and are extensively parameterized in most force fields.</p>
+</section>
+<section id="water-models-overview">
+<h2>Water Models Overview<a class="headerlink" href="#water-models-overview" title="Link to this heading"></a></h2>
+<p>Water is the most abundant molecule in biological and environmental systems. Its small size, strong intermolecular forces, and anomalous properties (e.g., density maximum at 4°C) make it a benchmark for force field development.</p>
+<p><strong>Key Properties to Match</strong></p>
+<ul class="simple">
+<li><p><strong>Dipole moment</strong> (<span class="math notranslate nohighlight">\(\mu\)</span>): ~1.85 Debye (experimental)</p></li>
+<li><p><strong>Density</strong> (<span class="math notranslate nohighlight">\(\rho\)</span>): ~1.0 g/cm³ at 298 K</p></li>
+<li><p><strong>Dielectric constant</strong> (<span class="math notranslate nohighlight">\(\varepsilon_r\)</span>): ~80 at room temperature</p></li>
+<li><p><strong>Heat of vaporization</strong> (<span class="math notranslate nohighlight">\(\Delta H_{\text{vap}}\)</span>): ~10.5 kcal/mol</p></li>
+<li><p><strong>Radial distribution function</strong> (RDF) g(r): shape and peaks</p></li>
+<li><p><strong>Self-diffusion coefficient</strong> (D): ~2.3 × 10⁻⁵ cm²/s at 298 K</p></li>
+</ul>
+<p><strong>Model Classification</strong></p>
+<p>Water models are classified by:</p>
+<ol class="arabic simple">
+<li><p><strong>Geometry:</strong> Rigid vs. flexible bonds</p></li>
+<li><p><strong>Charge sites:</strong> 3-site (O, H, H), 4-site (O + virtual M), 5-site (O, 2H, 2 virtual)</p></li>
+<li><p><strong>Functional form:</strong> Coulomb + LJ, or with additional terms</p></li>
+</ol>
+<p><strong>Naming Convention</strong></p>
+<ul class="simple">
+<li><p><strong>SPC:</strong> Simple Point Charge (3 sites)</p></li>
+<li><p><strong>TIP:</strong> Transferable Intermolecular Potential (3 or 4 sites)</p></li>
+<li><p><strong>q-TIP4P/f:</strong> Quantum Drude oscillator variant</p></li>
+<li><p><strong>-EW / -Ew:</strong> Ewald summation optimized</p></li>
+</ul>
+</section>
+<section id="detailed-water-model-comparison">
+<h2>Detailed Water Model Comparison<a class="headerlink" href="#detailed-water-model-comparison" title="Link to this heading"></a></h2>
+<p>We now examine eight popular water models in detail, organized from simplest to most sophisticated.</p>
+</section>
+<section id="spc-simple-point-charge">
+<h2>1. SPC (Simple Point Charge)<a class="headerlink" href="#spc-simple-point-charge" title="Link to this heading"></a></h2>
+<p><strong>Publication:</strong> Berendsen et al. (1981)</p>
+<p><strong>Geometry:</strong> 3-site rigid model</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{c|cccc}
+\text{Site} &amp; x \text{ (Å)} &amp; q \text{ (e)} &amp; \sigma \text{ (Å)} &amp; \varepsilon \text{ (kcal/mol)} \\
+\hline
+\text{O} &amp; 0 &amp; -0.82 &amp; 3.1656 &amp; 0.1554 \\
+\text{H} &amp; 0.8155 &amp; 0.41 &amp; 0 &amp; 0 \\
+\text{H} &amp; -0.8155 &amp; 0.41 &amp; 0 &amp; 0
+\end{array}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(x\)</span> is distance along O–H bond axis.</p>
+<p><strong>Key Characteristics:</strong></p>
+<ul class="simple">
+<li><p><strong>Dipole moment:</strong> 2.27 D (overestimated by ~23%)</p></li>
+<li><p><strong>O–H distance:</strong> 1.0 Å (rigid)</p></li>
+<li><p><strong>H–O–H angle:</strong> 109.47° (rigid)</p></li>
+<li><p><strong>Complexity:</strong> Very low; runs fastest</p></li>
+<li><p><strong>LJ parameters:</strong> O atom only (H atoms have no VdW)</p></li>
+<li><p><strong>Cutoff:</strong> Typically 10–12 Å</p></li>
+</ul>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Extremely fast; widely used in large simulations</p></li>
+<li><p>Reasonable liquid structure</p></li>
+<li><p>Good for non-aqueous systems</p></li>
+</ul>
+<p><strong>Weaknesses:</strong></p>
+<ul class="simple">
+<li><p>Dipole moment too high → overestimates dielectric constant</p></li>
+<li><p>Surface tension underestimated</p></li>
+<li><p>Hydrophobic effect overestimated</p></li>
+</ul>
+</section>
+<section id="spc-e-spc-extended">
+<h2>2. SPC/E (SPC Extended)<a class="headerlink" href="#spc-e-spc-extended" title="Link to this heading"></a></h2>
+<p><strong>Publication:</strong> Berendsen et al. (1987)</p>
+<p><strong>Geometry:</strong> 3-site rigid model (same as SPC)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{c|cccc}
+\text{Site} &amp; x \text{ (Å)} &amp; q \text{ (e)} &amp; \sigma \text{ (Å)} &amp; \varepsilon \text{ (kcal/mol)} \\
+\hline
+\text{O} &amp; 0 &amp; -0.8476 &amp; 3.1656 &amp; 0.1554 \\
+\text{H} &amp; 0.8155 &amp; 0.4238 &amp; 0 &amp; 0 \\
+\text{H} &amp; -0.8155 &amp; 0.4238 &amp; 0 &amp; 0
+\end{array}\end{split}\]</div>
+<p><strong>Key Characteristics:</strong></p>
+<ul class="simple">
+<li><p><strong>Dipole moment:</strong> 2.35 D (closer to experiment: 1.85 D)</p></li>
+<li><p><strong>O–H distance:</strong> 1.0 Å</p></li>
+<li><p><strong>H–O–H angle:</strong> 109.47°</p></li>
+<li><p><strong>Complexity:</strong> Very low (identical to SPC)</p></li>
+<li><p><strong>Cutoff:</strong> 10–12 Å</p></li>
+</ul>
+<p><strong>Changes from SPC:</strong></p>
+<p>Slightly adjusted charge distribution to improve properties.</p>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Better dipole moment than SPC</p></li>
+<li><p>Improved dielectric constant</p></li>
+<li><p>Still fast</p></li>
+<li><p>More stable for long simulations</p></li>
+</ul>
+<p><strong>Weaknesses:</strong></p>
+<ul class="simple">
+<li><p>Still overestimates dipole moment compared to gas-phase value</p></li>
+<li><p>Dielectric constant still somewhat high</p></li>
+</ul>
+</section>
+<section id="tip3p-transferable-intermolecular-potential-3-site">
+<h2>3. TIP3P (Transferable Intermolecular Potential, 3-site)<a class="headerlink" href="#tip3p-transferable-intermolecular-potential-3-site" title="Link to this heading"></a></h2>
+<p><strong>Publication:</strong> Jorgensen et al. (1983)</p>
+<p><strong>Geometry:</strong> 3-site rigid model</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{c|cccc}
+\text{Site} &amp; x \text{ (Å)} &amp; q \text{ (e)} &amp; \sigma \text{ (Å)} &amp; \varepsilon \text{ (kcal/mol)} \\
+\hline
+\text{O} &amp; 0 &amp; -0.834 &amp; 3.1506 &amp; 0.1520 \\
+\text{H} &amp; 0.9572 &amp; 0.417 &amp; 0 &amp; 0 \\
+\text{H} &amp; -0.9572 &amp; 0.417 &amp; 0 &amp; 0
+\end{array}\end{split}\]</div>
+<p><strong>Key Characteristics:</strong></p>
+<ul class="simple">
+<li><p><strong>Dipole moment:</strong> 2.35 D</p></li>
+<li><p><strong>O–H distance:</strong> 0.9572 Å (experimental geometry)</p></li>
+<li><p><strong>H–O–H angle:</strong> 104.52° (experimental)</p></li>
+<li><p><strong>Complexity:</strong> Low</p></li>
+<li><p><strong>Cutoff:</strong> 10–12 Å</p></li>
+</ul>
+<p><strong>Why “Transferable”:</strong></p>
+<p>TIP3P was parameterized to match intermolecular interactions from ab initio calculations, intending better transferability to different environments.</p>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Uses experimental O–H and H–O–H geometry</p></li>
+<li><p>Good hydrogen bonding geometry</p></li>
+<li><p>Widely used; extensive literature</p></li>
+<li><p>Computational efficiency comparable to SPC/E</p></li>
+</ul>
+<p><strong>Weaknesses:</strong></p>
+<ul class="simple">
+<li><p>Dipole moment still overestimated (~27% higher)</p></li>
+<li><p>Known to form too-stable hydrogen bonds</p></li>
+<li><p>Surface tension underestimated</p></li>
+<li><p>Dielectric constant higher than experiment</p></li>
+</ul>
+</section>
+<section id="tip4p-transferable-intermolecular-potential-4-site">
+<h2>4. TIP4P (Transferable Intermolecular Potential, 4-site)<a class="headerlink" href="#tip4p-transferable-intermolecular-potential-4-site" title="Link to this heading"></a></h2>
+<p><strong>Publication:</strong> Jorgensen et al. (1983)</p>
+<p><strong>Geometry:</strong> 4-site rigid model with virtual M site (virtual point representing the negative charge center)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{c|cccc}
+\text{Site} &amp; \text{Position} &amp; q \text{ (e)} &amp; \sigma \text{ (Å)} &amp; \varepsilon \text{ (kcal/mol)} \\
+\hline
+\text{O} &amp; \text{origin} &amp; 0.52 &amp; 3.1536 &amp; 0.1550 \\
+\text{H} &amp; 0.9572 \text{ Å from O} &amp; 0.24 &amp; 0 &amp; 0 \\
+\text{H} &amp; 0.9572 \text{ Å from O} &amp; 0.24 &amp; 0 &amp; 0 \\
+\text{M} &amp; 0.15 \text{ Å from O (toward bisector)} &amp; -0.52 &amp; 0 &amp; 0
+\end{array}\end{split}\]</div>
+<p><strong>O–H distance:</strong> 0.9572 Å
+<strong>H–O–H angle:</strong> 104.52°
+<strong>O–M distance:</strong> 0.15 Å</p>
+<p><strong>Key Characteristics:</strong></p>
+<ul class="simple">
+<li><p><strong>Dipole moment:</strong> 2.17 D (closer to experiment)</p></li>
+<li><p><strong>Complexity:</strong> Medium (virtual site computation)</p></li>
+<li><p><strong>Cutoff:</strong> 10–12 Å with Ewald summation recommended</p></li>
+</ul>
+<p><strong>Virtual Site Concept:</strong></p>
+<p>The negative charge is displaced from the oxygen toward the hydrogen lone-pair direction. This decouples the LJ repulsion center (on O) from the charge center (on M), improving properties.</p>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Better dipole moment than TIP3P</p></li>
+<li><p>Improved dielectric constant and hydrogen bonding</p></li>
+<li><p>Excellent liquid structure (RDF)</p></li>
+<li><p>Good compromise between accuracy and speed</p></li>
+</ul>
+<p><strong>Weaknesses:</strong></p>
+<ul class="simple">
+<li><p>Slightly more expensive than TIP3P (M site calculation)</p></li>
+<li><p>Still overestimates some properties</p></li>
+<li><p>Virtual site requires special handling in some codes</p></li>
+</ul>
+</section>
+<section id="tip4p-2005-tip4p-refined-2005">
+<h2>5. TIP4P/2005 (TIP4P Refined, 2005)<a class="headerlink" href="#tip4p-2005-tip4p-refined-2005" title="Link to this heading"></a></h2>
+<p><strong>Publication:</strong> Abascal &amp; Vega (2005)</p>
+<p><strong>Geometry:</strong> 4-site rigid model (similar structure to TIP4P)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{c|cccc}
+\text{Site} &amp; \text{Position} &amp; q \text{ (e)} &amp; \sigma \text{ (Å)} &amp; \varepsilon \text{ (kcal/mol)} \\
+\hline
+\text{O} &amp; \text{origin} &amp; 0.5564 &amp; 3.1589 &amp; 0.1852 \\
+\text{H} &amp; 0.9572 \text{ Å from O} &amp; 0.2722 &amp; 0 &amp; 0 \\
+\text{H} &amp; 0.9572 \text{ Å from O} &amp; 0.2722 &amp; 0 &amp; 0 \\
+\text{M} &amp; 0.1546 \text{ Å from O (toward bisector)} &amp; -0.5564 &amp; 0 &amp; 0
+\end{array}\end{split}\]</div>
+<p><strong>Key Characteristics:</strong></p>
+<ul class="simple">
+<li><p><strong>Dipole moment:</strong> 2.305 D</p></li>
+<li><p><strong>Complexity:</strong> Medium (same as TIP4P)</p></li>
+<li><p><strong>Cutoff:</strong> 10–12 Å with Ewald summation</p></li>
+</ul>
+<p><strong>Improvements over TIP4P:</strong></p>
+<p>Re-parameterized to better match:</p>
+<ul class="simple">
+<li><p>Bulk density across a wider temperature range</p></li>
+<li><p>Heat of vaporization</p></li>
+<li><p>Liquid structure</p></li>
+</ul>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Superior density and thermodynamic properties across temperature range</p></li>
+<li><p>Excellent balance of properties</p></li>
+<li><p>One of the most accurate models for standard conditions</p></li>
+<li><p>Good hydrogen bonding</p></li>
+</ul>
+<p><strong>Weaknesses:</strong></p>
+<ul class="simple">
+<li><p>Slightly more expensive (though similar to TIP4P)</p></li>
+<li><p>Less widespread use historically (but growing)</p></li>
+</ul>
+</section>
+<section id="tip4p-ice">
+<h2>6. TIP4P/Ice<a class="headerlink" href="#tip4p-ice" title="Link to this heading"></a></h2>
+<p><strong>Publication:</strong> Vega et al. (2009)</p>
+<p><strong>Geometry:</strong> 4-site rigid model (TIP4P-like architecture)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{c|cccc}
+\text{Site} &amp; \text{Position} &amp; q \text{ (e)} &amp; \sigma \text{ (Å)} &amp; \varepsilon \text{ (kcal/mol)} \\
+\hline
+\text{O} &amp; \text{origin} &amp; 0.6113 &amp; 3.1668 &amp; 0.1852 \\
+\text{H} &amp; 0.9572 \text{ Å from O} &amp; 0.1943 &amp; 0 &amp; 0 \\
+\text{H} &amp; 0.9572 \text{ Å from O} &amp; 0.1943 &amp; 0 &amp; 0 \\
+\text{M} &amp; 0.1577 \text{ Å from O (toward bisector)} &amp; -0.6113 &amp; 0 &amp; 0
+\end{array}\end{split}\]</div>
+<p><strong>Key Characteristics:</strong></p>
+<ul class="simple">
+<li><p><strong>Dipole moment:</strong> 2.42 D</p></li>
+<li><p><strong>Complexity:</strong> Medium</p></li>
+<li><p><strong>Designed for:</strong> Ice and solid-liquid interfaces</p></li>
+</ul>
+<p><strong>Specific Parameterization:</strong></p>
+<p>TIP4P/Ice was specifically optimized to reproduce:</p>
+<ul class="simple">
+<li><p>Ice polymorphs (Ih, II, III, V, VI, VII, VIII)</p></li>
+<li><p>Ice–water interfacial properties</p></li>
+<li><p>Melting point and phase diagram</p></li>
+</ul>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Best model for ice phases and ice-water interfaces</p></li>
+<li><p>Excellent solid-state properties</p></li>
+<li><p>Reproduces Ih melting point remarkably well</p></li>
+</ul>
+<p><strong>Weaknesses:</strong></p>
+<ul class="simple">
+<li><p>Slightly worse for pure liquid water properties than TIP4P/2005</p></li>
+<li><p>Optimized for cold temperatures</p></li>
+</ul>
+</section>
+<section id="tip4p-ew-tip4p-with-ewald-summation">
+<h2>7. TIP4P/Ew (TIP4P with Ewald summation)<a class="headerlink" href="#tip4p-ew-tip4p-with-ewald-summation" title="Link to this heading"></a></h2>
+<p><strong>Publication:</strong> Horn et al. (2004)</p>
+<p><strong>Geometry:</strong> 4-site rigid model</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{c|cccc}
+\text{Site} &amp; \text{Position} &amp; q \text{ (e)} &amp; \sigma \text{ (Å)} &amp; \varepsilon \text{ (kcal/mol)} \\
+\hline
+\text{O} &amp; \text{origin} &amp; 0.52422 &amp; 3.1640 &amp; 0.1852 \\
+\text{H} &amp; 0.9572 \text{ Å from O} &amp; 0.23788 &amp; 0 &amp; 0 \\
+\text{H} &amp; 0.9572 \text{ Å from O} &amp; 0.23788 &amp; 0 &amp; 0 \\
+\text{M} &amp; 0.1250 \text{ Å from O (toward bisector)} &amp; -0.52422 &amp; 0 &amp; 0
+\end{array}\end{split}\]</div>
+<p><strong>Key Characteristics:</strong></p>
+<ul class="simple">
+<li><p><strong>Dipole moment:</strong> 2.08 D (lower than TIP4P)</p></li>
+<li><p><strong>Complexity:</strong> Medium</p></li>
+<li><p><strong>Explicitly for:</strong> Periodic boundary conditions with Ewald summation</p></li>
+</ul>
+<p><strong>Why Ewald-Specific?</strong></p>
+<p>Parameterized assuming full electrostatic treatment via Ewald/PME rather than cutoff-based Coulomb. This changes the effective electrostatic environment and thus optimal parameters.</p>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Excellent for periodic simulations with full Ewald</p></li>
+<li><p>Better density predictions</p></li>
+<li><p>Lower dipole moment (more physical)</p></li>
+<li><p>Good thermodynamic properties</p></li>
+</ul>
+<p><strong>Weaknesses:</strong></p>
+<ul class="simple">
+<li><p>Must use Ewald summation (not suitable for cutoff methods)</p></li>
+<li><p>Less commonly used than TIP4P/2005</p></li>
+<li><p>Slightly reduced hydrogen bonding strength</p></li>
+</ul>
+</section>
+<section id="spc-fw-spc-flexible-water">
+<h2>8. SPC/Fw (SPC Flexible Water)<a class="headerlink" href="#spc-fw-spc-flexible-water" title="Link to this heading"></a></h2>
+<p><strong>Publication:</strong> Wu et al. (2006)</p>
+<p><strong>Geometry:</strong> 3-site <strong>flexible</strong> model (O–H bonds can stretch)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{c|cc}
+\text{Flexible Bond} &amp; k_b \text{ (kcal/mol·Å}^{-2}\text{)} &amp; r_0 \text{ (Å)} \\
+\hline
+\text{O–H} &amp; 450 &amp; 1.0 \\
+\text{H–O–H angle} &amp; 45 &amp; 109.47°
+\end{array}\end{split}\]</div>
+<p><strong>Charges and LJ:</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{c|cccc}
+\text{Site} &amp; q \text{ (e)} &amp; \sigma \text{ (Å)} &amp; \varepsilon \text{ (kcal/mol)} \\
+\hline
+\text{O} &amp; -0.82 &amp; 3.1656 &amp; 0.1554 \\
+\text{H} &amp; 0.41 &amp; 0 &amp; 0
+\end{array}\end{split}\]</div>
+<p><strong>Key Characteristics:</strong></p>
+<ul class="simple">
+<li><p><strong>Dipole moment:</strong> ~2.27 D (similar to rigid SPC)</p></li>
+<li><p><strong>Complexity:</strong> Medium (bond integration needed)</p></li>
+<li><p><strong>Flexibility:</strong> Allows O–H stretch and H–O–H bend</p></li>
+</ul>
+<p><strong>Advantages of Flexibility:</strong></p>
+<ul class="simple">
+<li><p>Better spectroscopic properties (IR absorption)</p></li>
+<li><p>More realistic vibrational dynamics</p></li>
+<li><p>Can couple to quantum dynamics</p></li>
+</ul>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Reasonably fast (similar to SPC)</p></li>
+<li><p>Flexible water more realistic for some applications</p></li>
+<li><p>Good for combined classical/quantum simulations</p></li>
+</ul>
+<p><strong>Weaknesses:</strong></p>
+<ul class="simple">
+<li><p>Requires shorter time steps (stiff O–H bond)</p></li>
+<li><p>More CPU time than rigid models</p></li>
+<li><p>Spectroscopic accuracy still limited</p></li>
+</ul>
+</section>
+<section id="q-tip4p-f-quantum-tip4p-f">
+<h2>9. q-TIP4P/f (Quantum TIP4P/f)<a class="headerlink" href="#q-tip4p-f-quantum-tip4p-f" title="Link to this heading"></a></h2>
+<p><strong>Publication:</strong> Burnham et al. (2002)</p>
+<p><strong>Geometry:</strong> 4-site with quantum corrections (similar to TIP4P)</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{array}{c|cccc}
+\text{Site} &amp; \text{Position} &amp; q \text{ (e)} &amp; \sigma \text{ (Å)} &amp; \varepsilon \text{ (kcal/mol)} \\
+\hline
+\text{O} &amp; \text{origin} &amp; 0.5200 &amp; 3.1537 &amp; 0.1550 \\
+\text{H} &amp; \text{~0.9572 Å} &amp; 0.2400 &amp; 0 &amp; 0 \\
+\text{H} &amp; \text{~0.9572 Å} &amp; 0.2400 &amp; 0 &amp; 0 \\
+\text{M} &amp; 0.15 \text{ Å from O} &amp; -0.5200 &amp; 0 &amp; 0
+\end{array}\end{split}\]</div>
+<p><strong>Quantum Corrections:</strong></p>
+<p>Effective potential includes quantum zero-point motion contributions via:</p>
+<div class="math notranslate nohighlight">
+\[V_{\text{eff}} = V_{\text{classical}} + V_{\text{quantum}}\]</div>
+<p><strong>Key Characteristics:</strong></p>
+<ul class="simple">
+<li><p><strong>Dipole moment:</strong> ~2.16 D</p></li>
+<li><p><strong>Complexity:</strong> High (quantum averaging)</p></li>
+<li><p><strong>Designed for:</strong> Accurate path integral molecular dynamics (PIMD)</p></li>
+</ul>
+<p><strong>Advantages:</strong></p>
+<ul class="simple">
+<li><p>Accounts for nuclear quantum effects (NQE)</p></li>
+<li><p>Better for low-temperature properties</p></li>
+<li><p>Important for isotope effects (D₂O vs H₂O)</p></li>
+</ul>
+<p><strong>Strengths:</strong></p>
+<ul class="simple">
+<li><p>Only model explicitly treating quantum effects</p></li>
+<li><p>Excellent for PIMD simulations</p></li>
+<li><p>More accurate density at low temperature</p></li>
+</ul>
+<p><strong>Weaknesses:</strong></p>
+<ul class="simple">
+<li><p>Most computationally expensive</p></li>
+<li><p>Requires specialized code for quantum averaging</p></li>
+<li><p>Limited adoption outside quantum dynamics community</p></li>
+</ul>
+</section>
+<section id="comparative-summary-table">
+<h2>Comparative Summary Table<a class="headerlink" href="#comparative-summary-table" title="Link to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/water_models_comparison.png"><img alt="Comparison table of water model properties" class="align-center" src="../_images/water_models_comparison.png" style="width: 90%;" />
+</a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text"><strong>Water Model Properties</strong></span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<colgroup>
+<col style="width: 16.9%" />
+<col style="width: 11.2%" />
+<col style="width: 13.5%" />
+<col style="width: 20.2%" />
+<col style="width: 13.5%" />
+<col style="width: 13.5%" />
+<col style="width: 11.2%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Model</p></th>
+<th class="head"><p>Sites</p></th>
+<th class="head"><p>Dipole (D)</p></th>
+<th class="head"><p>Density (g/cm³)</p></th>
+<th class="head"><p>Flexible?</p></th>
+<th class="head"><p>Complexity</p></th>
+<th class="head"><p>Cost</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>SPC</p></td>
+<td><p>3</p></td>
+<td><p>2.27</p></td>
+<td><p>0.970</p></td>
+<td><p>No</p></td>
+<td><p>Very Low</p></td>
+<td><p>1x</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPC/E</p></td>
+<td><p>3</p></td>
+<td><p>2.35</p></td>
+<td><p>0.995</p></td>
+<td><p>No</p></td>
+<td><p>Very Low</p></td>
+<td><p>1x</p></td>
+</tr>
+<tr class="row-even"><td><p>TIP3P</p></td>
+<td><p>3</p></td>
+<td><p>2.35</p></td>
+<td><p>0.976</p></td>
+<td><p>No</p></td>
+<td><p>Very Low</p></td>
+<td><p>1x</p></td>
+</tr>
+<tr class="row-odd"><td><p>TIP4P</p></td>
+<td><p>4</p></td>
+<td><p>2.17</p></td>
+<td><p>0.998</p></td>
+<td><p>No</p></td>
+<td><p>Low</p></td>
+<td><p>1.1x</p></td>
+</tr>
+<tr class="row-even"><td><p>TIP4P/2005</p></td>
+<td><p>4</p></td>
+<td><p>2.305</p></td>
+<td><p>0.994</p></td>
+<td><p>No</p></td>
+<td><p>Low</p></td>
+<td><p>1.1x</p></td>
+</tr>
+<tr class="row-odd"><td><p>TIP4P/Ice</p></td>
+<td><p>4</p></td>
+<td><p>2.42</p></td>
+<td><p>0.992</p></td>
+<td><p>No</p></td>
+<td><p>Low</p></td>
+<td><p>1.1x</p></td>
+</tr>
+<tr class="row-even"><td><p>TIP4P/Ew</p></td>
+<td><p>4</p></td>
+<td><p>2.08</p></td>
+<td><p>0.994</p></td>
+<td><p>No</p></td>
+<td><p>Low</p></td>
+<td><p>1.1x</p></td>
+</tr>
+<tr class="row-odd"><td><p>SPC/Fw</p></td>
+<td><p>3</p></td>
+<td><p>2.27</p></td>
+<td><p>0.972</p></td>
+<td><p>Yes</p></td>
+<td><p>Medium</p></td>
+<td><p>1.3x</p></td>
+</tr>
+<tr class="row-even"><td><p>q-TIP4P/f</p></td>
+<td><p>4</p></td>
+<td><p>2.16</p></td>
+<td><p>1.005 (PIMD)</p></td>
+<td><p>No</p></td>
+<td><p>High</p></td>
+<td><p>5–10x</p></td>
+</tr>
+</tbody>
+</table>
+<p><em>Exp. values: μ ≈ 1.85 D, ρ ≈ 1.000 g/cm³ at 298 K, 1 atm</em></p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="hydrogen-bonding-in-water-models">
+<h2>Hydrogen Bonding in Water Models<a class="headerlink" href="#hydrogen-bonding-in-water-models" title="Link to this heading"></a></h2>
+<p>All water models rely on hydrogen bonding for liquid structure. The quality of hydrogen bonding is assessed via:</p>
+<p><strong>Radial Distribution Function (RDF)</strong></p>
+<div class="math notranslate nohighlight">
+\[g(r) = \frac{\rho(r)}{\rho_0}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\rho(r)\)</span> is the local density at distance <span class="math notranslate nohighlight">\(r\)</span> from a reference molecule.</p>
+<p><strong>First Peak (H-bond distance ~2.8 Å):</strong></p>
+<ul class="simple">
+<li><p>Height indicates H-bond coordination number</p></li>
+<li><p>Better models (TIP4P/2005, TIP4P/Ice) show sharper, taller peaks</p></li>
+<li><p>SPC/E and TIP3P show slightly broader peaks</p></li>
+</ul>
+<p><strong>Hydrogen Bond Definition:</strong></p>
+<p>Common geometric criterion:</p>
+<ul class="simple">
+<li><p>O–O distance <span class="math notranslate nohighlight">\(r &lt; 3.5\)</span> Å</p></li>
+<li><p>O–H···O angle <span class="math notranslate nohighlight">\(\theta &gt; 150°\)</span></p></li>
+</ul>
+<p><strong>Coordination Number:</strong></p>
+<p>For most models: ~3.4–3.8 water neighbors within first shell (~3.5 Å).</p>
+<a class="reference internal image-reference" href="../_images/water_rdf_comparison.png"><img alt="Radial distribution functions for different water models" class="align-center" src="../_images/water_rdf_comparison.png" style="width: 85%;" />
+</a>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+<section id="choosing-a-water-model-for-your-simulation">
+<h2>Choosing a Water Model for Your Simulation<a class="headerlink" href="#choosing-a-water-model-for-your-simulation" title="Link to this heading"></a></h2>
+<p><strong>For high-speed simulations (MD, large systems):</strong>
+→ Use <strong>SPC</strong>, <strong>SPC/E</strong>, or <strong>TIP3P</strong>
+Fast and reasonably accurate for most purposes.</p>
+<p><strong>For standard biomolecular simulations:</strong>
+→ Use <strong>TIP4P/2005</strong>
+Best balance of accuracy and efficiency. Excellent thermodynamic properties.</p>
+<p><strong>For ice, solid-state, interfaces:</strong>
+→ Use <strong>TIP4P/Ice</strong>
+Specifically optimized for phase transitions and ice structures.</p>
+<p><strong>For periodic systems with Ewald summation:</strong>
+→ Use <strong>TIP4P/Ew</strong>
+Optimized for full electrostatic treatment.</p>
+<p><strong>For quantum dynamics or isotope effects:</strong>
+→ Use <strong>q-TIP4P/f</strong> with PIMD
+Only model accounting for nuclear quantum effects.</p>
+<p><strong>For spectroscopic properties (IR, Raman):</strong>
+→ Use <strong>SPC/Fw</strong>
+Flexible bonds allow realistic vibrational dynamics.</p>
+<p><strong>For educational purposes:</strong>
+→ Use <strong>TIP3P</strong> or <strong>SPC/E</strong>
+Well-documented, widely implemented, fast.</p>
+</section>
+<section id="extensions-and-modern-developments">
+<h2>Extensions and Modern Developments<a class="headerlink" href="#extensions-and-modern-developments" title="Link to this heading"></a></h2>
+<p><strong>Polarizable Water Models</strong></p>
+<p>Recent developments include explicit polarization:</p>
+<ul class="simple">
+<li><p><strong>Drude oscillator:</strong> Attached to each atom, responds to electric field</p></li>
+<li><p><strong>Induced dipole:</strong> Allows adaptive electrostatic response</p></li>
+<li><p>Example: <strong>Drude-2013</strong> (Harder et al., 2013)</p></li>
+</ul>
+<p><strong>Machine Learning Potentials</strong></p>
+<p>Neural network and kernel-based models trained on ab initio data:</p>
+<ul class="simple">
+<li><p><strong>DeePMD-kit</strong> (Deep Potential Molecular Dynamics)</p></li>
+<li><p><strong>ANI</strong> (Automated Interatomic Potential)</p></li>
+<li><p>Enable higher accuracy with reasonable computational cost</p></li>
+</ul>
+<p><strong>ab initio Molecular Dynamics (AIMD)</strong></p>
+<p>Direct calculation from quantum mechanics via DFT (Density Functional Theory):</p>
+<ul class="simple">
+<li><p>Highest accuracy for intermolecular interactions</p></li>
+<li><p>Much slower than classical MD (~1000–10000x)</p></li>
+<li><p>Increasingly used for validation and parameterization</p></li>
+</ul>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Berendsen, H. J. C., Grigera, J. R., &amp; Straatsma, T. P. (1987). The missing term in effective pair potentials. J. Phys. Chem., 91(24), 6269–6271. [SPC/E]</p></li>
+<li><p>Jorgensen, W. L., Chandrasekhar, J., Madura, J. D., Impey, R. W., &amp; Klein, M. L. (1983). Comparison of simple potential functions for simulating liquid water. J. Chem. Phys., 79(2), 926–935. [TIP3P, TIP4P]</p></li>
+<li><p>Abascal, J. L. F., &amp; Vega, C. (2005). A general purpose model for the condensed phases of water. J. Chem. Phys., 123(23), 234505. [TIP4P/2005]</p></li>
+<li><p>Vega, C., Abascal, J. L. F., Conde, M. M., &amp; Aragones, J. L. (2009). Water-ice interfacial energy and ice-nucleation rate from the TIP4P/2005 water model. J. Chem. Phys., 130(14), 144504. [TIP4P/Ice]</p></li>
+<li><p>Horn, H. W., Swope, W. C., Pitera, J. W., et al. (2004). Development of an improved four-site water model for biomolecular simulations. J. Chem. Phys., 120(20), 9665–9678. [TIP4P/Ew]</p></li>
+<li><p>Burnham, C. J., Xantheas, S. S., Miller, M. A., Solca, R., &amp; Temelso, B. (2002). The vibrational spectrum of the water dimer from experiments, ab initio theory, and classical simulations. J. Chem. Phys., 117(4), 1500–1510. [q-TIP4P/f]</p></li>
+<li><p>Wu, Y., Tepper, H. L., &amp; Voth, G. A. (2006). Flexible simple point-charge water model with improved liquid-state properties. J. Chem. Phys., 124(2), 024503. [SPC/Fw]</p></li>
+<li><p>Darden, T., York, D., &amp; Pedersen, L. (1993). Particle mesh Ewald: An N·log(N) method for Ewald sums in large systems. J. Chem. Phys., 98(12), 10089–10092. [PME for long-range electrostatics]</p></li>
+<li><p>Lemkul, J. A., &amp; Roux, B. (2013). From single channel conductance to macroscopic ionic currents: History and theory. J. Gen. Physiol., 141(3), 349–358. [Comprehensive review of electrostatic methods in molecular simulations]</p></li>
+<li><p>Guillot, B. (2002). A reappraisal of what we have learnt during three decades of computer simulations on water. J. Mol. Liq., 101(1-3), 219–260. [Critical analysis of water force field performance across 30 years of development]</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="computational_derivatives.html" class="btn btn-neutral float-left" title="Computational Derivatives" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../math/functions.html" class="btn btn-neutral float-right" title="Functions and Domains" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright J. V. V. Cassiano.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

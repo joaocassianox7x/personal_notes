@@ -20,7 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Functions and Domains" href="../math/functions.html" />
+    <link rel="next" title="Force Fields : Water" href="force_fields.html" />
     <link rel="prev" title="Double Pendulum via Lagrangian Mechanics" href="double_pendulum.html" /> 
 </head>
 
@@ -56,6 +56,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#goal">Goal</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#finite-differences-1d">Finite differences (1D)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#error-order-derivation-sketch">Error order derivation (sketch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visual-intuition">Visual intuition</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#why-central-differences-are-better">Why central differences are better</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#second-derivatives">Second derivatives</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#error-sources">Error sources</a></li>
@@ -65,6 +66,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#extending-to-gradients">Extending to gradients</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="force_fields.html">Force Fields : Water</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Math</span></p>
 <ul>
@@ -77,6 +79,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../ds_ai/linear_regression.html">Linear Regression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ds_ai/bias_variance.html">Bias - Variance Decomposition</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ds_ai/backpropagation.html">Backpropagation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/pca.html">Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/pca.html#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 
         </div>
@@ -124,10 +128,17 @@
 <div class="math notranslate nohighlight">
 \[f(x \pm h) = f(x) \pm h f'(x) + \tfrac{h^2}{2} f''(x) \pm \tfrac{h^3}{6} f^{(3)}(x) + \mathcal{O}(h^4).\]</div>
 <ul class="simple">
-<li><p>Forward: subtract <span class="math notranslate nohighlight">\(f(x)\)</span> and divide by <span class="math notranslate nohighlight">\(h\)</span> (Rightarrow f’(x) + tfrac{h}{2} f’’(x) + mathcal{O}(h^2)). Leading error <span class="math notranslate nohighlight">\(\propto h\)</span>.</p></li>
-<li><p>Backward: analogous, leading error <span class="math notranslate nohighlight">\(-\tfrac{h}{2} f''(x)\)</span> (mathcal{O}(h)).</p></li>
-<li><p>Central: subtract the backward from forward and divide by <span class="math notranslate nohighlight">\(2h\)</span> (Rightarrow f’(x) + tfrac{h^2}{6} f^{(3)}(x) + mathcal{O}(h^4)). Leading error <span class="math notranslate nohighlight">\(\propto h^2\)</span>.</p></li>
+<li><p>Forward: subtract <span class="math notranslate nohighlight">\(f(x)\)</span> and divide by <span class="math notranslate nohighlight">\(h\)</span> <span class="math notranslate nohighlight">\(\Rightarrow f'(x) + \tfrac{h}{2} f''(x) + \mathcal{O}(h^2)\)</span>. Leading error <span class="math notranslate nohighlight">\(\propto h\)</span>.</p></li>
+<li><p>Backward: analogous, leading error <span class="math notranslate nohighlight">\(-\tfrac{h}{2} f''(x)\)</span> <span class="math notranslate nohighlight">\(\mathcal{O}(h)\)</span>.</p></li>
+<li><p>Central: subtract the backward from forward and divide by <span class="math notranslate nohighlight">\(2h\)</span> <span class="math notranslate nohighlight">\(\Rightarrow f'(x) + \tfrac{h^2}{6} f^{(3)}(x) + \mathcal{O}(h^4)\)</span>. Leading error <span class="math notranslate nohighlight">\(\propto h^2\)</span>.</p></li>
 </ul>
+</section>
+<section id="visual-intuition">
+<h2>Visual intuition<a class="headerlink" href="#visual-intuition" title="Link to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/finite_difference_stencil.png"><img alt="Central stencil symmetry" class="align-center" src="../_images/finite_difference_stencil.png" style="width: 70%;" />
+</a>
+<a class="reference internal image-reference" href="../_images/finite_difference_error.png"><img alt="Error versus step size for forward, backward, and central differences" class="align-center" src="../_images/finite_difference_error.png" style="width: 80%;" />
+</a>
 </section>
 <section id="why-central-differences-are-better">
 <h2>Why central differences are better<a class="headerlink" href="#why-central-differences-are-better" title="Link to this heading"></a></h2>
@@ -150,6 +161,8 @@
 <li><p><strong>Roundoff error:</strong> subtractive cancellation when <span class="math notranslate nohighlight">\(h\)</span> is very small; scales roughly like <span class="math notranslate nohighlight">\(\varepsilon_{\text{mach}}/h\)</span>.</p></li>
 <li><p><strong>Total error tradeoff:</strong> choose <span class="math notranslate nohighlight">\(h\)</span> to balance truncation (<span class="math notranslate nohighlight">\(\propto h^2\)</span>) and roundoff (<span class="math notranslate nohighlight">\(\propto 1/h\)</span>).</p></li>
 </ul>
+<a class="reference internal image-reference" href="../_images/finite_difference_tradeoff.png"><img alt="Truncation versus roundoff error model showing optimal h" class="align-center" src="../_images/finite_difference_tradeoff.png" style="width: 80%;" />
+</a>
 </section>
 <section id="optimal-step-size-central-2nd-order">
 <h2>Optimal step size (central, 2nd order)<a class="headerlink" href="#optimal-step-size-central-2nd-order" title="Link to this heading"></a></h2>
@@ -200,7 +213,7 @@ Setting <span class="math notranslate nohighlight">\(\partial E / \partial h = 0
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="double_pendulum.html" class="btn btn-neutral float-left" title="Double Pendulum via Lagrangian Mechanics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../math/functions.html" class="btn btn-neutral float-right" title="Functions and Domains" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="force_fields.html" class="btn btn-neutral float-right" title="Force Fields : Water" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

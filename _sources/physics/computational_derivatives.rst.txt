@@ -21,9 +21,22 @@ Taylor-expand around :math:`x`:
 
     f(x \pm h) = f(x) \pm h f'(x) + \tfrac{h^2}{2} f''(x) \pm \tfrac{h^3}{6} f^{(3)}(x) + \mathcal{O}(h^4).
 
-- Forward: subtract :math:`f(x)` and divide by :math:`h` \(\Rightarrow f'(x) + \tfrac{h}{2} f''(x) + \mathcal{O}(h^2)\). Leading error :math:`\propto h`.
-- Backward: analogous, leading error :math:`-\tfrac{h}{2} f''(x)` \(\mathcal{O}(h)\).
-- Central: subtract the backward from forward and divide by :math:`2h` \(\Rightarrow f'(x) + \tfrac{h^2}{6} f^{(3)}(x) + \mathcal{O}(h^4)\). Leading error :math:`\propto h^2`.
+- Forward: subtract :math:`f(x)` and divide by :math:`h` :math:`\Rightarrow f'(x) + \tfrac{h}{2} f''(x) + \mathcal{O}(h^2)`. Leading error :math:`\propto h`.
+- Backward: analogous, leading error :math:`-\tfrac{h}{2} f''(x)` :math:`\mathcal{O}(h)`.
+- Central: subtract the backward from forward and divide by :math:`2h` :math:`\Rightarrow f'(x) + \tfrac{h^2}{6} f^{(3)}(x) + \mathcal{O}(h^4)`. Leading error :math:`\propto h^2`.
+
+Visual intuition
+----------------
+
+.. image:: ../_static_files/images/finite_difference_stencil.png
+   :alt: Central stencil symmetry
+   :align: center
+   :width: 70%
+
+.. image:: ../_static_files/images/finite_difference_error.png
+   :alt: Error versus step size for forward, backward, and central differences
+   :align: center
+   :width: 80%
 
 Why central differences are better
 ----------------------------------
@@ -44,6 +57,11 @@ Error sources
 - **Truncation error:** comes from omitting higher-order terms in the Taylor expansion. For central first derivative: :math:`E_T \approx \tfrac{h^2}{6} f^{(3)}(\xi)`.
 - **Roundoff error:** subtractive cancellation when :math:`h` is very small; scales roughly like :math:`\varepsilon_{\text{mach}}/h`.
 - **Total error tradeoff:** choose :math:`h` to balance truncation (:math:`\propto h^2`) and roundoff (:math:`\propto 1/h`).
+
+.. image:: ../_static_files/images/finite_difference_tradeoff.png
+    :alt: Truncation versus roundoff error model showing optimal h
+    :align: center
+    :width: 80%
 
 Optimal step size (central, 2nd order)
 --------------------------------------

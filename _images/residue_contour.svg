@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="220" viewBox="0 0 320 220" role="img" aria-labelledby="title desc">
+  <title id="title">Contour integral around simple poles</title>
+  <desc id="desc">A closed contour enclosing two simple poles z1 and z2. The contour is oriented counterclockwise.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2c3e50" />
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="320" height="220" rx="8" fill="#f8f9fb" stroke="#d0d7de" />
+  <circle cx="120" cy="110" r="6" fill="#e74c3c" stroke="#b03a2e" stroke-width="1.5" />
+  <text x="110" y="100" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2c3e50">z1</text>
+  <circle cx="210" cy="90" r="6" fill="#e74c3c" stroke="#b03a2e" stroke-width="1.5" />
+  <text x="200" y="78" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2c3e50">z2</text>
+  <path d="M 90 60 C 170 20 250 40 260 110 C 250 180 150 200 80 150 C 60 120 60 90 90 60" fill="none" stroke="#2c3e50" stroke-width="2.5" marker-end="url(#arrow)" />
+  <text x="190" y="155" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#2c3e50">C</text>
+  <text x="60" y="200" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#4d5966">Only residues inside C contribute.</text>
+</svg>

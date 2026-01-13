@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="520" height="320" viewBox="0 0 520 320" role="img" aria-labelledby="title desc">
+  <title id="title">Logistic regression decision boundary</title>
+  <desc id="desc">2D data with a linear decision boundary and probability shading.</desc>
+  <defs>
+    <linearGradient id="prob" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e8f4ff" />
+      <stop offset="50%" stop-color="#f8f9fb" />
+      <stop offset="100%" stop-color="#ffecec" />
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="520" height="320" fill="#ffffff" stroke="#d0d7de" />
+  <rect x="60" y="40" width="400" height="240" fill="url(#prob)" stroke="#e2e6eb" />
+  <g transform="translate(60,280)">
+    <line x1="0" y1="0" x2="400" y2="0" stroke="#2c3e50" stroke-width="2" />
+    <line x1="0" y1="0" x2="0" y2="-240" stroke="#2c3e50" stroke-width="2" />
+    <text x="410" y="6" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2c3e50">x1</text>
+    <text x="-14" y="-232" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#2c3e50" transform="rotate(-90 -14 -232)">x0</text>
+    <line x1="10" y1="-200" x2="360" y2="-40" stroke="#6c5ce7" stroke-width="2.4" />
+    <text x="250" y="-60" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#6c5ce7">w^T x + b = 0</text>
+    <g fill="#2ecc71" stroke="#1e8449" stroke-width="1">
+      <circle cx="70" cy="-190" r="5" />
+      <circle cx="120" cy="-170" r="5" />
+      <circle cx="90" cy="-140" r="5" />
+      <circle cx="150" cy="-160" r="5" />
+      <circle cx="110" cy="-200" r="5" />
+    </g>
+    <g fill="#e74c3c" stroke="#b03a2e" stroke-width="1">
+      <circle cx="300" cy="-70" r="5" />
+      <circle cx="260" cy="-90" r="5" />
+      <circle cx="320" cy="-110" r="5" />
+      <circle cx="280" cy="-50" r="5" />
+      <circle cx="340" cy="-80" r="5" />
+    </g>
+    <text x="70" y="-210" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#1e8449">class 0</text>
+    <text x="300" y="-30" font-family="DejaVu Sans, Arial, sans-serif" font-size="12" fill="#b03a2e">class 1</text>
+  </g>
+  <text x="120" y="305" font-family="DejaVu Sans, Arial, sans-serif" font-size="13" fill="#4d5966">Linear boundary with sigmoid probability field</text>
+</svg>

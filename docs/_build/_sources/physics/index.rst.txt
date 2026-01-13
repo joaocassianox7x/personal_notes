@@ -10,3 +10,5 @@ Physics and Computational Physics
    double_pendulum
    computational_derivatives
    force_fields
+   lammps
+   harmonic_oscillator

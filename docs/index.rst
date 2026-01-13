@@ -16,6 +16,8 @@ Personal Notes
    physics/double_pendulum
    physics/computational_derivatives
    physics/force_fields
+   physics/lammps
+   physics/harmonic_oscillator
 
 .. toctree::
    :maxdepth: 1
@@ -23,6 +25,7 @@ Personal Notes
 
    math/functions
    math/limits
+   math/residue_theorem
 
 .. toctree::
    :maxdepth: 1
@@ -30,6 +33,7 @@ Personal Notes
 
    ds_ai/python
    ds_ai/linear_regression
+   ds_ai/logistic_regression
    ds_ai/bias_variance
    ds_ai/backpropagation
    ds_ai/pca

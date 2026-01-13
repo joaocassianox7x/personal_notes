@@ -8,6 +8,7 @@ Data Science, Machine Learning, and AI
 
    python
    linear_regression
+   logistic_regression
    bias_variance
    backpropagation
    pca

@@ -1,0 +1,218 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Residue Theorem &mdash; Personal Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Python for Data Science" href="../ds_ai/python.html" />
+    <link rel="prev" title="Limits" href="limits.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Personal Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">About Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction of Material</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../physics/pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/computational_derivatives.html">Computational Derivatives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/force_fields.html">Force Fields : Water</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/lammps.html">Molecular Dynamics with LAMMPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/harmonic_oscillator.html">Quantum Harmonic Oscillator</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Math</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="functions.html">Functions and Domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="limits.html">Limits</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Residue Theorem</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#summary-arfken">Summary (Arfken)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#residue-formulas">Residue formulas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#practical-checklist">Practical checklist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#notes-on-contour-choices">Notes on contour choices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#methodology">Methodology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-int-0-2-pi-cos-2n-x-dx">Example: <span class="math notranslate nohighlight">\(\int_0^{2\pi} \cos^{2n}(x)\,dx\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-examples-to-practice">Additional examples to practice</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/python.html">Python for Data Science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/linear_regression.html">Linear Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/logistic_regression.html">Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/backpropagation.html">Backpropagation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/pca.html">Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/pca.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Personal Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Residue Theorem</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/math/residue_theorem.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="residue-theorem">
+<h1>Residue Theorem<a class="headerlink" href="#residue-theorem" title="Link to this heading"></a></h1>
+<section id="summary-arfken">
+<h2>Summary (Arfken)<a class="headerlink" href="#summary-arfken" title="Link to this heading"></a></h2>
+<p>Given a function <span class="math notranslate nohighlight">\(f(z)\)</span> that is analytic on and inside a closed contour <span class="math notranslate nohighlight">\(C\)</span> except for isolated poles <span class="math notranslate nohighlight">\(z_k\)</span>, the contour integral obeys the residue theorem (Arfken, Weber, Harris, <em>Mathematical Methods for Physicists</em>):</p>
+<div class="math notranslate nohighlight">
+\[\oint_C f(z)\,dz = 2\pi i \sum_k \operatorname{Res}\big(f, z_k\big).\]</div>
+<p>Residues capture the coefficient of <span class="math notranslate nohighlight">\((z - z_k)^{-1}\)</span> in the Laurent series of <span class="math notranslate nohighlight">\(f\)</span> about <span class="math notranslate nohighlight">\(z_k\)</span>.</p>
+<figure class="align-center" id="id1" style="width: 60%">
+<img alt="Contour integral around simple poles" src="../_images/residue_contour.svg" />
+<figcaption>
+<p><span class="caption-text">Simple contour enclosing two simple poles; only enclosed residues contribute to the integral.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="residue-formulas">
+<h2>Residue formulas<a class="headerlink" href="#residue-formulas" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Simple pole at <span class="math notranslate nohighlight">\(z_0\)</span>: <span class="math notranslate nohighlight">\(\operatorname{Res}(f,z_0) = \lim_{z\to z_0} (z - z_0) f(z)\)</span>.</p></li>
+<li><p>Higher-order pole (order <span class="math notranslate nohighlight">\(m\)</span>): <span class="math notranslate nohighlight">\(\operatorname{Res}(f,z_0) = \tfrac{1}{(m-1)!} \lim_{z\to z_0} \tfrac{d^{m-1}}{dz^{m-1}} \big[(z - z_0)^m f(z)\big]\)</span>.</p></li>
+<li><p>At infinity (if useful for rational functions): <span class="math notranslate nohighlight">\(\operatorname{Res}(f,\infty)\)</span> equals minus the coefficient of <span class="math notranslate nohighlight">\(z^{-1}\)</span> in the Laurent series of <span class="math notranslate nohighlight">\(f\)</span> at infinity.</p></li>
+</ul>
+</section>
+<section id="practical-checklist">
+<h2>Practical checklist<a class="headerlink" href="#practical-checklist" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p><strong>Choose contour:</strong> match decay/symmetry of the integrand (unit circle for trigonometric, semicircle for decaying exponentials, keyholes for branch cuts).</p></li>
+<li><p><strong>Rewrite integrand:</strong> express in <span class="math notranslate nohighlight">\(z\)</span> with <span class="math notranslate nohighlight">\(z = e^{ix}\)</span> or other substitutions; convert differentials (e.g., <span class="math notranslate nohighlight">\(dx = \tfrac{dz}{i z}\)</span>).</p></li>
+<li><p><strong>Locate poles inside contour:</strong> classify orders and check if any cancel.</p></li>
+<li><p><strong>Compute residues:</strong> use limit formulas for simple poles or quick partial fractions when possible.</p></li>
+<li><p><strong>Sum residues and multiply by :math:`2pi i`:</strong> then take real/imag part if needed for the original real integral.</p></li>
+</ol>
+</section>
+<section id="notes-on-contour-choices">
+<h2>Notes on contour choices<a class="headerlink" href="#notes-on-contour-choices" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Unit circle</strong>: trigonometric integrals via <span class="math notranslate nohighlight">\(z=e^{ix}\)</span>.</p></li>
+<li><p><strong>Upper/lower semicircle</strong>: Fourier-type integrals with exponential decay in half-planes.</p></li>
+<li><p><strong>Keyhole</strong>: branch cuts on the positive real axis for logarithms or fractional powers.</p></li>
+<li><p><strong>Indented contours</strong>: avoid poles on the real axis by small semicircular detours.</p></li>
+</ul>
+</section>
+<section id="methodology">
+<h2>Methodology<a class="headerlink" href="#methodology" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Choose a contour that encloses the singularities relevant to the real integral (often the unit circle for trigonometric integrals using <span class="math notranslate nohighlight">\(z = e^{ix}\)</span>).</p></li>
+<li><p>Rewrite the integrand as a complex function <span class="math notranslate nohighlight">\(f(z)\)</span> and express <span class="math notranslate nohighlight">\(dx\)</span> in terms of <span class="math notranslate nohighlight">\(dz\)</span>.</p></li>
+<li><p>Identify poles inside the contour and compute their residues (by series expansion or the limit formula for simple poles).</p></li>
+<li><p>Apply <span class="math notranslate nohighlight">\(\oint_C f(z) dz = 2\pi i \sum \operatorname{Res}(f, z_k)\)</span> and take the real part if the original integral was real-valued.</p></li>
+</ol>
+</section>
+<section id="example-int-0-2-pi-cos-2n-x-dx">
+<h2>Example: <span class="math notranslate nohighlight">\(\int_0^{2\pi} \cos^{2n}(x)\,dx\)</span><a class="headerlink" href="#example-int-0-2-pi-cos-2n-x-dx" title="Link to this heading"></a></h2>
+<p>Let <span class="math notranslate nohighlight">\(z = e^{ix}\)</span> so <span class="math notranslate nohighlight">\(\cos x = \tfrac{1}{2}(z + z^{-1})\)</span> and <span class="math notranslate nohighlight">\(dx = \tfrac{dz}{i z}\)</span> on the unit circle <span class="math notranslate nohighlight">\(|z| = 1\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[I_n = \int_0^{2\pi} \cos^{2n}(x)\,dx = \Re\left( \oint_{|z|=1} \frac{1}{i z} \left( \frac{z + z^{-1}}{2} \right)^{2n} dz \right).\]</div>
+<p>Expand the binomial <span class="math notranslate nohighlight">\((z + z^{-1})^{2n} = \sum_{k=0}^{2n} \binom{2n}{k} z^{2k-2n}\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{i z} \left( \frac{z + z^{-1}}{2} \right)^{2n} = \frac{1}{i 2^{2n}} \sum_{k=0}^{2n} \binom{2n}{k} z^{2k-2n-1}.\]</div>
+<p>The only term contributing a residue at <span class="math notranslate nohighlight">\(z = 0\)</span> is the <span class="math notranslate nohighlight">\(z^{-1}\)</span> term, which occurs when <span class="math notranslate nohighlight">\(2k - 2n - 1 = -1\)</span>, i.e., <span class="math notranslate nohighlight">\(k = n\)</span>. Hence</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{Res}\left( \frac{1}{i z} \left( \frac{z + z^{-1}}{2} \right)^{2n}, 0 \right) = \frac{1}{i 2^{2n}} \binom{2n}{n}.\]</div>
+<p>Applying the residue theorem yields</p>
+<div class="math notranslate nohighlight">
+\[I_n = 2\pi i \cdot \frac{1}{i 2^{2n}} \binom{2n}{n} = \frac{2\pi}{2^{2n}} \binom{2n}{n} = 2\pi \frac{(2n)!}{4^{n} (n!)^2}.\]</div>
+<p>This matches the standard reduction formula and provides a quick contour-integral evaluation for even powers of cosine.</p>
+</section>
+<section id="additional-examples-to-practice">
+<h2>Additional examples to practice<a class="headerlink" href="#additional-examples-to-practice" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\int_{-\infty}^{\infty} \frac{dx}{x^2 + a^2}\)</span> using a semicircle in the upper half-plane.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\int_0^{\infty} \frac{\cos bx}{x^2 + a^2}\,dx\)</span> via Jordan’s lemma.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\int_0^{2\pi} \frac{d\theta}{5 - 4 \cos \theta}\)</span> via the unit circle and a simple pole.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="limits.html" class="btn btn-neutral float-left" title="Limits" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../ds_ai/python.html" class="btn btn-neutral float-right" title="Python for Data Science" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright J. V. V. Cassiano.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

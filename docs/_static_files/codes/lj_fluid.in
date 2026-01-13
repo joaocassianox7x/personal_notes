@@ -1,0 +1,54 @@
+# LJ fluid simulation - NPT ensemble
+units lj
+atom_style atomic
+dimension 3
+boundary p p p
+
+# Create FCC lattice (864 atoms)
+lattice fcc 0.8442
+region box block 0 6 0 6 0 6
+create_box 1 box
+create_atoms 1 box
+mass 1 1.0
+
+# LJ potential
+pair_style lj/cut 2.5
+pair_coeff 1 1 1.0 1.0
+
+# Neighbor list
+neighbor 0.3 bin
+neigh_modify every 1 delay 0 check yes
+
+# Increase ghost atom communication for RDF
+comm_modify cutoff 6.0
+
+# Initial velocities (T* = 2.0)
+velocity all create 2.0 482901 dist gaussian
+
+# Thermodynamic output
+thermo_style custom step temp pe ke etotal press vol density
+thermo 100
+
+# Trajectory output
+dump 1 all custom 50 trajectory.lammpstrj id type x y z
+dump_modify 1 sort id
+
+# RDF calculation
+compute rdf all rdf 100 1 1 cutoff 5.0
+fix 3 all ave/time 100 10 1000 c_rdf[*] file rdf.dat mode vector
+
+# MSD calculation
+compute msd all msd
+fix 4 all ave/time 1 1 1 c_msd[4] file msd.dat
+
+# NPT equilibration (cool from T* = 2.0 to T* = 1.0)
+fix 1 all npt temp 2.0 1.0 0.1 iso 1.0 1.0 1.0
+timestep 0.005
+run 5000
+
+# NPT production (T* = 1.0, P* = 1.0)
+unfix 1
+fix 2 all npt temp 1.0 1.0 0.1 iso 1.0 1.0 1.0
+run 10000
+
+write_data lj_final.data

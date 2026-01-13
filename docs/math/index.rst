@@ -8,3 +8,4 @@ Math
 
    functions
    limits
+   residue_theorem

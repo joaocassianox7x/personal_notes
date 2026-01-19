@@ -18,6 +18,7 @@ Personal Notes
    physics/force_fields
    physics/lammps
    physics/harmonic_oscillator
+   physics/split_operator
 
 .. toctree::
    :maxdepth: 1
@@ -35,5 +36,6 @@ Personal Notes
    ds_ai/linear_regression
    ds_ai/logistic_regression
    ds_ai/bias_variance
+   ds_ai/metrics
    ds_ai/backpropagation
    ds_ai/pca

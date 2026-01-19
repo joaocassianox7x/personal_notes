@@ -560,3 +560,12 @@ Summary Table
      - Both curves high, converge
      - Large gap, gap persists
      - Small gap, both converge to low error
+
+
+References and Further Reading
+------------------------------
+- **Geman, S., Bienenstock, E., & Doursat, R.** (1992). Neural networks and the bias/variance dilemma. *Neural Computation*, 4(1), 1–58. Classic paper formalizing the tradeoff for neural nets.
+- **Domingos, P.** (2000). A unified bias-variance decomposition. In *ICML*. Extends the decomposition to many loss functions beyond squared error.
+- **Hastie, T., Tibshirani, R., & Friedman, J.** (2009). *The Elements of Statistical Learning* (2nd ed.). Springer. Chapter 7 provides practical guidance on bias-variance and model selection.
+- **Bishop, C. M.** (2006). *Pattern Recognition and Machine Learning*. Springer. Sections 1.3 and 3.2 connect bias-variance with Bayesian viewpoints.
+- **Kuhn, M., & Johnson, K.** (2013). *Applied Predictive Modeling*. Springer. Chapter 4 covers bias-variance diagnostics with real-world examples.

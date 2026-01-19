@@ -56,6 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../physics/force_fields.html">Force Fields : Water</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../physics/lammps.html">Molecular Dynamics with LAMMPS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../physics/harmonic_oscillator.html">Quantum Harmonic Oscillator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/split_operator.html">Split-Operator Method (Quantum Time Propagation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Math</span></p>
 <ul class="current">
@@ -63,11 +64,22 @@
 <li class="toctree-l1"><a class="reference internal" href="limits.html">Limits</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Residue Theorem</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#summary-arfken">Summary (Arfken)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#intuition-why-it-works">Intuition (why it works)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#residue-formulas">Residue formulas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#equivalent-identities-handy-in-practice">Equivalent identities (handy in practice)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fast-residue-methods-beyond-the-limit-formula">Fast residue methods (beyond the limit formula)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#practical-checklist">Practical checklist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#notes-on-contour-choices">Notes on contour choices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#methodology">Methodology</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example-int-0-2-pi-cos-2n-x-dx">Example: <span class="math notranslate nohighlight">\(\int_0^{2\pi} \cos^{2n}(x)\,dx\)</span></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#worked-examples">Worked examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-1-int-infty-infty-frac-dx-x-2-a-2">Example 1: <span class="math notranslate nohighlight">\(\int_{-\infty}^{\infty} \frac{dx}{x^2+a^2}\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-2-int-0-infty-frac-cos-bx-x-2-a-2-dx">Example 2: <span class="math notranslate nohighlight">\(\int_0^{\infty} \frac{\cos(bx)}{x^2+a^2}\,dx\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-3-int-0-2-pi-frac-d-theta-a-b-cos-theta">Example 3: <span class="math notranslate nohighlight">\(\int_0^{2\pi} \frac{d\theta}{a+b\cos\theta}\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-4-int-0-2-pi-cos-2n-x-dx">Example 4: <span class="math notranslate nohighlight">\(\int_0^{2\pi} \cos^{2n}(x)\,dx\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-5-keyhole-branch-cut-int-0-infty-frac-x-alpha-1-1-x-dx">Example 5 (keyhole/branch cut): <span class="math notranslate nohighlight">\(\int_0^{\infty} \frac{x^{\alpha-1}}{1+x}\,dx\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-6-pole-on-the-integration-path-mathrm-pv-int-infty-infty-frac-sin-x-x-dx">Example 6 (pole on the integration path): <span class="math notranslate nohighlight">\(\mathrm{PV}\int_{-\infty}^{\infty} \frac{\sin x}{x}\,dx\)</span></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#additional-examples-to-practice">Additional examples to practice</a></li>
 </ul>
 </li>
@@ -78,9 +90,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../ds_ai/linear_regression.html">Linear Regression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ds_ai/logistic_regression.html">Logistic Regression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ds_ai/bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/metrics.html">Metrics for DS, ML, and AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ds_ai/backpropagation.html">Backpropagation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ds_ai/pca.html">Principal Component Analysis (PCA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ds_ai/pca.html#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 
         </div>
@@ -115,6 +127,20 @@
 <div class="math notranslate nohighlight">
 \[\oint_C f(z)\,dz = 2\pi i \sum_k \operatorname{Res}\big(f, z_k\big).\]</div>
 <p>Residues capture the coefficient of <span class="math notranslate nohighlight">\((z - z_k)^{-1}\)</span> in the Laurent series of <span class="math notranslate nohighlight">\(f\)</span> about <span class="math notranslate nohighlight">\(z_k\)</span>.</p>
+</section>
+<section id="intuition-why-it-works">
+<h2>Intuition (why it works)<a class="headerlink" href="#intuition-why-it-works" title="Link to this heading"></a></h2>
+<p>If <span class="math notranslate nohighlight">\(f\)</span> is analytic in a punctured neighborhood of <span class="math notranslate nohighlight">\(z_0\)</span>, it has a Laurent expansion</p>
+<div class="math notranslate nohighlight">
+\[f(z) = \sum_{n=-\infty}^{\infty} a_n (z-z_0)^n.\]</div>
+<p>When you integrate term-by-term around a small circle <span class="math notranslate nohighlight">\(|z-z_0|=\rho\)</span>, all powers vanish except the <span class="math notranslate nohighlight">\(n=-1\)</span> term:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\oint_{|z-z_0|=\rho} (z-z_0)^n\,dz =
+\begin{cases}
+2\pi i, &amp; n=-1,\\
+0, &amp; n\neq -1.
+\end{cases}\end{split}\]</div>
+<p>So the local contribution of an isolated singularity is exactly <span class="math notranslate nohighlight">\(2\pi i\,a_{-1}\)</span>. Summing over all enclosed singularities gives the global contour integral.</p>
 <figure class="align-center" id="id1" style="width: 60%">
 <img alt="Contour integral around simple poles" src="../_images/residue_contour.svg" />
 <figcaption>
@@ -127,7 +153,33 @@
 <ul class="simple">
 <li><p>Simple pole at <span class="math notranslate nohighlight">\(z_0\)</span>: <span class="math notranslate nohighlight">\(\operatorname{Res}(f,z_0) = \lim_{z\to z_0} (z - z_0) f(z)\)</span>.</p></li>
 <li><p>Higher-order pole (order <span class="math notranslate nohighlight">\(m\)</span>): <span class="math notranslate nohighlight">\(\operatorname{Res}(f,z_0) = \tfrac{1}{(m-1)!} \lim_{z\to z_0} \tfrac{d^{m-1}}{dz^{m-1}} \big[(z - z_0)^m f(z)\big]\)</span>.</p></li>
-<li><p>At infinity (if useful for rational functions): <span class="math notranslate nohighlight">\(\operatorname{Res}(f,\infty)\)</span> equals minus the coefficient of <span class="math notranslate nohighlight">\(z^{-1}\)</span> in the Laurent series of <span class="math notranslate nohighlight">\(f\)</span> at infinity.</p></li>
+<li><p>At infinity (often useful for rational functions): <span class="math notranslate nohighlight">\(\operatorname{Res}(f,\infty)\)</span> equals minus the coefficient of <span class="math notranslate nohighlight">\(z^{-1}\)</span> in the Laurent series of <span class="math notranslate nohighlight">\(f\)</span> at infinity.</p></li>
+</ul>
+</section>
+<section id="equivalent-identities-handy-in-practice">
+<h2>Equivalent identities (handy in practice)<a class="headerlink" href="#equivalent-identities-handy-in-practice" title="Link to this heading"></a></h2>
+<p>For a meromorphic function on the Riemann sphere (e.g., a rational function), the residues satisfy</p>
+<div class="math notranslate nohighlight">
+\[\sum_{k\in\mathbb{C}} \operatorname{Res}(f, z_k) + \operatorname{Res}(f,\infty) = 0.\]</div>
+<p>For rational <span class="math notranslate nohighlight">\(f(z)=\tfrac{p(z)}{q(z)}\)</span> with <span class="math notranslate nohighlight">\(\deg q \ge \deg p + 2\)</span>, one has <span class="math notranslate nohighlight">\(\operatorname{Res}(f,\infty)=0\)</span>, hence the sum of all finite residues is zero.</p>
+</section>
+<section id="fast-residue-methods-beyond-the-limit-formula">
+<h2>Fast residue methods (beyond the limit formula)<a class="headerlink" href="#fast-residue-methods-beyond-the-limit-formula" title="Link to this heading"></a></h2>
+<ul>
+<li><p><strong>Series match (Laurent/Taylor)</strong>: expand factors until the <span class="math notranslate nohighlight">\((z-z_0)^{-1}\)</span> term appears.</p></li>
+<li><p><strong>Partial fractions</strong> (rational functions): isolate the <span class="math notranslate nohighlight">\(\tfrac{A}{z-z_0}\)</span> term.</p></li>
+<li><p><strong>Simple pole at a simple root of the denominator</strong>:</p>
+<blockquote>
+<div><p>If <span class="math notranslate nohighlight">\(f(z)=\tfrac{g(z)}{h(z)}\)</span> and <span class="math notranslate nohighlight">\(h(z_0)=0\)</span> with <span class="math notranslate nohighlight">\(h'(z_0)\neq 0\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{Res}(f,z_0) = \frac{g(z_0)}{h'(z_0)}.\]</div>
+</div></blockquote>
+</li>
+<li><p><strong>Logarithmic derivative trick</strong> (common in products):</p>
+<blockquote>
+<div><p>If <span class="math notranslate nohighlight">\(f(z)=\tfrac{g'(z)}{g(z)}\)</span> and <span class="math notranslate nohighlight">\(g\)</span> has a simple zero at <span class="math notranslate nohighlight">\(z_0\)</span>, then <span class="math notranslate nohighlight">\(\operatorname{Res}(f,z_0)=1\)</span>.</p>
+</div></blockquote>
+</li>
 </ul>
 </section>
 <section id="practical-checklist">
@@ -158,8 +210,74 @@
 <li><p>Apply <span class="math notranslate nohighlight">\(\oint_C f(z) dz = 2\pi i \sum \operatorname{Res}(f, z_k)\)</span> and take the real part if the original integral was real-valued.</p></li>
 </ol>
 </section>
-<section id="example-int-0-2-pi-cos-2n-x-dx">
-<h2>Example: <span class="math notranslate nohighlight">\(\int_0^{2\pi} \cos^{2n}(x)\,dx\)</span><a class="headerlink" href="#example-int-0-2-pi-cos-2n-x-dx" title="Link to this heading"></a></h2>
+<section id="worked-examples">
+<h2>Worked examples<a class="headerlink" href="#worked-examples" title="Link to this heading"></a></h2>
+<section id="example-1-int-infty-infty-frac-dx-x-2-a-2">
+<h3>Example 1: <span class="math notranslate nohighlight">\(\int_{-\infty}^{\infty} \frac{dx}{x^2+a^2}\)</span><a class="headerlink" href="#example-1-int-infty-infty-frac-dx-x-2-a-2" title="Link to this heading"></a></h3>
+<p>Assume <span class="math notranslate nohighlight">\(a&gt;0\)</span>. Consider the semicircular contour in the upper half-plane: the real segment from <span class="math notranslate nohighlight">\(-R\)</span> to <span class="math notranslate nohighlight">\(R\)</span> plus the arc <span class="math notranslate nohighlight">\(z=Re^{i\theta}\)</span>, <span class="math notranslate nohighlight">\(\theta\in[0,\pi]\)</span>.</p>
+<p>Let</p>
+<div class="math notranslate nohighlight">
+\[f(z) = \frac{1}{z^2+a^2} = \frac{1}{(z-ia)(z+ia)}.\]</div>
+<p>There is a single pole inside the contour at <span class="math notranslate nohighlight">\(z=ia\)</span>. Its residue is</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{Res}(f, ia)
+= \lim_{z\to ia} (z-ia)\frac{1}{(z-ia)(z+ia)}
+= \frac{1}{2ia}.\]</div>
+<p>Hence</p>
+<div class="math notranslate nohighlight">
+\[\oint_C f(z)\,dz = 2\pi i\,\frac{1}{2ia} = \frac{\pi}{a}.\]</div>
+<p>On the arc, <span class="math notranslate nohighlight">\(|f(z)|\le \tfrac{1}{R^2-a^2}\)</span> so the arc contribution vanishes as <span class="math notranslate nohighlight">\(R\to\infty\)</span>. Therefore</p>
+<div class="math notranslate nohighlight">
+\[\int_{-\infty}^{\infty} \frac{dx}{x^2+a^2} = \frac{\pi}{a}.\]</div>
+</section>
+<section id="example-2-int-0-infty-frac-cos-bx-x-2-a-2-dx">
+<h3>Example 2: <span class="math notranslate nohighlight">\(\int_0^{\infty} \frac{\cos(bx)}{x^2+a^2}\,dx\)</span><a class="headerlink" href="#example-2-int-0-infty-frac-cos-bx-x-2-a-2-dx" title="Link to this heading"></a></h3>
+<p>Assume <span class="math notranslate nohighlight">\(a&gt;0\)</span> and first take <span class="math notranslate nohighlight">\(b&gt;0\)</span>. Consider</p>
+<div class="math notranslate nohighlight">
+\[I(b)=\int_{-\infty}^{\infty} \frac{e^{ibx}}{x^2+a^2}\,dx.\]</div>
+<p>Close the contour in the upper half-plane. By Jordan’s lemma the arc integral vanishes (because <span class="math notranslate nohighlight">\(e^{ibz}=e^{ibx-b\,\Im z}\)</span> decays when <span class="math notranslate nohighlight">\(\Im z&gt;0\)</span>). The only enclosed pole is <span class="math notranslate nohighlight">\(z=ia\)</span> with residue</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{Res}\left(\frac{e^{ibz}}{z^2+a^2}, ia\right)
+= \frac{e^{ib(ia)}}{2ia}
+= \frac{e^{-ab}}{2ia}.\]</div>
+<p>Therefore</p>
+<div class="math notranslate nohighlight">
+\[I(b)=2\pi i\,\frac{e^{-ab}}{2ia}=\frac{\pi}{a}e^{-ab}.\]</div>
+<p>Taking the real part gives</p>
+<div class="math notranslate nohighlight">
+\[\int_{-\infty}^{\infty} \frac{\cos(bx)}{x^2+a^2}\,dx = \frac{\pi}{a}e^{-ab}.\]</div>
+<p>Since the integrand is even,</p>
+<div class="math notranslate nohighlight">
+\[\int_{0}^{\infty} \frac{\cos(bx)}{x^2+a^2}\,dx = \frac{\pi}{2a}e^{-ab}\qquad (b&gt;0).\]</div>
+<p>For general real <span class="math notranslate nohighlight">\(b\)</span>, symmetry yields <span class="math notranslate nohighlight">\(e^{-ab}\to e^{-a|b|}\)</span>.</p>
+</section>
+<section id="example-3-int-0-2-pi-frac-d-theta-a-b-cos-theta">
+<h3>Example 3: <span class="math notranslate nohighlight">\(\int_0^{2\pi} \frac{d\theta}{a+b\cos\theta}\)</span><a class="headerlink" href="#example-3-int-0-2-pi-frac-d-theta-a-b-cos-theta" title="Link to this heading"></a></h3>
+<p>Assume <span class="math notranslate nohighlight">\(a&gt;|b|&gt;0\)</span> so the denominator never vanishes on the real interval.</p>
+<p>Set <span class="math notranslate nohighlight">\(z=e^{i\theta}\)</span> so <span class="math notranslate nohighlight">\(d\theta = \tfrac{dz}{iz}\)</span> and <span class="math notranslate nohighlight">\(\cos\theta=\tfrac{1}{2}\left(z+z^{-1}\right)\)</span>. Then</p>
+<div class="math notranslate nohighlight">
+\[\int_0^{2\pi} \frac{d\theta}{a+b\cos\theta}
+= \oint_{|z|=1} \frac{1}{a+\tfrac{b}{2}(z+z^{-1})}\,\frac{dz}{iz}
+= \oint_{|z|=1} \frac{2}{i\,(b z^2 + 2 a z + b)}\,dz.\]</div>
+<p>The poles are the roots of <span class="math notranslate nohighlight">\(b z^2 + 2 a z + b=0\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[z_{\pm} = \frac{-a \pm \sqrt{a^2-b^2}}{b}.\]</div>
+<p>For <span class="math notranslate nohighlight">\(a&gt;|b|\)</span>, one root lies inside the unit circle and the other outside; the inside pole is</p>
+<div class="math notranslate nohighlight">
+\[z_- = \frac{-a + \sqrt{a^2-b^2}}{b},\qquad |z_-|&lt;1.\]</div>
+<p>Since it is a simple pole, using <span class="math notranslate nohighlight">\(\operatorname{Res}\big(\tfrac{1}{P(z)},z_-\big)=\tfrac{1}{P'(z_-)}\)</span> for <span class="math notranslate nohighlight">\(P(z)=b z^2 +2az + b\)</span>,</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{Res}\left(\frac{2}{i\,P(z)}, z_-\right)
+= \frac{2}{i\,P'(z_-)}
+= \frac{2}{i\,(2b z_- + 2a)}.\]</div>
+<p>But <span class="math notranslate nohighlight">\(2b z_- + 2a = 2\sqrt{a^2-b^2}\)</span>. Therefore</p>
+<div class="math notranslate nohighlight">
+\[\int_0^{2\pi} \frac{d\theta}{a+b\cos\theta}
+= 2\pi i\,\frac{2}{i\,2\sqrt{a^2-b^2}}
+= \frac{2\pi}{\sqrt{a^2-b^2}}.\]</div>
+</section>
+<section id="example-4-int-0-2-pi-cos-2n-x-dx">
+<h3>Example 4: <span class="math notranslate nohighlight">\(\int_0^{2\pi} \cos^{2n}(x)\,dx\)</span><a class="headerlink" href="#example-4-int-0-2-pi-cos-2n-x-dx" title="Link to this heading"></a></h3>
 <p>Let <span class="math notranslate nohighlight">\(z = e^{ix}\)</span> so <span class="math notranslate nohighlight">\(\cos x = \tfrac{1}{2}(z + z^{-1})\)</span> and <span class="math notranslate nohighlight">\(dx = \tfrac{dz}{i z}\)</span> on the unit circle <span class="math notranslate nohighlight">\(|z| = 1\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[I_n = \int_0^{2\pi} \cos^{2n}(x)\,dx = \Re\left( \oint_{|z|=1} \frac{1}{i z} \left( \frac{z + z^{-1}}{2} \right)^{2n} dz \right).\]</div>
@@ -174,12 +292,49 @@
 \[I_n = 2\pi i \cdot \frac{1}{i 2^{2n}} \binom{2n}{n} = \frac{2\pi}{2^{2n}} \binom{2n}{n} = 2\pi \frac{(2n)!}{4^{n} (n!)^2}.\]</div>
 <p>This matches the standard reduction formula and provides a quick contour-integral evaluation for even powers of cosine.</p>
 </section>
+<section id="example-5-keyhole-branch-cut-int-0-infty-frac-x-alpha-1-1-x-dx">
+<h3>Example 5 (keyhole/branch cut): <span class="math notranslate nohighlight">\(\int_0^{\infty} \frac{x^{\alpha-1}}{1+x}\,dx\)</span><a class="headerlink" href="#example-5-keyhole-branch-cut-int-0-infty-frac-x-alpha-1-1-x-dx" title="Link to this heading"></a></h3>
+<p>This classical contour integral connects residues to the Beta/Gamma functions. Assume <span class="math notranslate nohighlight">\(0&lt;\alpha&lt;1\)</span> and define the branch</p>
+<div class="math notranslate nohighlight">
+\[z^{\alpha-1} = e^{(\alpha-1)\Log z},\qquad \Arg z\in(0,2\pi).\]</div>
+<p>Use a keyhole contour encircling the positive real axis (with a small circle around the origin and a large circle at infinity). Consider</p>
+<div class="math notranslate nohighlight">
+\[f(z)=\frac{z^{\alpha-1}}{1+z}.\]</div>
+<p>There is a simple pole at <span class="math notranslate nohighlight">\(z=-1\)</span> with residue</p>
+<div class="math notranslate nohighlight">
+\[\operatorname{Res}(f,-1)=\lim_{z\to-1}(z+1)\frac{z^{\alpha-1}}{1+z}=(-1)^{\alpha-1}=e^{i\pi(\alpha-1)}.\]</div>
+<p>The integral over the two sides of the cut differ by a phase. On the upper side <span class="math notranslate nohighlight">\(\Arg z = 0\)</span>, so <span class="math notranslate nohighlight">\(z^{\alpha-1}=x^{\alpha-1}\)</span>; on the lower side <span class="math notranslate nohighlight">\(\Arg z = 2\pi\)</span>, so <span class="math notranslate nohighlight">\(z^{\alpha-1}=e^{2\pi i(\alpha-1)}x^{\alpha-1}\)</span>. Taking the contour orientation into account, one obtains</p>
+<div class="math notranslate nohighlight">
+\[\oint_C f(z)\,dz
+= \left(1-e^{2\pi i(\alpha-1)}\right)\int_0^{\infty}\frac{x^{\alpha-1}}{1+x}\,dx
+= \left(1-e^{2\pi i\alpha}\right)\int_0^{\infty}\frac{x^{\alpha-1}}{1+x}\,dx.\]</div>
+<p>By residues, the same contour integral equals</p>
+<div class="math notranslate nohighlight">
+\[\oint_C f(z)\,dz = 2\pi i\,\operatorname{Res}(f,-1)=2\pi i\,e^{i\pi(\alpha-1)}.\]</div>
+<p>Using <span class="math notranslate nohighlight">\(1-e^{2\pi i\alpha} = -2i e^{i\pi\alpha}\sin(\pi\alpha)\)</span>, it follows that</p>
+<div class="math notranslate nohighlight">
+\[\int_0^{\infty}\frac{x^{\alpha-1}}{1+x}\,dx
+= \frac{\pi}{\sin(\pi\alpha)}\qquad (0&lt;\alpha&lt;1).\]</div>
+</section>
+<section id="example-6-pole-on-the-integration-path-mathrm-pv-int-infty-infty-frac-sin-x-x-dx">
+<h3>Example 6 (pole on the integration path): <span class="math notranslate nohighlight">\(\mathrm{PV}\int_{-\infty}^{\infty} \frac{\sin x}{x}\,dx\)</span><a class="headerlink" href="#example-6-pole-on-the-integration-path-mathrm-pv-int-infty-infty-frac-sin-x-x-dx" title="Link to this heading"></a></h3>
+<p>This illustrates <em>indented contours</em> and principal values. Consider</p>
+<div class="math notranslate nohighlight">
+\[J = \mathrm{PV}\int_{-\infty}^{\infty} \frac{e^{ix}}{x}\,dx.\]</div>
+<p>Close in the upper half-plane and detour around the pole at the origin with a small semicircle of radius <span class="math notranslate nohighlight">\(\varepsilon\)</span> above the real axis. There are no poles in the upper half-plane, but the indentation contributes</p>
+<div class="math notranslate nohighlight">
+\[\int_{\text{indent}} \frac{e^{iz}}{z}\,dz \xrightarrow[\varepsilon\to 0]{} i\pi.\]</div>
+<p>Hence <span class="math notranslate nohighlight">\(J=i\pi\)</span>. Taking the imaginary part gives the standard result</p>
+<div class="math notranslate nohighlight">
+\[\mathrm{PV}\int_{-\infty}^{\infty} \frac{\sin x}{x}\,dx = \pi.\]</div>
+</section>
+</section>
 <section id="additional-examples-to-practice">
 <h2>Additional examples to practice<a class="headerlink" href="#additional-examples-to-practice" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\int_{-\infty}^{\infty} \frac{dx}{x^2 + a^2}\)</span> using a semicircle in the upper half-plane.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\int_0^{\infty} \frac{\cos bx}{x^2 + a^2}\,dx\)</span> via Jordan’s lemma.</p></li>
-<li><p><span class="math notranslate nohighlight">\(\int_0^{2\pi} \frac{d\theta}{5 - 4 \cos \theta}\)</span> via the unit circle and a simple pole.</p></li>
+<li><p>Compute residues for higher-order poles, e.g. <span class="math notranslate nohighlight">\(\operatorname{Res}\big(\tfrac{e^z}{z^3},0\big)\)</span> via series.</p></li>
+<li><p>Evaluate <span class="math notranslate nohighlight">\(\int_0^{2\pi} \tfrac{d\theta}{5-4\cos\theta}\)</span> and check it matches <span class="math notranslate nohighlight">\(\tfrac{2\pi}{\sqrt{5^2-4^2}}\)</span>.</p></li>
+<li><p>Use <span class="math notranslate nohighlight">\(\operatorname{Res}(f,\infty)\)</span> to verify that the sum of all residues of a rational function is zero.</p></li>
 </ul>
 </section>
 </section>

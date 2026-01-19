@@ -198,3 +198,12 @@ features:
 - `tomllib` (3.11) for reading TOML configuration files.
 - Interpreter performance improvements in 3.11+ that make numeric code faster
   even before NumPy.
+
+
+References and Further Reading
+------------------------------
+- **van Rossum, G., & Drake, F. L.** (2009). *The Python Language Reference*. Python Software Foundation. Authoritative language specification.
+- **Beazley, D.** (2021). *Python Cookbook* (3rd ed.). O'Reilly. Practical patterns for core Python constructs.
+- **McKinney, W.** (2022). *Python for Data Analysis* (3rd ed.). O'Reilly. Focused on pandas, NumPy, and data wrangling.
+- **VanderPlas, J.** (2016). *Python Data Science Handbook*. O'Reilly. Covers NumPy, pandas, Matplotlib, and scikit-learn fundamentals.
+- **Oliphant, T. E.** (2015). *Guide to NumPy* (2nd ed.). Continuum Analytics. In-depth treatment of NumPy internals and array programming.

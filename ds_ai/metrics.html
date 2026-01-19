@@ -1,0 +1,513 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Metrics for DS, ML, and AI &mdash; Personal Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Backpropagation" href="backpropagation.html" />
+    <link rel="prev" title="Bias - Variance Decomposition" href="bias_variance.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Personal Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">About Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction of Material</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../physics/pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/computational_derivatives.html">Computational Derivatives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/force_fields.html">Force Fields : Water</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/lammps.html">Molecular Dynamics with LAMMPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/harmonic_oscillator.html">Quantum Harmonic Oscillator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/split_operator.html">Split-Operator Method (Quantum Time Propagation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Math</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/residue_theorem.html">Residue Theorem</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="python.html">Python for Data Science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_regression.html">Linear Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logistic_regression.html">Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Metrics for DS, ML, and AI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#confusion-matrix-and-notation-binary">Confusion matrix and notation (binary)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visual-layout-binary">Visual layout (binary)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#core-metrics-binary">Core metrics (binary)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#thresholds-and-decision-rules">Thresholds and decision rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#when-to-use-which">When to use which</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-class-and-multi-label">Multi-class and multi-label</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#worked-example-binary">Worked example (binary)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choosing-a-metric-for-common-scenarios">Choosing a metric for common scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#roc-vs-pr-intuition">ROC vs PR intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prevalence-effect-on-precision">Prevalence effect on precision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#threshold-sweeps-practical">Threshold sweeps (practical)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numpy-implementation">NumPy implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#attention-and-risks">Attention and risks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#practice-exercises">Practice exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="backpropagation.html">Backpropagation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pca.html">Principal Component Analysis (PCA)</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Personal Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Metrics for DS, ML, and AI</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/ds_ai/metrics.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="metrics-for-ds-ml-and-ai">
+<h1>Metrics for DS, ML, and AI<a class="headerlink" href="#metrics-for-ds-ml-and-ai" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>Evaluation metrics summarize model performance and guide model selection. Choose them based on class balance, error costs, deployment constraints, and whether outputs are scores or probabilities. This note focuses on binary classification and extends to multi-class/multi-label.</p>
+</section>
+<section id="confusion-matrix-and-notation-binary">
+<h2>Confusion matrix and notation (binary)<a class="headerlink" href="#confusion-matrix-and-notation-binary" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>True Positive (TP): predicted positive, actually positive.</p></li>
+<li><p>False Positive (FP): predicted positive, actually negative.</p></li>
+<li><p>False Negative (FN): predicted negative, actually positive.</p></li>
+<li><p>True Negative (TN): predicted negative, actually negative.</p></li>
+</ul>
+<p>Let <span class="math notranslate nohighlight">\(P = TP + FN\)</span> (actual positives), <span class="math notranslate nohighlight">\(N = FP + TN\)</span> (actual negatives), <span class="math notranslate nohighlight">\(T = P + N\)</span> (all samples).</p>
+</section>
+<section id="visual-layout-binary">
+<h2>Visual layout (binary)<a class="headerlink" href="#visual-layout-binary" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/metrics_confusion.png"><img alt="Confusion matrix layout with TP, FP, FN, TN" src="../_images/metrics_confusion.png" style="width: 60%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Confusion matrix with predicted labels on columns and true labels on rows. Precision focuses on the positive column; recall on the positive row.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="core-metrics-binary">
+<h2>Core metrics (binary)<a class="headerlink" href="#core-metrics-binary" title="Link to this heading"></a></h2>
+<p><strong>Classification metrics (threshold-dependent):</strong></p>
+<ul class="simple">
+<li><p><strong>Accuracy</strong>: <span class="math notranslate nohighlight">\((TP + TN) / T\)</span>. Proportion of all correct predictions. Use only with balanced classes and symmetric costs. Can be misleading when one class dominates.</p></li>
+<li><p><strong>Precision (PPV, positive predictive value)</strong>: <span class="math notranslate nohighlight">\(TP / (TP + FP)\)</span>. Of predicted positives, how many are truly positive? High precision means few false alarms. Critical in scenarios where alerting has high cost (e.g., manual review, spam filtering).</p></li>
+<li><p><strong>Recall / Sensitivity / TPR (true positive rate)</strong>: <span class="math notranslate nohighlight">\(TP / (TP + FN)\)</span>. Of actual positives, how many did we catch? High recall means we miss fewer true positives. Essential in scenarios where missing positives is costly (disease screening, fraud triage).</p></li>
+<li><p><strong>Specificity / TNR (true negative rate)</strong>: <span class="math notranslate nohighlight">\(TN / (TN + FP)\)</span>. Of actual negatives, how many did we correctly reject? High specificity means few false alarms. Use when false positives are unacceptable (safety-critical systems).</p></li>
+<li><p><strong>FPR (false positive rate)</strong>: <span class="math notranslate nohighlight">\(FP / (FP + TN)\)</span>. Of actual negatives, how many did we wrongly flag? Complement of specificity. Inverse of what we want in many applications.</p></li>
+<li><p><strong>FNR (false negative rate)</strong>: <span class="math notranslate nohighlight">\(FN / (FN + TP)\)</span>. Of actual positives, how many did we miss? Complement of recall. High FNR means we’re letting true positives slip through.</p></li>
+<li><p><strong>NPV (negative predictive value)</strong>: <span class="math notranslate nohighlight">\(TN / (TN + FN)\)</span>. Of predicted negatives, how many are truly negative? The “reliability” of negative predictions. Less commonly used but important in contexts where negative decisions drive actions.</p></li>
+<li><p><strong>F1 score</strong>: <span class="math notranslate nohighlight">\(2 \cdot \frac{\text{precision} \cdot \text{recall}}{\text{precision} + \text{recall}}\)</span>. Harmonic mean of precision and recall. Single balanced metric; good when precision and recall are both important and classes are skewed. Assumes equal cost for false positives and false negatives.</p></li>
+<li><p><strong>:math:`F_beta` score</strong>: <span class="math notranslate nohighlight">\((1+\beta^2) \cdot \frac{\text{precision} \cdot \text{recall}}{\beta^2 \cdot \text{precision} + \text{recall}}\)</span>. Weighted harmonic mean. Use <span class="math notranslate nohighlight">\(\beta &gt; 1\)</span> to emphasize recall (e.g., <span class="math notranslate nohighlight">\(F_2\)</span>); <span class="math notranslate nohighlight">\(\beta &lt; 1\)</span> to emphasize precision (e.g., <span class="math notranslate nohighlight">\(F_{0.5}\)</span>).</p></li>
+<li><p><strong>Balanced accuracy</strong>: <span class="math notranslate nohighlight">\((\text{TPR} + \text{TNR}) / 2\)</span>. Average of recall and specificity. Simple fix for class imbalance; avoids accuracy’s bias toward frequent class.</p></li>
+<li><p><strong>MCC (Matthews correlation coefficient)</strong>: <span class="math notranslate nohighlight">\(\frac{TP \cdot TN - FP \cdot FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}\)</span>. Ranges from -1 (perfect disagreement) to +1 (perfect agreement). Handles imbalance well; considers all four confusion matrix entries. Good general-purpose single-number summary.</p></li>
+</ul>
+<p><strong>Threshold-independent metrics (ranking quality):</strong></p>
+<ul class="simple">
+<li><p><strong>PR-AUC (precision-recall area under curve)</strong>: Area under the precision-recall curve as threshold varies. Directly reflects ranking quality under class imbalance; better than ROC-AUC for rare positives. Higher is better.</p></li>
+<li><p><strong>ROC-AUC (receiver operating characteristic area under curve)</strong>: Area under the TPR-vs-FPR curve. Measures ranking quality across thresholds; insensitive to prevalence on the axes but can appear optimistic when one class is very rare. Random classifier scores 0.5.</p></li>
+</ul>
+</section>
+<section id="thresholds-and-decision-rules">
+<h2>Thresholds and decision rules<a class="headerlink" href="#thresholds-and-decision-rules" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Hard labels: pick a threshold <span class="math notranslate nohighlight">\(\tau\)</span> on predicted probability <span class="math notranslate nohighlight">\(\hat{p}\)</span> and predict positive if <span class="math notranslate nohighlight">\(\hat{p} \ge \tau\)</span>.</p></li>
+<li><p>Cost-sensitive tuning: pick <span class="math notranslate nohighlight">\(\tau\)</span> that minimizes expected cost or maximizes a validation metric aligned to the business objective (e.g., maximize <span class="math notranslate nohighlight">\(F_\beta\)</span> or net benefit).</p></li>
+<li><p>Calibration: well-calibrated probabilities make threshold choice meaningful; check reliability diagrams or Brier score.</p></li>
+</ul>
+</section>
+<section id="when-to-use-which">
+<h2>When to use which<a class="headerlink" href="#when-to-use-which" title="Link to this heading"></a></h2>
+<p><strong>Decision trees for metric selection:</strong></p>
+<ul class="simple">
+<li><p><strong>Accuracy</strong>: Balanced classes, symmetric costs, general benchmark. Misleading under heavy imbalance.</p></li>
+<li><p><strong>Precision</strong>: False positives are costly or require human review (e.g., spam filtering, ad targeting, anomaly alerts). Goal: minimize false alarms sent downstream.</p></li>
+<li><p><strong>Recall/TPR</strong>: False negatives are costly or dangerous (e.g., disease screening, fraud detection, quality control). Goal: catch as many true positives as possible.</p></li>
+<li><p><strong>Specificity/TNR</strong>: False positives trigger costly or dangerous actions (e.g., emergency alerts, model rollbacks). Goal: keep false alarm rate low.</p></li>
+<li><p><strong>F1</strong>: Balanced goal when precision and recall equally important. Common choice for imbalanced binary classification without clear cost asymmetry.</p></li>
+<li><p><strong>:math:`F_beta`</strong>: Explicitly tune cost: <span class="math notranslate nohighlight">\(\beta &gt; 1\)</span> for recall priority (e.g., <span class="math notranslate nohighlight">\(F_2\)</span> emphasizes recall), <span class="math notranslate nohighlight">\(\beta &lt; 1\)</span> for precision priority (e.g., <span class="math notranslate nohighlight">\(F_{0.5}\)</span> emphasizes precision).</p></li>
+<li><p><strong>Balanced accuracy</strong>: Quick fix for imbalance when both classes matter equally but no other cost structure is clear.</p></li>
+<li><p><strong>MCC</strong>: Robust default for imbalanced data; single number that considers all four confusion matrix entries. Good for rigorous evaluation or when combining with other metrics.</p></li>
+<li><p><strong>ROC-AUC</strong>: Ranking quality across thresholds; good for comparing models. Can be overly optimistic under strong imbalance (prefer PR-AUC in that case).</p></li>
+<li><p><strong>PR-AUC</strong>: <strong>Preferred for rare positive class</strong> (&lt; 10% prevalence). Shows how precision drops as we increase recall—critical insight for rare-event detection.</p></li>
+</ul>
+</section>
+<section id="multi-class-and-multi-label">
+<h2>Multi-class and multi-label<a class="headerlink" href="#multi-class-and-multi-label" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Micro averaging: sum TP/FP/FN across classes, then compute metrics (reflects instance-level performance; dominated by frequent classes).</p></li>
+<li><p>Macro averaging: compute per-class metrics, then average (treats classes equally; good when minority classes matter).</p></li>
+<li><p>Weighted macro: average per-class metrics weighted by support (middle ground).</p></li>
+<li><p>One-vs-rest ROC-AUC / PR-AUC: compute per class and average (macro/weighted).</p></li>
+</ul>
+</section>
+<section id="worked-example-binary">
+<h2>Worked example (binary)<a class="headerlink" href="#worked-example-binary" title="Link to this heading"></a></h2>
+<p>Suppose a model yields predictions on 200 test samples: TP=40, FP=10, FN=5, TN=145.</p>
+<p><strong>Computed metrics:</strong></p>
+<ul class="simple">
+<li><p>Accuracy = <span class="math notranslate nohighlight">\((40+145)/200 = 0.925\)</span> (92.5% overall correct, but can be misleading if classes are imbalanced).</p></li>
+<li><p>Precision = <span class="math notranslate nohighlight">\(40/(40+10) = 0.80\)</span> (of 50 positive predictions, 40 were correct; 80% reliability).</p></li>
+<li><p>Recall/TPR = <span class="math notranslate nohighlight">\(40/(40+5) \approx 0.889\)</span> (we caught 40 out of 45 true positives; ~89% catch rate).</p></li>
+<li><p>Specificity/TNR = <span class="math notranslate nohighlight">\(145/(145+10) \approx 0.935\)</span> (of 155 true negatives, we correctly identified 145; 93.5% specificity).</p></li>
+<li><p>FPR = <span class="math notranslate nohighlight">\(10/(10+145) \approx 0.065\)</span> (false alarm rate on negatives is ~6.5%).</p></li>
+<li><p>FNR = <span class="math notranslate nohighlight">\(5/(5+40) = 0.111\)</span> (we miss ~11% of true positives).</p></li>
+<li><p>F1 = <span class="math notranslate nohighlight">\(2 \cdot 0.80 \cdot 0.889 / (0.80 + 0.889) \approx 0.842\)</span> (harmonic mean is 0.842; balanced score).</p></li>
+<li><p>Balanced accuracy = <span class="math notranslate nohighlight">\((0.889 + 0.935)/2 \approx 0.912\)</span> (average of recall and specificity).</p></li>
+<li><p>MCC <span class="math notranslate nohighlight">\(\approx 0.83\)</span> (strong positive correlation; robust summary under any imbalance).</p></li>
+</ul>
+<p><strong>Interpretation:</strong> The model achieves high overall accuracy (92.5%) and balanced performance across both classes (TPR and TNR both high). Precision is also solid (80%), so we can rely on positive predictions. F1 (0.842) and MCC (0.83) confirm good balanced performance. This model is suitable for most balanced scenarios; if false negatives are costly, consider lowering the threshold to increase recall.</p>
+</section>
+<section id="choosing-a-metric-for-common-scenarios">
+<h2>Choosing a metric for common scenarios<a class="headerlink" href="#choosing-a-metric-for-common-scenarios" title="Link to this heading"></a></h2>
+<p><strong>Rare-event detection (fraud, defects, anomalies):</strong></p>
+<ul class="simple">
+<li><p>Use <strong>PR-AUC</strong> as primary metric; report <strong>recall at fixed precision</strong> (e.g., <a class="reference external" href="mailto:recall&#37;&#52;&#48;prec=0&#46;9">recall<span>&#64;</span>prec=0<span>&#46;</span>9</a>).</p></li>
+<li><p>Tune threshold on validation to meet precision or recall target aligned with business cost.</p></li>
+<li><p>Why: Accuracy and ROC-AUC mislead when positives are rare; PR-AUC directly shows the precision-recall trade-off.</p></li>
+<li><p>Example: fraud dataset with 1% fraud rate; target precision = 0.95 to minimize manual review time.</p></li>
+</ul>
+<p><strong>Medical screening (disease detection, diagnostic tests):</strong></p>
+<ul class="simple">
+<li><p>Prioritize <strong>high recall/TPR</strong> (catch most true cases) with minimum acceptable precision.</p></li>
+<li><p>Report <strong>specificity/TNR</strong> separately to control false alarms and anxiety in negatives.</p></li>
+<li><p>Metrics: recall, specificity, <span class="math notranslate nohighlight">\(F_\beta\)</span> with <span class="math notranslate nohighlight">\(\beta &gt; 1\)</span> (e.g., <span class="math notranslate nohighlight">\(F_2\)</span>).</p></li>
+<li><p>Why: Missing disease is worse than false alarms; but too many false positives burden the system.</p></li>
+<li><p>Example: cancer screening; target recall ≥ 0.95 and specificity ≥ 0.90.</p></li>
+</ul>
+<p><strong>Triage / queue ranking:</strong></p>
+<ul class="simple">
+<li><p>Use <strong>ROC-AUC</strong> or <strong>PR-AUC</strong> to rank models by ordering quality.</p></li>
+<li><p>Supplement with <strong>precision&#64;k</strong> (precision in top-k predictions) to match queue capacity.</p></li>
+<li><p>Tune threshold on validation to hit a target capacity or precision threshold.</p></li>
+<li><p>Why: You care about ranking, not just hard predictions; precision&#64;k tells you if you can handle the volume.</p></li>
+<li><p>Example: prioritize support tickets; model must get ≥ 90% precision in top-1000 tickets.</p></li>
+</ul>
+<p><strong>Balanced benchmarks (academic, general ML):</strong></p>
+<ul class="simple">
+<li><p>Report <strong>accuracy</strong> for transparency; add <strong>F1</strong> for balanced perspective; include <strong>MCC</strong> for robustness.</p></li>
+<li><p>If classes are imbalanced, use <strong>balanced accuracy</strong> and avoid raw accuracy.</p></li>
+<li><p>Also report per-class precision and recall to detect asymmetries.</p></li>
+</ul>
+<p><strong>Multi-class with class importance:</strong></p>
+<ul class="simple">
+<li><p>Compute <strong>per-class recall/precision</strong> to identify which classes are harder.</p></li>
+<li><p>Use <strong>macro F1</strong> (treats all classes equally) or <strong>weighted F1</strong> (weighted by support).</p></li>
+<li><p>If one class is much rarer, use <strong>macro</strong> to prevent dominant classes from masking poor minority performance.</p></li>
+</ul>
+</section>
+<section id="roc-vs-pr-intuition">
+<h2>ROC vs PR intuition<a class="headerlink" href="#roc-vs-pr-intuition" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>ROC plots TPR vs FPR; good for ranking quality, insensitive to prevalence in the axes but can appear optimistic when positives are rare.</p></li>
+<li><p>PR plots precision vs recall; directly reflects effect of false positives when positives are rare.</p></li>
+<li><p>A random classifier has ROC-AUC = 0.5 and a PR curve at the prevalence level.</p></li>
+</ul>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/metrics_roc_pr.png"><img alt="ROC and PR curves comparing two models" src="../_images/metrics_roc_pr.png" style="width: 75%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Model A and B ROC/PR curves: AUC can agree on ranking while PR highlights precision loss at higher recall.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="prevalence-effect-on-precision">
+<h2>Prevalence effect on precision<a class="headerlink" href="#prevalence-effect-on-precision" title="Link to this heading"></a></h2>
+<p>Precision is highly sensitive to class prevalence (base rate). Even with fixed TPR/FPR, precision drops when positives are rare.</p>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/metrics_precision_prevalence.png"><img alt="Precision vs prevalence holding TPR and FPR fixed" src="../_images/metrics_precision_prevalence.png" style="width: 65%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">With TPR=0.9 and FPR=0.05, precision falls as prevalence decreases.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="threshold-sweeps-practical">
+<h2>Threshold sweeps (practical)<a class="headerlink" href="#threshold-sweeps-practical" title="Link to this heading"></a></h2>
+<p>Compute metrics across thresholds to see trade-offs:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">metrics_vs_threshold</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">):</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">tau</span> <span class="ow">in</span> <span class="n">thresholds</span><span class="p">:</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">y_score</span> <span class="o">&gt;=</span> <span class="n">tau</span>
+        <span class="n">tp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">tn</span> <span class="o">=</span> <span class="n">confusion_counts</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">tau</span><span class="p">,</span> <span class="n">metrics_from_counts</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">tn</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="n">taus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">metrics_vs_threshold</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">taus</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">tau</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;tau=</span><span class="si">{</span><span class="n">tau</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> precision=</span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;precision&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> recall=</span><span class="si">{</span><span class="n">m</span><span class="p">[</span><span class="s1">&#39;recall&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="numpy-implementation">
+<h2>NumPy implementation<a class="headerlink" href="#numpy-implementation" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">confusion_counts</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_pred</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">tp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">&amp;</span> <span class="n">y_true</span><span class="p">)</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">y_true</span><span class="p">)</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">~</span><span class="n">y_pred</span> <span class="o">&amp;</span> <span class="n">y_true</span><span class="p">)</span>
+    <span class="n">tn</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">~</span><span class="n">y_pred</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">y_true</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">tn</span>
+
+ <span class="k">def</span><span class="w"> </span><span class="nf">metrics_from_counts</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">tn</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">):</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">+</span> <span class="n">fn</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">fp</span> <span class="o">+</span> <span class="n">tn</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="n">n</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">tn</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="n">prec</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fp</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="n">rec</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="n">tnr</span> <span class="o">=</span> <span class="n">tn</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="n">fpr</span> <span class="o">=</span> <span class="n">fp</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="n">fnr</span> <span class="o">=</span> <span class="n">fn</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="n">f1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">prec</span> <span class="o">*</span> <span class="n">rec</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">prec</span> <span class="o">+</span> <span class="n">rec</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="n">ba</span> <span class="o">=</span> <span class="p">(</span><span class="n">rec</span> <span class="o">+</span> <span class="n">tnr</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">mcc</span> <span class="o">=</span> <span class="p">(</span><span class="n">tp</span> <span class="o">*</span> <span class="n">tn</span> <span class="o">-</span> <span class="n">fp</span> <span class="o">*</span> <span class="n">fn</span><span class="p">)</span> <span class="o">/</span> <span class="nb">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">tn</span> <span class="o">+</span> <span class="n">fp</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">tn</span> <span class="o">+</span> <span class="n">fn</span><span class="p">)),</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;accuracy&quot;</span><span class="p">:</span> <span class="n">acc</span><span class="p">,</span>
+        <span class="s2">&quot;precision&quot;</span><span class="p">:</span> <span class="n">prec</span><span class="p">,</span>
+        <span class="s2">&quot;recall&quot;</span><span class="p">:</span> <span class="n">rec</span><span class="p">,</span>
+        <span class="s2">&quot;specificity&quot;</span><span class="p">:</span> <span class="n">tnr</span><span class="p">,</span>
+        <span class="s2">&quot;fpr&quot;</span><span class="p">:</span> <span class="n">fpr</span><span class="p">,</span>
+        <span class="s2">&quot;fnr&quot;</span><span class="p">:</span> <span class="n">fnr</span><span class="p">,</span>
+        <span class="s2">&quot;f1&quot;</span><span class="p">:</span> <span class="n">f1</span><span class="p">,</span>
+        <span class="s2">&quot;balanced_accuracy&quot;</span><span class="p">:</span> <span class="n">ba</span><span class="p">,</span>
+        <span class="s2">&quot;mcc&quot;</span><span class="p">:</span> <span class="n">mcc</span><span class="p">,</span>
+    <span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">simple_auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">):</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">fpr</span><span class="p">)</span>
+    <span class="n">fpr_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">fpr</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">]</span>
+    <span class="n">tpr_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">tpr</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="mf">1.0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">tpr_s</span><span class="p">,</span> <span class="n">fpr_s</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">roc_curve</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">):</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">y_score</span><span class="p">)</span>
+    <span class="n">y_true_sorted</span> <span class="o">=</span> <span class="n">y_true</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+    <span class="n">tp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">y_true_sorted</span><span class="p">)</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="o">~</span><span class="n">y_true_sorted</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">tp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">fp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">tpr</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">fpr</span> <span class="o">=</span> <span class="n">fp</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">precision_recall_curve</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">):</span>
+    <span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">y_score</span><span class="p">)</span>
+    <span class="n">y_true_sorted</span> <span class="o">=</span> <span class="n">y_true</span><span class="p">[</span><span class="n">order</span><span class="p">]</span>
+    <span class="n">tp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">y_true_sorted</span><span class="p">)</span>
+    <span class="n">fp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="o">~</span><span class="n">y_true_sorted</span><span class="p">)</span>
+    <span class="n">precision</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">tp</span> <span class="o">+</span> <span class="n">fp</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">recall</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">tp</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">precision</span><span class="p">,</span> <span class="n">recall</span>
+
+<span class="c1"># Example usage</span>
+<span class="n">y_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">y_score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.9</span><span class="p">,</span><span class="mf">0.8</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.7</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.4</span><span class="p">,</span><span class="mf">0.6</span><span class="p">,</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.05</span><span class="p">])</span>
+<span class="n">tp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">tn</span> <span class="o">=</span> <span class="n">confusion_counts</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">metrics_from_counts</span><span class="p">(</span><span class="n">tp</span><span class="p">,</span> <span class="n">fp</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">tn</span><span class="p">)</span>
+<span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span> <span class="o">=</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">)</span>
+<span class="n">roc_auc</span> <span class="o">=</span> <span class="n">simple_auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span>
+ <span class="n">prec</span><span class="p">,</span> <span class="n">rec</span> <span class="o">=</span> <span class="n">precision_recall_curve</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ROC-AUC&quot;</span><span class="p">,</span> <span class="n">roc_auc</span><span class="p">)</span>
+ <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;PR points (first three)&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">prec</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">rec</span><span class="p">[:</span><span class="mi">3</span><span class="p">])))</span>
+</pre></div>
+</div>
+</section>
+<section id="attention-and-risks">
+<h2>Attention and risks<a class="headerlink" href="#attention-and-risks" title="Link to this heading"></a></h2>
+<p><strong>Class imbalance (most common pitfall):</strong></p>
+<ul class="simple">
+<li><p><strong>Problem:</strong> Accuracy and ROC-AUC can look excellent while recall or precision on the minority class is terrible. A model predicting all negatives on 99% negative data scores 99% accuracy.</p></li>
+<li><p><strong>Solution:</strong> Use PR-AUC, MCC, F1, balanced accuracy; always report per-class metrics. Look at confusion matrix, not just one summary number.</p></li>
+<li><p><strong>Detection:</strong> Compare accuracy to F1 or MCC; large gap signals imbalance problems.</p></li>
+</ul>
+<p><strong>Threshold choice (dependency on implementation):</strong></p>
+<ul class="simple">
+<li><p><strong>Problem:</strong> Metrics change drastically with threshold. Default threshold (0.5 for probabilities) may not align with business cost.</p></li>
+<li><p><strong>Solution:</strong> Tune threshold on validation data (not test!), targeting a metric aligned to your objective (e.g., maximize <span class="math notranslate nohighlight">\(F_\beta\)</span>, hit <a class="reference external" href="mailto:recall&#37;&#52;&#48;prec">recall<span>&#64;</span>prec</a> target). Plot precision-recall or ROC curves to visualize trade-offs.</p></li>
+<li><p><strong>Avoid:</strong> Tuning threshold on test data → overfitting to test set.</p></li>
+</ul>
+<p><strong>Data leakage (subtle but fatal):</strong></p>
+<ul class="simple">
+<li><p><strong>Problem:</strong> Training data leaks into validation/test (future info, target info, duplicates). Metrics become artificially inflated and don’t reflect true generalization.</p></li>
+<li><p><strong>Solution:</strong> Use temporal splits (train before validation; validate before test). For cross-validated, use group splits (if data has natural groups). Shuffle before splitting.</p></li>
+<li><p><strong>Detection:</strong> Large gap between training and validation metrics; validation suddenly much better.</p></li>
+</ul>
+<p><strong>Calibration (probabilities ≠ frequencies):</strong></p>
+<ul class="simple">
+<li><p><strong>Problem:</strong> High precision/recall does not guarantee calibrated probabilities. Classifier may be confident but wrong. If downstream uses probabilities (e.g., cost-benefit analysis), miscalibration misleads.</p></li>
+<li><p><strong>Solution:</strong> Check reliability diagrams (plot predicted probability vs empirical frequency in bins). Compute Brier score or log loss. Recalibrate if needed (e.g., Platt scaling).</p></li>
+<li><p><strong>When it matters:</strong> Medical, finance, or probabilistic decision systems where probabilities drive final decisions.</p></li>
+</ul>
+<p><strong>Small sample sizes (high variance):</strong></p>
+<ul class="simple">
+<li><p><strong>Problem:</strong> With few positives (e.g., 5-10 samples), metrics have high variance. A few examples swinging class changes everything.</p></li>
+<li><p><strong>Solution:</strong> Compute confidence intervals (bootstrap, binomial), use stratified k-fold CV, repeat experiments. Report range, not point estimate.</p></li>
+<li><p><strong>Detect:</strong> Large differences when rerunning on resampled data.</p></li>
+</ul>
+<p><strong>Distribution shift (deployment reality):</strong></p>
+<ul class="simple">
+<li><p><strong>Problem:</strong> Train/test data may differ from production. Class prevalence, feature distributions, or label quality change; metrics drift.</p></li>
+<li><p><strong>Solution:</strong> Monitor per-segment or over-time performance after deployment. Set up data drift alerts. Retrain periodically.</p></li>
+<li><p><strong>Example:</strong> Model trained on 2023 data performs poorly in 2024 due to changing fraud patterns.</p></li>
+</ul>
+</section>
+<section id="practice-exercises">
+<h2>Practice exercises<a class="headerlink" href="#practice-exercises" title="Link to this heading"></a></h2>
+<p><strong>Exercise 1: Threshold tuning on imbalanced data</strong></p>
+<ul class="simple">
+<li><p>Obtain a dataset with class imbalance (e.g., fraud, rare disease, defects; ~10% positive).</p></li>
+<li><p>Train a classifier and extract prediction probabilities on validation set.</p></li>
+<li><p>Compute precision, recall, F1, <span class="math notranslate nohighlight">\(F_2\)</span>, PR-AUC, ROC-AUC at default threshold (0.5).</p></li>
+<li><p>Create a threshold sweep (0.1 to 0.9) and plot precision, recall, F1 vs threshold.</p></li>
+<li><p>Choose a threshold to maximize <span class="math notranslate nohighlight">\(F_2\)</span> (recall emphasis) and one to hit <a class="reference external" href="mailto:recall&#37;&#52;&#48;prec=0&#46;9">recall<span>&#64;</span>prec=0<span>&#46;</span>9</a>. Compare.</p></li>
+</ul>
+<p><strong>Exercise 2: ROC-AUC vs PR-AUC in rare-event settings</strong></p>
+<ul class="simple">
+<li><p>Generate synthetic data: 1000 negatives, 10 positives.</p></li>
+<li><p>Train or use mock scores (e.g., random, or with some signal).</p></li>
+<li><p>Compute ROC-AUC and PR-AUC; compare numerical values and curve shapes.</p></li>
+<li><p>Explain why PR-AUC is lower and more sensitive to false positives.</p></li>
+<li><p>Repeat with balanced data (500 each) and observe the convergence.</p></li>
+</ul>
+<p><strong>Exercise 3: Multi-class metric computation</strong></p>
+<ul class="simple">
+<li><p>Use a 3+ class dataset (e.g., iris, digits, sentiment).</p></li>
+<li><p>Train a multi-class classifier; extract predictions.</p></li>
+<li><p>Compute per-class precision, recall, F1.</p></li>
+<li><p>Compute micro-averaged and macro-averaged F1; compare to weighted average.</p></li>
+<li><p>Identify which class is hardest to predict and why.</p></li>
+</ul>
+<p><strong>Exercise 4: Reliability diagram and calibration</strong></p>
+<ul class="simple">
+<li><p>Use classifier prediction probabilities on a holdout set.</p></li>
+<li><p>Bin probabilities into 10 equal-width bins (0–0.1, 0.1–0.2, …, 0.9–1.0).</p></li>
+<li><p>For each bin, compute empirical frequency (fraction of true positives).</p></li>
+<li><p>Plot expected (bin center) vs empirical frequency; ideally should lie on y=x.</p></li>
+<li><p>Compute Brier score: <span class="math notranslate nohighlight">\(\text{Brier} = \frac{1}{n} \sum_i (\hat{p}_i - y_i)^2\)</span>.</p></li>
+<li><p>If miscalibrated, apply Platt scaling or isotonic regression.</p></li>
+</ul>
+<p><strong>Exercise 5: Confusion matrix walkthrough</strong></p>
+<ul class="simple">
+<li><p>Pick a classification result with known TP, FP, FN, TN.</p></li>
+<li><p>Compute all metrics: accuracy, precision, recall, specificity, FPR, FNR, F1, MCC.</p></li>
+<li><p>For each metric, explain which region of the confusion matrix it emphasizes.</p></li>
+<li><p>Propose a scenario (fraud, disease, etc.) and choose the top 2 metrics to track; justify the choice.</p></li>
+</ul>
+<p><strong>Exercise 6: Prevalence sensitivity</strong></p>
+<ul class="simple">
+<li><p>Fix TPR = 0.90, FPR = 0.05 (a typical good classifier).</p></li>
+<li><p>Compute precision as prevalence varies: 1%, 5%, 10%, 50%.</p></li>
+<li><p>Plot precision vs prevalence; discuss implications for a rare-event detector.</p></li>
+<li><p>Explain why the same classifier has wildly different precision under different prevalences (hint: base rate fallacy).</p></li>
+</ul>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Fawcett, T.</strong> (2006). An introduction to ROC analysis. <em>Pattern Recognition Letters</em>, 27(8), 861–874. Classic tutorial on ROC curves and AUC.</p></li>
+<li><p><strong>Saito, T., &amp; Rehmsmeier, M.</strong> (2015). The precision-recall plot is more informative than the ROC plot when evaluating binary classifiers on imbalanced datasets. <em>PLOS ONE</em>, 10(3), e0118432. Advocates PR-AUC for rare events.</p></li>
+<li><p><strong>Powers, D. M. W.</strong> (2011). Evaluation: from precision, recall and F-measure to ROC, informedness, markedness and correlation. <em>Journal of Machine Learning Technologies</em>, 2(1), 37–63. Comprehensive taxonomy of metrics.</p></li>
+<li><p><strong>Manning, C. D., Raghavan, P., &amp; Schütze, H.</strong> (2008). <em>Introduction to Information Retrieval</em>. Cambridge University Press. Chapter 8 covers evaluation with precision/recall and ranking metrics.</p></li>
+<li><p><strong>Chicco, D., &amp; Jurman, G.</strong> (2020). The advantages of the Matthews correlation coefficient (MCC) over F1 score and accuracy in binary classification evaluation. <em>BMC Genomics</em>, 21(6), 6. Defends MCC as a balanced single metric.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bias_variance.html" class="btn btn-neutral float-left" title="Bias - Variance Decomposition" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="backpropagation.html" class="btn btn-neutral float-right" title="Backpropagation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright J. V. V. Cassiano.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

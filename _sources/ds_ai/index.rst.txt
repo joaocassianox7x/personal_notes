@@ -12,3 +12,4 @@ Data Science, Machine Learning, and AI
    bias_variance
    backpropagation
    pca
+   metrics

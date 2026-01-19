@@ -1,0 +1,373 @@
+Metrics for DS, ML, and AI
+==========================
+
+Overview
+--------
+Evaluation metrics summarize model performance and guide model selection. Choose them based on class balance, error costs, deployment constraints, and whether outputs are scores or probabilities. This note focuses on binary classification and extends to multi-class/multi-label.
+
+Confusion matrix and notation (binary)
+--------------------------------------
+- True Positive (TP): predicted positive, actually positive.
+- False Positive (FP): predicted positive, actually negative.
+- False Negative (FN): predicted negative, actually positive.
+- True Negative (TN): predicted negative, actually negative.
+
+Let :math:`P = TP + FN` (actual positives), :math:`N = FP + TN` (actual negatives), :math:`T = P + N` (all samples).
+
+Visual layout (binary)
+----------------------
+
+.. figure:: ../_static_files/images/metrics_confusion.png
+    :alt: Confusion matrix layout with TP, FP, FN, TN
+    :align: center
+    :width: 60%
+
+    Confusion matrix with predicted labels on columns and true labels on rows. Precision focuses on the positive column; recall on the positive row.
+
+Core metrics (binary)
+---------------------
+
+**Classification metrics (threshold-dependent):**
+
+- **Accuracy**: :math:`(TP + TN) / T`. Proportion of all correct predictions. Use only with balanced classes and symmetric costs. Can be misleading when one class dominates.
+
+- **Precision (PPV, positive predictive value)**: :math:`TP / (TP + FP)`. Of predicted positives, how many are truly positive? High precision means few false alarms. Critical in scenarios where alerting has high cost (e.g., manual review, spam filtering).
+
+- **Recall / Sensitivity / TPR (true positive rate)**: :math:`TP / (TP + FN)`. Of actual positives, how many did we catch? High recall means we miss fewer true positives. Essential in scenarios where missing positives is costly (disease screening, fraud triage).
+
+- **Specificity / TNR (true negative rate)**: :math:`TN / (TN + FP)`. Of actual negatives, how many did we correctly reject? High specificity means few false alarms. Use when false positives are unacceptable (safety-critical systems).
+
+- **FPR (false positive rate)**: :math:`FP / (FP + TN)`. Of actual negatives, how many did we wrongly flag? Complement of specificity. Inverse of what we want in many applications.
+
+- **FNR (false negative rate)**: :math:`FN / (FN + TP)`. Of actual positives, how many did we miss? Complement of recall. High FNR means we're letting true positives slip through.
+
+- **NPV (negative predictive value)**: :math:`TN / (TN + FN)`. Of predicted negatives, how many are truly negative? The "reliability" of negative predictions. Less commonly used but important in contexts where negative decisions drive actions.
+
+- **F1 score**: :math:`2 \cdot \frac{\text{precision} \cdot \text{recall}}{\text{precision} + \text{recall}}`. Harmonic mean of precision and recall. Single balanced metric; good when precision and recall are both important and classes are skewed. Assumes equal cost for false positives and false negatives.
+
+- **:math:`F_\beta` score**: :math:`(1+\beta^2) \cdot \frac{\text{precision} \cdot \text{recall}}{\beta^2 \cdot \text{precision} + \text{recall}}`. Weighted harmonic mean. Use :math:`\beta > 1` to emphasize recall (e.g., :math:`F_2`); :math:`\beta < 1` to emphasize precision (e.g., :math:`F_{0.5}`).
+
+- **Balanced accuracy**: :math:`(\text{TPR} + \text{TNR}) / 2`. Average of recall and specificity. Simple fix for class imbalance; avoids accuracy's bias toward frequent class.
+
+- **MCC (Matthews correlation coefficient)**: :math:`\frac{TP \cdot TN - FP \cdot FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}`. Ranges from -1 (perfect disagreement) to +1 (perfect agreement). Handles imbalance well; considers all four confusion matrix entries. Good general-purpose single-number summary.
+
+**Threshold-independent metrics (ranking quality):**
+
+- **PR-AUC (precision-recall area under curve)**: Area under the precision-recall curve as threshold varies. Directly reflects ranking quality under class imbalance; better than ROC-AUC for rare positives. Higher is better.
+
+- **ROC-AUC (receiver operating characteristic area under curve)**: Area under the TPR-vs-FPR curve. Measures ranking quality across thresholds; insensitive to prevalence on the axes but can appear optimistic when one class is very rare. Random classifier scores 0.5.
+
+Thresholds and decision rules
+-----------------------------
+- Hard labels: pick a threshold :math:`\tau` on predicted probability :math:`\hat{p}` and predict positive if :math:`\hat{p} \ge \tau`.
+- Cost-sensitive tuning: pick :math:`\tau` that minimizes expected cost or maximizes a validation metric aligned to the business objective (e.g., maximize :math:`F_\beta` or net benefit).
+- Calibration: well-calibrated probabilities make threshold choice meaningful; check reliability diagrams or Brier score.
+
+When to use which
+-----------------
+
+**Decision trees for metric selection:**
+
+- **Accuracy**: Balanced classes, symmetric costs, general benchmark. Misleading under heavy imbalance.
+
+- **Precision**: False positives are costly or require human review (e.g., spam filtering, ad targeting, anomaly alerts). Goal: minimize false alarms sent downstream.
+
+- **Recall/TPR**: False negatives are costly or dangerous (e.g., disease screening, fraud detection, quality control). Goal: catch as many true positives as possible.
+
+- **Specificity/TNR**: False positives trigger costly or dangerous actions (e.g., emergency alerts, model rollbacks). Goal: keep false alarm rate low.
+
+- **F1**: Balanced goal when precision and recall equally important. Common choice for imbalanced binary classification without clear cost asymmetry.
+
+- **:math:`F_\beta`**: Explicitly tune cost: :math:`\beta > 1` for recall priority (e.g., :math:`F_2` emphasizes recall), :math:`\beta < 1` for precision priority (e.g., :math:`F_{0.5}` emphasizes precision).
+
+- **Balanced accuracy**: Quick fix for imbalance when both classes matter equally but no other cost structure is clear.
+
+- **MCC**: Robust default for imbalanced data; single number that considers all four confusion matrix entries. Good for rigorous evaluation or when combining with other metrics.
+
+- **ROC-AUC**: Ranking quality across thresholds; good for comparing models. Can be overly optimistic under strong imbalance (prefer PR-AUC in that case).
+
+- **PR-AUC**: **Preferred for rare positive class** (< 10% prevalence). Shows how precision drops as we increase recall—critical insight for rare-event detection.
+
+Multi-class and multi-label
+---------------------------
+- Micro averaging: sum TP/FP/FN across classes, then compute metrics (reflects instance-level performance; dominated by frequent classes).
+- Macro averaging: compute per-class metrics, then average (treats classes equally; good when minority classes matter).
+- Weighted macro: average per-class metrics weighted by support (middle ground).
+- One-vs-rest ROC-AUC / PR-AUC: compute per class and average (macro/weighted).
+
+Worked example (binary)
+-----------------------
+Suppose a model yields predictions on 200 test samples: TP=40, FP=10, FN=5, TN=145.
+
+**Computed metrics:**
+
+- Accuracy = :math:`(40+145)/200 = 0.925` (92.5% overall correct, but can be misleading if classes are imbalanced).
+- Precision = :math:`40/(40+10) = 0.80` (of 50 positive predictions, 40 were correct; 80% reliability).
+- Recall/TPR = :math:`40/(40+5) \approx 0.889` (we caught 40 out of 45 true positives; ~89% catch rate).
+- Specificity/TNR = :math:`145/(145+10) \approx 0.935` (of 155 true negatives, we correctly identified 145; 93.5% specificity).
+- FPR = :math:`10/(10+145) \approx 0.065` (false alarm rate on negatives is ~6.5%).
+- FNR = :math:`5/(5+40) = 0.111` (we miss ~11% of true positives).
+- F1 = :math:`2 \cdot 0.80 \cdot 0.889 / (0.80 + 0.889) \approx 0.842` (harmonic mean is 0.842; balanced score).
+- Balanced accuracy = :math:`(0.889 + 0.935)/2 \approx 0.912` (average of recall and specificity).
+- MCC :math:`\approx 0.83` (strong positive correlation; robust summary under any imbalance).
+
+**Interpretation:** The model achieves high overall accuracy (92.5%) and balanced performance across both classes (TPR and TNR both high). Precision is also solid (80%), so we can rely on positive predictions. F1 (0.842) and MCC (0.83) confirm good balanced performance. This model is suitable for most balanced scenarios; if false negatives are costly, consider lowering the threshold to increase recall.
+
+Choosing a metric for common scenarios
+--------------------------------------
+
+**Rare-event detection (fraud, defects, anomalies):**
+
+- Use **PR-AUC** as primary metric; report **recall at fixed precision** (e.g., recall@prec=0.9).
+- Tune threshold on validation to meet precision or recall target aligned with business cost.
+- Why: Accuracy and ROC-AUC mislead when positives are rare; PR-AUC directly shows the precision-recall trade-off.
+- Example: fraud dataset with 1% fraud rate; target precision = 0.95 to minimize manual review time.
+
+**Medical screening (disease detection, diagnostic tests):**
+
+- Prioritize **high recall/TPR** (catch most true cases) with minimum acceptable precision.
+- Report **specificity/TNR** separately to control false alarms and anxiety in negatives.
+- Metrics: recall, specificity, :math:`F_\beta` with :math:`\beta > 1` (e.g., :math:`F_2`).
+- Why: Missing disease is worse than false alarms; but too many false positives burden the system.
+- Example: cancer screening; target recall ≥ 0.95 and specificity ≥ 0.90.
+
+**Triage / queue ranking:**
+
+- Use **ROC-AUC** or **PR-AUC** to rank models by ordering quality.
+- Supplement with **precision@k** (precision in top-k predictions) to match queue capacity.
+- Tune threshold on validation to hit a target capacity or precision threshold.
+- Why: You care about ranking, not just hard predictions; precision@k tells you if you can handle the volume.
+- Example: prioritize support tickets; model must get ≥ 90% precision in top-1000 tickets.
+
+**Balanced benchmarks (academic, general ML):**
+
+- Report **accuracy** for transparency; add **F1** for balanced perspective; include **MCC** for robustness.
+- If classes are imbalanced, use **balanced accuracy** and avoid raw accuracy.
+- Also report per-class precision and recall to detect asymmetries.
+
+**Multi-class with class importance:**
+
+- Compute **per-class recall/precision** to identify which classes are harder.
+- Use **macro F1** (treats all classes equally) or **weighted F1** (weighted by support).
+- If one class is much rarer, use **macro** to prevent dominant classes from masking poor minority performance.
+
+ROC vs PR intuition
+-------------------
+- ROC plots TPR vs FPR; good for ranking quality, insensitive to prevalence in the axes but can appear optimistic when positives are rare.
+- PR plots precision vs recall; directly reflects effect of false positives when positives are rare.
+- A random classifier has ROC-AUC = 0.5 and a PR curve at the prevalence level.
+
+.. figure:: ../_static_files/images/metrics_roc_pr.png
+    :alt: ROC and PR curves comparing two models
+    :align: center
+    :width: 75%
+
+    Model A and B ROC/PR curves: AUC can agree on ranking while PR highlights precision loss at higher recall.
+
+Prevalence effect on precision
+------------------------------
+Precision is highly sensitive to class prevalence (base rate). Even with fixed TPR/FPR, precision drops when positives are rare.
+
+.. figure:: ../_static_files/images/metrics_precision_prevalence.png
+    :alt: Precision vs prevalence holding TPR and FPR fixed
+    :align: center
+    :width: 65%
+
+    With TPR=0.9 and FPR=0.05, precision falls as prevalence decreases.
+
+Threshold sweeps (practical)
+-----------------------------
+Compute metrics across thresholds to see trade-offs:
+
+.. code-block:: python
+
+   def metrics_vs_threshold(y_true, y_score, thresholds):
+       out = []
+       for tau in thresholds:
+           y_pred = y_score >= tau
+           tp, fp, fn, tn = confusion_counts(y_true, y_pred)
+           out.append((tau, metrics_from_counts(tp, fp, fn, tn)))
+       return out
+
+   taus = np.linspace(0.0, 1.0, 6)
+   results = metrics_vs_threshold(y_true, y_score, taus)
+   for tau, m in results:
+       print(f"tau={tau:.2f} precision={m['precision']:.3f} recall={m['recall']:.3f}")
+
+NumPy implementation
+--------------------
+.. code-block:: python
+
+   import numpy as np
+
+   def confusion_counts(y_true, y_pred):
+       y_true = np.asarray(y_true).astype(bool)
+       y_pred = np.asarray(y_pred).astype(bool)
+       tp = np.sum(y_pred & y_true)
+       fp = np.sum(y_pred & ~y_true)
+       fn = np.sum(~y_pred & y_true)
+       tn = np.sum(~y_pred & ~y_true)
+       return tp, fp, fn, tn
+
+    def metrics_from_counts(tp, fp, fn, tn, eps=1e-12):
+       p = tp + fn
+       n = fp + tn
+       t = p + n
+       acc = (tp + tn) / max(t, eps)
+       prec = tp / max(tp + fp, eps)
+       rec = tp / max(p, eps)
+       tnr = tn / max(n, eps)
+       fpr = fp / max(n, eps)
+       fnr = fn / max(p, eps)
+       f1 = 2 * prec * rec / max(prec + rec, eps)
+       ba = (rec + tnr) / 2
+       mcc = (tp * tn - fp * fn) / max(np.sqrt((tp + fp) * (tp + fn) * (tn + fp) * (tn + fn)), eps)
+       return {
+           "accuracy": acc,
+           "precision": prec,
+           "recall": rec,
+           "specificity": tnr,
+           "fpr": fpr,
+           "fnr": fnr,
+           "f1": f1,
+           "balanced_accuracy": ba,
+           "mcc": mcc,
+       }
+
+   def simple_auc(fpr, tpr):
+       order = np.argsort(fpr)
+       fpr_s = np.r_[0.0, fpr[order], 1.0]
+       tpr_s = np.r_[0.0, tpr[order], 1.0]
+       return np.trapz(tpr_s, fpr_s)
+
+   def roc_curve(y_true, y_score):
+       y_true = np.asarray(y_true).astype(bool)
+       order = np.argsort(-y_score)
+       y_true_sorted = y_true[order]
+       tp = np.cumsum(y_true_sorted)
+       fp = np.cumsum(~y_true_sorted)
+       p = tp[-1]
+       n = fp[-1]
+       tpr = tp / np.maximum(p, 1)
+       fpr = fp / np.maximum(n, 1)
+       return fpr, tpr
+
+   def precision_recall_curve(y_true, y_score):
+       y_true = np.asarray(y_true).astype(bool)
+       order = np.argsort(-y_score)
+       y_true_sorted = y_true[order]
+       tp = np.cumsum(y_true_sorted)
+       fp = np.cumsum(~y_true_sorted)
+       precision = tp / np.maximum(tp + fp, 1)
+       recall = tp / np.maximum(tp[-1], 1)
+       return precision, recall
+
+   # Example usage
+   y_true = np.array([1,1,1,1,0,0,0,0,0,0])
+   y_pred = np.array([1,1,0,1,0,0,0,1,0,0])
+   y_score = np.array([0.9,0.8,0.3,0.7,0.2,0.1,0.4,0.6,0.2,0.05])
+   tp, fp, fn, tn = confusion_counts(y_true, y_pred)
+   scores = metrics_from_counts(tp, fp, fn, tn)
+   fpr, tpr = roc_curve(y_true, y_score)
+   roc_auc = simple_auc(fpr, tpr)
+    prec, rec = precision_recall_curve(y_true, y_score)
+   print(scores)
+   print("ROC-AUC", roc_auc)
+    print("PR points (first three)", list(zip(prec[:3], rec[:3])))
+
+Attention and risks
+-------------------
+
+**Class imbalance (most common pitfall):**
+
+- **Problem:** Accuracy and ROC-AUC can look excellent while recall or precision on the minority class is terrible. A model predicting all negatives on 99% negative data scores 99% accuracy.
+- **Solution:** Use PR-AUC, MCC, F1, balanced accuracy; always report per-class metrics. Look at confusion matrix, not just one summary number.
+- **Detection:** Compare accuracy to F1 or MCC; large gap signals imbalance problems.
+
+**Threshold choice (dependency on implementation):**
+
+- **Problem:** Metrics change drastically with threshold. Default threshold (0.5 for probabilities) may not align with business cost.
+- **Solution:** Tune threshold on validation data (not test!), targeting a metric aligned to your objective (e.g., maximize :math:`F_\beta`, hit recall@prec target). Plot precision-recall or ROC curves to visualize trade-offs.
+- **Avoid:** Tuning threshold on test data → overfitting to test set.
+
+**Data leakage (subtle but fatal):**
+
+- **Problem:** Training data leaks into validation/test (future info, target info, duplicates). Metrics become artificially inflated and don't reflect true generalization.
+- **Solution:** Use temporal splits (train before validation; validate before test). For cross-validated, use group splits (if data has natural groups). Shuffle before splitting.
+- **Detection:** Large gap between training and validation metrics; validation suddenly much better.
+
+**Calibration (probabilities ≠ frequencies):**
+
+- **Problem:** High precision/recall does not guarantee calibrated probabilities. Classifier may be confident but wrong. If downstream uses probabilities (e.g., cost-benefit analysis), miscalibration misleads.
+- **Solution:** Check reliability diagrams (plot predicted probability vs empirical frequency in bins). Compute Brier score or log loss. Recalibrate if needed (e.g., Platt scaling).
+- **When it matters:** Medical, finance, or probabilistic decision systems where probabilities drive final decisions.
+
+**Small sample sizes (high variance):**
+
+- **Problem:** With few positives (e.g., 5-10 samples), metrics have high variance. A few examples swinging class changes everything.
+- **Solution:** Compute confidence intervals (bootstrap, binomial), use stratified k-fold CV, repeat experiments. Report range, not point estimate.
+- **Detect:** Large differences when rerunning on resampled data.
+
+**Distribution shift (deployment reality):**
+
+- **Problem:** Train/test data may differ from production. Class prevalence, feature distributions, or label quality change; metrics drift.
+- **Solution:** Monitor per-segment or over-time performance after deployment. Set up data drift alerts. Retrain periodically.
+- **Example:** Model trained on 2023 data performs poorly in 2024 due to changing fraud patterns.
+
+Practice exercises
+-------------------
+
+**Exercise 1: Threshold tuning on imbalanced data**
+
+- Obtain a dataset with class imbalance (e.g., fraud, rare disease, defects; ~10% positive).
+- Train a classifier and extract prediction probabilities on validation set.
+- Compute precision, recall, F1, :math:`F_2`, PR-AUC, ROC-AUC at default threshold (0.5).
+- Create a threshold sweep (0.1 to 0.9) and plot precision, recall, F1 vs threshold.
+- Choose a threshold to maximize :math:`F_2` (recall emphasis) and one to hit recall@prec=0.9. Compare.
+
+**Exercise 2: ROC-AUC vs PR-AUC in rare-event settings**
+
+- Generate synthetic data: 1000 negatives, 10 positives.
+- Train or use mock scores (e.g., random, or with some signal).
+- Compute ROC-AUC and PR-AUC; compare numerical values and curve shapes.
+- Explain why PR-AUC is lower and more sensitive to false positives.
+- Repeat with balanced data (500 each) and observe the convergence.
+
+**Exercise 3: Multi-class metric computation**
+
+- Use a 3+ class dataset (e.g., iris, digits, sentiment).
+- Train a multi-class classifier; extract predictions.
+- Compute per-class precision, recall, F1.
+- Compute micro-averaged and macro-averaged F1; compare to weighted average.
+- Identify which class is hardest to predict and why.
+
+**Exercise 4: Reliability diagram and calibration**
+
+- Use classifier prediction probabilities on a holdout set.
+- Bin probabilities into 10 equal-width bins (0–0.1, 0.1–0.2, …, 0.9–1.0).
+- For each bin, compute empirical frequency (fraction of true positives).
+- Plot expected (bin center) vs empirical frequency; ideally should lie on y=x.
+- Compute Brier score: :math:`\text{Brier} = \frac{1}{n} \sum_i (\hat{p}_i - y_i)^2`.
+- If miscalibrated, apply Platt scaling or isotonic regression.
+
+**Exercise 5: Confusion matrix walkthrough**
+
+- Pick a classification result with known TP, FP, FN, TN.
+- Compute all metrics: accuracy, precision, recall, specificity, FPR, FNR, F1, MCC.
+- For each metric, explain which region of the confusion matrix it emphasizes.
+- Propose a scenario (fraud, disease, etc.) and choose the top 2 metrics to track; justify the choice.
+
+**Exercise 6: Prevalence sensitivity**
+
+- Fix TPR = 0.90, FPR = 0.05 (a typical good classifier).
+- Compute precision as prevalence varies: 1%, 5%, 10%, 50%.
+- Plot precision vs prevalence; discuss implications for a rare-event detector.
+- Explain why the same classifier has wildly different precision under different prevalences (hint: base rate fallacy).
+
+References and Further Reading
+------------------------------
+- **Fawcett, T.** (2006). An introduction to ROC analysis. *Pattern Recognition Letters*, 27(8), 861–874. Classic tutorial on ROC curves and AUC.
+- **Saito, T., & Rehmsmeier, M.** (2015). The precision-recall plot is more informative than the ROC plot when evaluating binary classifiers on imbalanced datasets. *PLOS ONE*, 10(3), e0118432. Advocates PR-AUC for rare events.
+- **Powers, D. M. W.** (2011). Evaluation: from precision, recall and F-measure to ROC, informedness, markedness and correlation. *Journal of Machine Learning Technologies*, 2(1), 37–63. Comprehensive taxonomy of metrics.
+- **Manning, C. D., Raghavan, P., & Schütze, H.** (2008). *Introduction to Information Retrieval*. Cambridge University Press. Chapter 8 covers evaluation with precision/recall and ranking metrics.
+- **Chicco, D., & Jurman, G.** (2020). The advantages of the Matthews correlation coefficient (MCC) over F1 score and accuracy in binary classification evaluation. *BMC Genomics*, 21(6), 6. Defends MCC as a balanced single metric.

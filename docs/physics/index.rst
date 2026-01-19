@@ -12,3 +12,4 @@ Physics and Computational Physics
    force_fields
    lammps
    harmonic_oscillator
+   split_operator

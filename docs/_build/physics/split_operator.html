@@ -1,0 +1,410 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Split-Operator Method (Quantum Time Propagation) &mdash; Personal Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Functions and Domains" href="../math/functions.html" />
+    <link rel="prev" title="Quantum Harmonic Oscillator" href="harmonic_oscillator.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Personal Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">About Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction of Material</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="computational_derivatives.html">Computational Derivatives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="force_fields.html">Force Fields : Water</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lammps.html">Molecular Dynamics with LAMMPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="harmonic_oscillator.html">Quantum Harmonic Oscillator</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Split-Operator Method (Quantum Time Propagation)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-math-behind-it-trotter-strang">The math behind it (Trotter + Strang)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-it-is-fast-fourier-diagonalizes-the-kinetic-term">Why it is fast (Fourier diagonalizes the kinetic term)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#practical-notes">Practical notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#animated-example-gaussian-wavepacket-in-a-harmonic-trap">Animated example (Gaussian wavepacket in a harmonic trap)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-by-step-python-1d">Step-by-step Python (1D)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reproducibility">Reproducibility</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Math</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/residue_theorem.html">Residue Theorem</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/python.html">Python for Data Science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/linear_regression.html">Linear Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/logistic_regression.html">Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/metrics.html">Metrics for DS, ML, and AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/backpropagation.html">Backpropagation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/pca.html">Principal Component Analysis (PCA)</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Personal Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Split-Operator Method (Quantum Time Propagation)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/physics/split_operator.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="split-operator-method-quantum-time-propagation">
+<h1>Split-Operator Method (Quantum Time Propagation)<a class="headerlink" href="#split-operator-method-quantum-time-propagation" title="Link to this heading"></a></h1>
+<p>The split-operator (a.k.a. split-step Fourier) method is a workhorse algorithm to evolve the time-dependent Schr&quot;odinger equation</p>
+<div class="math notranslate nohighlight">
+\[i\hbar\,\partial_t\psi(x,t) = \hat{H}\,\psi(x,t),\qquad \hat{H}=\hat{T}+\hat{V}.\]</div>
+<p>In 1D, typically</p>
+<div class="math notranslate nohighlight">
+\[\hat{T} = \frac{\hat{p}^2}{2m} = -\frac{\hbar^2}{2m}\frac{d^2}{dx^2},
+\qquad (\hat{V}\psi)(x)=V(x)\psi(x).\]</div>
+<section id="the-math-behind-it-trotter-strang">
+<h2>The math behind it (Trotter + Strang)<a class="headerlink" href="#the-math-behind-it-trotter-strang" title="Link to this heading"></a></h2>
+<p>The formal time-evolution over a step <span class="math notranslate nohighlight">\(\Delta t\)</span> is</p>
+<div class="math notranslate nohighlight">
+\[\psi(t+\Delta t) = \hat{U}(\Delta t)\,\psi(t),\qquad
+\hat{U}(\Delta t)=\exp\!\left(-\frac{i}{\hbar}\hat{H}\,\Delta t\right).\]</div>
+<p>The difficulty is that <span class="math notranslate nohighlight">\([\hat{T},\hat{V}]\neq 0\)</span> in general, so</p>
+<div class="math notranslate nohighlight">
+\[e^{-\frac{i}{\hbar}(\hat{T}+\hat{V})\Delta t}\neq e^{-\frac{i}{\hbar}\hat{T}\Delta t}\,e^{-\frac{i}{\hbar}\hat{V}\Delta t}.\]</div>
+<p>A key idea is the <strong>Trotter product formula</strong>: for operators <span class="math notranslate nohighlight">\(\hat{A},\hat{B}\)</span> (under appropriate conditions),</p>
+<div class="math notranslate nohighlight">
+\[e^{\hat{A}+\hat{B}} = \lim_{n\to\infty}\left(e^{\hat{A}/n}e^{\hat{B}/n}\right)^n.\]</div>
+<p>For finite <span class="math notranslate nohighlight">\(\Delta t\)</span>, we use a higher-accuracy symmetric split (Strang splitting):</p>
+<div class="math notranslate nohighlight">
+\[e^{(\hat{A}+\hat{B})\Delta t}
+= e^{\hat{A}\Delta t/2}\,e^{\hat{B}\Delta t}\,e^{\hat{A}\Delta t/2} + \mathcal{O}(\Delta t^3).\]</div>
+<p>With</p>
+<div class="math notranslate nohighlight">
+\[\hat{A}=-\frac{i}{\hbar}\hat{V},\qquad \hat{B}=-\frac{i}{\hbar}\hat{T},\]</div>
+<p>we obtain the standard split-operator propagator</p>
+<div class="math notranslate nohighlight">
+\[\hat{U}(\Delta t)
+\approx
+e^{-\frac{i}{\hbar}\hat{V}\,\Delta t/2}
+\;e^{-\frac{i}{\hbar}\hat{T}\,\Delta t}
+\;e^{-\frac{i}{\hbar}\hat{V}\,\Delta t/2}
+\; + \;\mathcal{O}(\Delta t^3).\]</div>
+<p>Two important consequences:</p>
+<ul class="simple">
+<li><p><strong>Second-order global accuracy</strong>: local error is <span class="math notranslate nohighlight">\(\mathcal{O}(\Delta t^3)\)</span>, hence global error after <span class="math notranslate nohighlight">\(N\sim T/\Delta t\)</span> steps is typically <span class="math notranslate nohighlight">\(\mathcal{O}(\Delta t^2)\)</span>.</p></li>
+<li><p><strong>Unitarity (norm preservation)</strong>: each factor is unitary (exponential of a Hermitian operator times <span class="math notranslate nohighlight">\(-i\)</span>), so the method preserves <span class="math notranslate nohighlight">\(\|\psi\|_2\)</span> up to numerical roundoff.</p></li>
+</ul>
+</section>
+<section id="why-it-is-fast-fourier-diagonalizes-the-kinetic-term">
+<h2>Why it is fast (Fourier diagonalizes the kinetic term)<a class="headerlink" href="#why-it-is-fast-fourier-diagonalizes-the-kinetic-term" title="Link to this heading"></a></h2>
+<p>In coordinate space, the potential exponential is pointwise multiplication:</p>
+<div class="math notranslate nohighlight">
+\[\left(e^{-\frac{i}{\hbar}V(x)\Delta t/2}\psi\right)(x)
+= e^{-\frac{i}{\hbar}V(x)\Delta t/2}\,\psi(x).\]</div>
+<p>The kinetic exponential is easiest in momentum (or wave-number) space. Let <span class="math notranslate nohighlight">\(\tilde\psi(k)=\mathcal{F}[\psi](k)\)</span>.
+Since <span class="math notranslate nohighlight">\(\hat{p}=\hbar k\)</span> on plane waves, one has</p>
+<div class="math notranslate nohighlight">
+\[\left(e^{-\frac{i}{\hbar}\hat{T}\Delta t}\tilde\psi\right)(k)
+= e^{-\frac{i}{\hbar}\frac{(\hbar k)^2}{2m}\Delta t}\,\tilde\psi(k)
+= e^{-i\frac{\hbar k^2}{2m}\Delta t}\,\tilde\psi(k).\]</div>
+<p>So one time step is:</p>
+<ol class="arabic simple">
+<li><p>Multiply in <span class="math notranslate nohighlight">\(x\)</span> space by <span class="math notranslate nohighlight">\(e^{-\frac{i}{\hbar}V(x)\Delta t/2}\)</span>.</p></li>
+<li><p>FFT to <span class="math notranslate nohighlight">\(k\)</span> space.</p></li>
+<li><p>Multiply in <span class="math notranslate nohighlight">\(k\)</span> space by <span class="math notranslate nohighlight">\(e^{-i\frac{\hbar k^2}{2m}\Delta t}\)</span>.</p></li>
+<li><p>Inverse FFT back to <span class="math notranslate nohighlight">\(x\)</span> space.</p></li>
+<li><p>Multiply again by <span class="math notranslate nohighlight">\(e^{-\frac{i}{\hbar}V(x)\Delta t/2}\)</span>.</p></li>
+</ol>
+<p>This costs <span class="math notranslate nohighlight">\(\mathcal{O}(N\log N)\)</span> per step (FFT) and is typically much faster than finite-difference implicit solvers for large grids.</p>
+</section>
+<section id="practical-notes">
+<h2>Practical notes<a class="headerlink" href="#practical-notes" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Boundary conditions</strong>: FFT implies periodic boundaries; use a large domain + absorbing layers (complex absorbing potential) if needed.</p></li>
+<li><p><strong>Time step</strong>: choose <span class="math notranslate nohighlight">\(\Delta t\)</span> small enough to resolve phase oscillations from both <span class="math notranslate nohighlight">\(T\)</span> and <span class="math notranslate nohighlight">\(V\)</span>.</p></li>
+<li><p><strong>Normalization</strong>: the algorithm is norm-preserving, but a sanity check <span class="math notranslate nohighlight">\(\int |\psi|^2 dx\)</span> helps catch discretization mistakes.</p></li>
+</ul>
+</section>
+<section id="animated-example-gaussian-wavepacket-in-a-harmonic-trap">
+<h2>Animated example (Gaussian wavepacket in a harmonic trap)<a class="headerlink" href="#animated-example-gaussian-wavepacket-in-a-harmonic-trap" title="Link to this heading"></a></h2>
+<p>Below is an original animation generated from a 1D harmonic potential <span class="math notranslate nohighlight">\(V(x)=\tfrac{1}{2}m\omega^2x^2\)</span>.
+A displaced Gaussian wavepacket oscillates in the trap while spreading slightly due to dispersion.</p>
+<figure class="align-center" id="id1" style="width: 85%">
+<img alt="Split-operator propagation of a Gaussian wavepacket in a harmonic potential" src="../_images/split_operator_wavepacket.gif" />
+<figcaption>
+<p><span class="caption-text">Probability density <span class="math notranslate nohighlight">\(|\psi(x,t)|^2\)</span> evolved via the Strang split-operator method.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="step-by-step-python-1d">
+<h2>Step-by-step Python (1D)<a class="headerlink" href="#step-by-step-python-1d" title="Link to this heading"></a></h2>
+<p>This is the minimal structure of a 1D implementation.</p>
+<ol class="arabic">
+<li><p>Choose a grid <span class="math notranslate nohighlight">\(x_j\)</span> and its FFT wave-number grid <span class="math notranslate nohighlight">\(k_j\)</span>.</p></li>
+<li><p>Build <span class="math notranslate nohighlight">\(V(x)\)</span> and precompute phase factors</p>
+<div class="math notranslate nohighlight">
+\[P_V(x)=e^{-\frac{i}{\hbar}V(x)\Delta t/2},\qquad
+P_T(k)=e^{-i\frac{\hbar k^2}{2m}\Delta t}.\]</div>
+</li>
+<li><p>Iterate the Strang step:</p>
+<div class="math notranslate nohighlight">
+\[\psi \leftarrow P_V\,\psi,\quad
+  ilde\psi\leftarrow \mathcal{F}[\psi],\quad
+  ilde\psi\leftarrow P_T\,\tilde\psi,\quad
+\psi\leftarrow \mathcal{F}^{-1}[\tilde\psi],\quad
+\psi \leftarrow P_V\,\psi.\]</div>
+</li>
+</ol>
+<p>Concrete snippet:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Step 1: grid</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">1024</span>
+<span class="n">x_max</span> <span class="o">=</span> <span class="mf">12.0</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">x_max</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">k</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">dx</span><span class="p">)</span>
+
+<span class="c1"># Parameters</span>
+<span class="n">hbar</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="mf">0.02</span>
+
+<span class="c1"># Step 2: potential and phases (example: harmonic)</span>
+<span class="n">omega</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">V</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">omega</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="n">P_V</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">V</span><span class="o">*</span><span class="p">(</span><span class="n">dt</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">hbar</span><span class="p">)</span>
+<span class="n">P_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="p">(</span><span class="n">hbar</span><span class="o">*</span><span class="n">k</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">dt</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="p">))</span>
+
+<span class="c1"># Step 3: initial state (example: Gaussian)</span>
+<span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="mf">4.0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mf">2.0</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="mf">0.0</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+<span class="n">psi</span> <span class="o">=</span> <span class="n">psi</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">dx</span><span class="p">)</span>
+
+<span class="c1"># Step 4: one Strang step</span>
+<span class="n">psi</span> <span class="o">=</span> <span class="n">P_V</span> <span class="o">*</span> <span class="n">psi</span>
+<span class="n">psi_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span>
+<span class="n">psi_k</span> <span class="o">=</span> <span class="n">P_T</span> <span class="o">*</span> <span class="n">psi_k</span>
+<span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">psi_k</span><span class="p">)</span>
+<span class="n">psi</span> <span class="o">=</span> <span class="n">P_V</span> <span class="o">*</span> <span class="n">psi</span>
+</pre></div>
+</div>
+</section>
+<section id="reproducibility">
+<h2>Reproducibility<a class="headerlink" href="#reproducibility" title="Link to this heading"></a></h2>
+<p>The GIF was generated by the script:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
+<span class="linenos">  2</span>
+<span class="linenos">  3</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.animation</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">animation</span>
+<span class="linenos">  4</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="linenos">  5</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="linenos">  6</span>
+<span class="linenos">  7</span><span class="n">ROOT</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
+<span class="linenos">  8</span><span class="n">IMG_DIR</span> <span class="o">=</span> <span class="n">ROOT</span> <span class="o">/</span> <span class="s2">&quot;images&quot;</span>
+<span class="linenos">  9</span><span class="n">IMG_DIR</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos"> 10</span>
+<span class="linenos"> 11</span>
+<span class="linenos"> 12</span><span class="k">def</span><span class="w"> </span><span class="nf">make_grid</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="n">x_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">12.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="linenos"> 13</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Step 1: Build a 1D periodic grid x and its FFT-compatible k grid.&quot;&quot;&quot;</span>
+<span class="linenos"> 14</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="n">x_max</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="linenos"> 15</span>    <span class="n">dx</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="linenos"> 16</span>    <span class="n">k</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fftfreq</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">dx</span><span class="p">)</span>
+<span class="linenos"> 17</span>    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">k</span>
+<span class="linenos"> 18</span>
+<span class="linenos"> 19</span>
+<span class="linenos"> 20</span><span class="k">def</span><span class="w"> </span><span class="nf">harmonic_potential</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">omega</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="linenos"> 21</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Step 2: Define the potential V(x).&quot;&quot;&quot;</span>
+<span class="linenos"> 22</span>    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">m</span> <span class="o">*</span> <span class="n">omega</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span>
+<span class="linenos"> 23</span>
+<span class="linenos"> 24</span>
+<span class="linenos"> 25</span><span class="k">def</span><span class="w"> </span><span class="nf">gaussian_wavepacket</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">x0</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">sigma</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">k0</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="linenos"> 26</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Step 3: Initialize a normalized Gaussian wavepacket.&quot;&quot;&quot;</span>
+<span class="linenos"> 27</span>    <span class="n">psi</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.25</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">k0</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span>
+<span class="linenos"> 28</span>    <span class="k">return</span> <span class="n">psi</span>
+<span class="linenos"> 29</span>
+<span class="linenos"> 30</span>
+<span class="linenos"> 31</span><span class="k">def</span><span class="w"> </span><span class="nf">normalize_l2</span><span class="p">(</span><span class="n">psi</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">dx</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="linenos"> 32</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Step 4: Normalize so that sum(|psi|^2) dx = 1.&quot;&quot;&quot;</span>
+<span class="linenos"> 33</span>    <span class="n">norm</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span><span class="p">))</span>
+<span class="linenos"> 34</span>    <span class="k">return</span> <span class="n">psi</span> <span class="o">/</span> <span class="n">norm</span>
+<span class="linenos"> 35</span>
+<span class="linenos"> 36</span>
+<span class="linenos"> 37</span><span class="k">def</span><span class="w"> </span><span class="nf">split_operator_step</span><span class="p">(</span><span class="n">psi</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">hbar</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="linenos"> 38</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;One Strang-splitting time step: V(dt/2) -&gt; FFT -&gt; T(dt) -&gt; IFFT -&gt; V(dt/2).&quot;&quot;&quot;</span>
+<span class="linenos"> 39</span>    <span class="n">phase_v_half</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">v</span> <span class="o">*</span> <span class="p">(</span><span class="n">dt</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">/</span> <span class="n">hbar</span><span class="p">)</span>
+<span class="linenos"> 40</span>    <span class="n">psi</span> <span class="o">=</span> <span class="n">phase_v_half</span> <span class="o">*</span> <span class="n">psi</span>
+<span class="linenos"> 41</span>
+<span class="linenos"> 42</span>    <span class="n">psi_k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span>
+<span class="linenos"> 43</span>    <span class="n">phase_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="p">(</span><span class="n">hbar</span> <span class="o">*</span> <span class="n">k</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">dt</span> <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">m</span><span class="p">))</span>
+<span class="linenos"> 44</span>    <span class="n">psi_k</span> <span class="o">=</span> <span class="n">phase_t</span> <span class="o">*</span> <span class="n">psi_k</span>
+<span class="linenos"> 45</span>    <span class="n">psi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">ifft</span><span class="p">(</span><span class="n">psi_k</span><span class="p">)</span>
+<span class="linenos"> 46</span>
+<span class="linenos"> 47</span>    <span class="n">psi</span> <span class="o">=</span> <span class="n">phase_v_half</span> <span class="o">*</span> <span class="n">psi</span>
+<span class="linenos"> 48</span>    <span class="k">return</span> <span class="n">psi</span>
+<span class="linenos"> 49</span>
+<span class="linenos"> 50</span>
+<span class="linenos"> 51</span><span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="linenos"> 52</span>    <span class="c1"># Units: set ħ = m = ω = 1 for a clean demo</span>
+<span class="linenos"> 53</span>    <span class="n">hbar</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="linenos"> 54</span>    <span class="n">m</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="linenos"> 55</span>    <span class="n">omega</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="linenos"> 56</span>
+<span class="linenos"> 57</span>    <span class="c1"># Step 1: grid</span>
+<span class="linenos"> 58</span>    <span class="n">x</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">make_grid</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">x_max</span><span class="o">=</span><span class="mf">12.0</span><span class="p">)</span>
+<span class="linenos"> 59</span>
+<span class="linenos"> 60</span>    <span class="c1"># Step 2: potential</span>
+<span class="linenos"> 61</span>    <span class="n">v</span> <span class="o">=</span> <span class="n">harmonic_potential</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">m</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="n">omega</span><span class="p">)</span>
+<span class="linenos"> 62</span>
+<span class="linenos"> 63</span>    <span class="c1"># Step 3: initial state</span>
+<span class="linenos"> 64</span>    <span class="n">psi</span> <span class="o">=</span> <span class="n">gaussian_wavepacket</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">k0</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+<span class="linenos"> 65</span>    <span class="n">psi</span> <span class="o">=</span> <span class="n">normalize_l2</span><span class="p">(</span><span class="n">psi</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="n">dx</span><span class="p">)</span>
+<span class="linenos"> 66</span>
+<span class="linenos"> 67</span>    <span class="c1"># Time stepping</span>
+<span class="linenos"> 68</span>    <span class="n">dt</span> <span class="o">=</span> <span class="mf">0.02</span>
+<span class="linenos"> 69</span>    <span class="n">steps</span> <span class="o">=</span> <span class="mi">420</span>
+<span class="linenos"> 70</span>    <span class="n">stride</span> <span class="o">=</span> <span class="mi">3</span>  <span class="c1"># render every few steps</span>
+<span class="linenos"> 71</span>
+<span class="linenos"> 72</span>    <span class="c1"># Precompute a scaled potential curve for plotting context</span>
+<span class="linenos"> 73</span>    <span class="n">v_plot</span> <span class="o">=</span> <span class="n">v</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="linenos"> 74</span>
+<span class="linenos"> 75</span>    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">))</span>
+<span class="linenos"> 76</span>    <span class="p">(</span><span class="n">line</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#4C72B0&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;$|\psi(x,t)|^2$&quot;</span><span class="p">)</span>
+<span class="linenos"> 77</span>    <span class="p">(</span><span class="n">vline</span><span class="p">,)</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;#888888&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;scaled $V(x)$&quot;</span><span class="p">)</span>
+<span class="linenos"> 78</span>
+<span class="linenos"> 79</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+<span class="linenos"> 80</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
+<span class="linenos"> 81</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
+<span class="linenos"> 82</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$|\psi|^2$&quot;</span><span class="p">)</span>
+<span class="linenos"> 83</span>    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Split-operator propagation (harmonic potential)&quot;</span><span class="p">)</span>
+<span class="linenos"> 84</span>    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="linenos"> 85</span>    <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;upper right&quot;</span><span class="p">)</span>
+<span class="linenos"> 86</span>
+<span class="linenos"> 87</span>    <span class="c1"># Initialize artists</span>
+<span class="linenos"> 88</span>    <span class="k">def</span><span class="w"> </span><span class="nf">init</span><span class="p">():</span>
+<span class="linenos"> 89</span>        <span class="n">line</span><span class="o">.</span><span class="n">set_data</span><span class="p">([],</span> <span class="p">[])</span>
+<span class="linenos"> 90</span>        <span class="n">vline</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mf">0.7</span> <span class="o">*</span> <span class="n">v_plot</span><span class="p">)</span>
+<span class="linenos"> 91</span>        <span class="k">return</span> <span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">vline</span><span class="p">)</span>
+<span class="linenos"> 92</span>
+<span class="linenos"> 93</span>    <span class="c1"># Evolve and store frames on the fly</span>
+<span class="linenos"> 94</span>    <span class="n">psi_state</span> <span class="o">=</span> <span class="n">psi</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="linenos"> 95</span>
+<span class="linenos"> 96</span>    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="n">frame_index</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="linenos"> 97</span>        <span class="k">nonlocal</span> <span class="n">psi_state</span>
+<span class="linenos"> 98</span>        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">stride</span><span class="p">):</span>
+<span class="linenos"> 99</span>            <span class="n">psi_state</span> <span class="o">=</span> <span class="n">split_operator_step</span><span class="p">(</span><span class="n">psi_state</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">dt</span><span class="p">,</span> <span class="n">hbar</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="linenos">100</span>
+<span class="linenos">101</span>        <span class="n">density</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">psi_state</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+<span class="linenos">102</span>        <span class="n">line</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">density</span><span class="p">)</span>
+<span class="linenos">103</span>        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Split-operator propagation (t=</span><span class="si">{</span><span class="n">frame_index</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">stride</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dt</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+<span class="linenos">104</span>        <span class="k">return</span> <span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">vline</span><span class="p">)</span>
+<span class="linenos">105</span>
+<span class="linenos">106</span>    <span class="n">frames</span> <span class="o">=</span> <span class="n">steps</span> <span class="o">//</span> <span class="n">stride</span>
+<span class="linenos">107</span>    <span class="n">anim</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">update</span><span class="p">,</span> <span class="n">init_func</span><span class="o">=</span><span class="n">init</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="n">frames</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">blit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="linenos">108</span>
+<span class="linenos">109</span>    <span class="n">out_path</span> <span class="o">=</span> <span class="n">IMG_DIR</span> <span class="o">/</span> <span class="s2">&quot;split_operator_wavepacket.gif&quot;</span>
+<span class="linenos">110</span>    <span class="k">try</span><span class="p">:</span>
+<span class="linenos">111</span>        <span class="n">writer</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">PillowWriter</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="linenos">112</span>        <span class="n">anim</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="n">writer</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">110</span><span class="p">)</span>
+<span class="linenos">113</span>    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+<span class="linenos">114</span>        <span class="c1"># Fallback: if Pillow isn&#39;t available, try ImageMagick.</span>
+<span class="linenos">115</span>        <span class="c1"># If this also fails, the exception will show what dependency is missing.</span>
+<span class="linenos">116</span>        <span class="n">writer</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">ImageMagickWriter</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="linenos">117</span>        <span class="n">anim</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">out_path</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="n">writer</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">110</span><span class="p">)</span>
+<span class="linenos">118</span>    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+<span class="linenos">119</span>
+<span class="linenos">120</span>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Wrote: </span><span class="si">{</span><span class="n">out_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="linenos">121</span>
+<span class="linenos">122</span>
+<span class="linenos">123</span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="linenos">124</span>    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Run it to regenerate assets (it writes into <code class="docutils literal notranslate"><span class="pre">docs/_static_files/images</span></code>).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="harmonic_oscillator.html" class="btn btn-neutral float-left" title="Quantum Harmonic Oscillator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../math/functions.html" class="btn btn-neutral float-right" title="Functions and Domains" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright J. V. V. Cassiano.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

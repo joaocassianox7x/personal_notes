@@ -411,7 +411,7 @@ Applications
 
 
 References and Further Reading
-==============================
+------------------------------
 
 - **Pearson, K.** (1901). On lines and planes of closest fit to systems of points in space. *Philosophical Magazine*, 2(11), 559–572. Classic foundational paper introducing PCA (then called "principal axes").
 

@@ -62,3 +62,12 @@ Figures
    :figwidth: 65%
 
    Sigmoid-shaped probability contours with a linear decision boundary.
+
+
+References and Further Reading
+------------------------------
+- **Cox, D. R.** (1958). The regression analysis of binary sequences. *Journal of the Royal Statistical Society: Series B*, 20(2), 215–242. Foundational paper introducing logistic regression for binary outcomes.
+- **Hosmer, D. W., Lemeshow, S., & Sturdivant, R. X.** (2013). *Applied Logistic Regression* (3rd ed.). Wiley. Practical guidance on modeling, diagnostics, and interpretation.
+- **Bishop, C. M.** (2006). *Pattern Recognition and Machine Learning*. Springer. Chapter 4 covers logistic regression, regularization, and Bayesian formulations.
+- **Murphy, K. P.** (2012). *Machine Learning: A Probabilistic Perspective*. MIT Press. Section 8.3 details logistic regression with optimization and calibration.
+- **Hastie, T., Tibshirani, R., & Friedman, J.** (2009). *The Elements of Statistical Learning* (2nd ed.). Springer. Chapter 4 discusses logistic regression and classification diagnostics.

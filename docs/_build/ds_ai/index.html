@@ -53,6 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../physics/force_fields.html">Force Fields : Water</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../physics/lammps.html">Molecular Dynamics with LAMMPS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../physics/harmonic_oscillator.html">Quantum Harmonic Oscillator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/split_operator.html">Split-Operator Method (Quantum Time Propagation)</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Math</span></p>
 <ul>
@@ -66,9 +67,9 @@
 <li class="toctree-l1"><a class="reference internal" href="linear_regression.html">Linear Regression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logistic_regression.html">Logistic Regression</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics for DS, ML, and AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="backpropagation.html">Backpropagation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pca.html">Principal Component Analysis (PCA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pca.html#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 
         </div>
@@ -113,6 +114,7 @@
 <li class="toctree-l2"><a class="reference internal" href="python.html#numerical-methods-in-pure-python">Numerical methods in pure Python</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python.html#scientific-python-stack">Scientific Python stack</a></li>
 <li class="toctree-l2"><a class="reference internal" href="python.html#python-updates-since-2020">Python updates since 2020</a></li>
+<li class="toctree-l2"><a class="reference internal" href="python.html#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="linear_regression.html">Linear Regression</a><ul>
@@ -126,6 +128,7 @@
 <li class="toctree-l2"><a class="reference internal" href="linear_regression.html#numpy-implementation">NumPy implementation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="linear_regression.html#visuals">Visuals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="linear_regression.html#reproducibility-of-figures">Reproducibility of figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linear_regression.html#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="logistic_regression.html">Logistic Regression</a><ul>
@@ -135,6 +138,7 @@
 <li class="toctree-l2"><a class="reference internal" href="logistic_regression.html#numpy-implementation-batch-gd">Numpy implementation (batch GD)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logistic_regression.html#notes">Notes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="logistic_regression.html#figures">Figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="logistic_regression.html#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="bias_variance.html">Bias - Variance Decomposition</a><ul>
@@ -161,6 +165,7 @@
 <li class="toctree-l2"><a class="reference internal" href="bias_variance.html#the-bayes-error-ultimate-lower-bound">The Bayes Error: Ultimate Lower Bound</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bias_variance.html#bias-variance-in-classification">Bias-Variance in Classification</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bias_variance.html#summary-table">Summary Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bias_variance.html#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="backpropagation.html">Backpropagation</a><ul>
@@ -173,6 +178,7 @@
 <li class="toctree-l2"><a class="reference internal" href="backpropagation.html#numpy-reference-implementation">NumPy reference implementation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="backpropagation.html#figures">Figures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="backpropagation.html#reproduce-the-figures">Reproduce the figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backpropagation.html#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="pca.html">Principal Component Analysis (PCA)</a><ul>
@@ -186,9 +192,28 @@
 <li class="toctree-l2"><a class="reference internal" href="pca.html#visualizations-and-interpretations">Visualizations and Interpretations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pca.html#common-pitfalls-and-best-practices">Common Pitfalls and Best Practices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pca.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pca.html#references-and-further-reading">References and Further Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics for DS, ML, and AI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#confusion-matrix-and-notation-binary">Confusion matrix and notation (binary)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#visual-layout-binary">Visual layout (binary)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#core-metrics-binary">Core metrics (binary)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#thresholds-and-decision-rules">Thresholds and decision rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#when-to-use-which">When to use which</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#multi-class-and-multi-label">Multi-class and multi-label</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#worked-example-binary">Worked example (binary)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#choosing-a-metric-for-common-scenarios">Choosing a metric for common scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#roc-vs-pr-intuition">ROC vs PR intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#prevalence-effect-on-precision">Prevalence effect on precision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#threshold-sweeps-practical">Threshold sweeps (practical)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#numpy-implementation">NumPy implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#attention-and-risks">Attention and risks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#practice-exercises">Practice exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </section>

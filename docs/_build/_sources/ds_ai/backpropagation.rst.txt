@@ -160,3 +160,12 @@ Run the generator script after edits:
    python docs/_static_files/codes/backpropagation.py
 
 It will write the PNGs under ``docs/_static_files/images`` and print the final loss for sanity checking.
+
+
+References and Further Reading
+------------------------------
+- **Rumelhart, D. E., Hinton, G. E., & Williams, R. J.** (1986). Learning representations by back-propagating errors. *Nature*, 323, 533–536. Seminal paper popularizing backpropagation for neural networks.
+- **LeCun, Y., Bottou, L., Orr, G. B., & Muller, K.-R.** (2012). Efficient backprop. In *Neural Networks: Tricks of the Trade* (2nd ed.). Springer. Practical guidance on initialization, optimization, and regularization.
+- **Goodfellow, I., Bengio, Y., & Courville, A.** (2016). *Deep Learning*. MIT Press. Chapters 6–8 cover backpropagation, optimization, and regularization in depth.
+- **Bishop, C. M.** (2006). *Pattern Recognition and Machine Learning*. Springer. Section 5.3 derives backpropagation from a probabilistic standpoint.
+- **Nielsen, M.** (2015). *Neural Networks and Deep Learning*. Online book; Chapter 2 provides an accessible backpropagation walkthrough with code.

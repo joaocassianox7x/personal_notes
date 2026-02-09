@@ -13,3 +13,4 @@ Data Science, Machine Learning, and AI
    backpropagation
    pca
    metrics
+   transformers

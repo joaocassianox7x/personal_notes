@@ -39,3 +39,4 @@ Personal Notes
    ds_ai/metrics
    ds_ai/backpropagation
    ds_ai/pca
+   ds_ai/transformers

@@ -47,6 +47,12 @@ extensions = [
     'sphinx_tabs.tabs'
 ]
 
+# MathJax: load the boldsymbol extension so \boldsymbol works in equations
+mathjax3_config = {
+    'loader': {'load': ['[tex]/boldsymbol']},
+    'tex': {'packages': {'[+]': ['boldsymbol']}},
+}
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 

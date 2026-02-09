@@ -1,0 +1,847 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Understanding Transformers &mdash; Personal Notes</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script>window.MathJax = {"loader": {"load": ["[tex]/boldsymbol"]}, "tex": {"packages": {"[+]": ["boldsymbol"]}}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Principal Component Analysis (PCA)" href="pca.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Personal Notes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../aboutme.html">About Me</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction of Material</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../physics/pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/computational_derivatives.html">Computational Derivatives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/force_fields.html">Force Fields : Water</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/lammps.html">Molecular Dynamics with LAMMPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/harmonic_oscillator.html">Quantum Harmonic Oscillator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../physics/split_operator.html">Split-Operator Method (Quantum Time Propagation)</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Math</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/residue_theorem.html">Residue Theorem</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="python.html">Python for Data Science</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_regression.html">Linear Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logistic_regression.html">Logistic Regression</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bias_variance.html">Bias - Variance Decomposition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics for DS, ML, and AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backpropagation.html">Backpropagation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pca.html">Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Understanding Transformers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#notation">Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#token-embedding">Token Embedding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#positional-encoding">Positional Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scaled-dot-product-attention">Scaled Dot-Product Attention</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#why-attention-works">Why Attention Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-head-attention">Multi-Head Attention</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#layer-normalization">Layer Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#residual-connections">Residual Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#position-wise-feed-forward-network">Position-wise Feed-Forward Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#full-transformer-block">Full Transformer Block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#causal-decoder-masking">Causal (Decoder) Masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parameter-count-analysis">Parameter Count Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#numpy-reference-implementation">NumPy Reference Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#training-walkthrough">Training walkthrough</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#computational-complexity">Computational Complexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#figures">Figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reproduce-the-figures">Reproduce the figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Personal Notes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Understanding Transformers</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/ds_ai/transformers.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="understanding-transformers">
+<h1>Understanding Transformers<a class="headerlink" href="#understanding-transformers" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>Sequence modeling — translating a sentence, predicting the next word, summarizing a document — requires a model that can capture dependencies between tokens that may be arbitrarily far apart. Before 2017 the dominant paradigm was <strong>recurrent</strong>: RNNs, LSTMs, and GRUs process a sequence one step at a time, threading information through a hidden state <span class="math notranslate nohighlight">\(h_t\)</span> that depends on <span class="math notranslate nohighlight">\(h_{t-1}\)</span>. This design has three fundamental limitations:</p>
+<ol class="arabic simple">
+<li><p><strong>Sequential bottleneck.</strong> Because <span class="math notranslate nohighlight">\(h_t\)</span> is a function of <span class="math notranslate nohighlight">\(h_{t-1}\)</span>, computation cannot be parallelized across time steps, making training slow on modern GPU hardware that thrives on large matrix multiplies.</p></li>
+<li><p><strong>Lossy long-range memory.</strong> Information about early tokens must survive a chain of <span class="math notranslate nohighlight">\(n-1\)</span> nonlinear transformations to reach the end of the sequence. In practice, gradients either vanish or explode, and the effective memory window is much shorter than the sequence length.</p></li>
+<li><p><strong>Fixed-size state.</strong> The entire history is compressed into a single vector <span class="math notranslate nohighlight">\(h_t \in \mathbb{R}^d\)</span>. No matter how much context the model has seen, it must squeeze it into the same <span class="math notranslate nohighlight">\(d\)</span> numbers — an information bottleneck that worsens with longer inputs.</p></li>
+</ol>
+<p><strong>Transformers</strong> (Vaswani et al., 2017) replace recurrence entirely with a mechanism called <strong>self-attention</strong>. The core idea is deceptively simple: instead of processing tokens one by one, let every token look at every other token <em>simultaneously</em>, and learn which relationships matter. Concretely, each token computes a weighted average over all tokens in the sequence, where the weights are determined by learned pairwise compatibility scores.</p>
+<p>This single change unlocks several advantages:</p>
+<ul class="simple">
+<li><p><strong>Full parallelism.</strong> All pairwise interactions are computed via matrix multiplication, removing the sequential dependency and enabling efficient GPU utilization.</p></li>
+<li><p><strong>Constant path length.</strong> Any two tokens in the sequence are connected by a single attention step (<span class="math notranslate nohighlight">\(O(1)\)</span> path length), regardless of how far apart they are. Compare this to the <span class="math notranslate nohighlight">\(O(n)\)</span> path through an RNN’s hidden states.</p></li>
+<li><p><strong>Dynamic, content-based connectivity.</strong> The attention weights are a function of the <em>input itself</em> — different inputs produce different connectivity patterns. This is fundamentally more flexible than the fixed filter banks of CNNs or the static transition matrix of an RNN.</p></li>
+<li><p><strong>Composable representations.</strong> Stacking multiple attention layers lets the model build increasingly abstract representations: early layers capture local syntax, later layers capture long-range semantics and reasoning.</p></li>
+</ul>
+<p>Since the original “Attention Is All You Need” paper, the transformer has become the backbone of virtually all state-of-the-art models in NLP (BERT, GPT, T5), computer vision (ViT, DINO), speech (Whisper), protein folding (AlphaFold 2), and beyond. Understanding its internals — <em>why</em> attention works, what each layer computes, and how gradients flow — is essential to working effectively with modern deep learning.</p>
+<p>The rest of this document builds the transformer from first principles: we derive each component mathematically, explain its role, and provide a complete NumPy implementation that you can train on a toy task to see every piece in action.</p>
+</section>
+<section id="notation">
+<h2>Notation<a class="headerlink" href="#notation" title="Link to this heading"></a></h2>
+<p>Throughout this document:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n\)</span> = sequence length (number of tokens)</p></li>
+<li><p><span class="math notranslate nohighlight">\(d_{\text{model}}\)</span> = model (embedding) dimension</p></li>
+<li><p><span class="math notranslate nohighlight">\(d_k\)</span> = dimension of keys and queries per head</p></li>
+<li><p><span class="math notranslate nohighlight">\(d_v\)</span> = dimension of values per head</p></li>
+<li><p><span class="math notranslate nohighlight">\(h\)</span> = number of attention heads</p></li>
+<li><p><span class="math notranslate nohighlight">\(d_{\text{ff}}\)</span> = feed-forward inner dimension</p></li>
+<li><p><span class="math notranslate nohighlight">\(V\)</span> = vocabulary size</p></li>
+</ul>
+</section>
+<section id="token-embedding">
+<h2>Token Embedding<a class="headerlink" href="#token-embedding" title="Link to this heading"></a></h2>
+<p>Each discrete token <span class="math notranslate nohighlight">\(t_i \in \{1, \dots, V\}\)</span> is mapped to a dense vector via a learned embedding matrix:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{E} \in \mathbb{R}^{V \times d_{\text{model}}}\]</div>
+<p>The embedding for position <span class="math notranslate nohighlight">\(i\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{x}_i = \mathbf{E}[t_i, :] \in \mathbb{R}^{d_{\text{model}}}\]</div>
+<p>Stacking all positions gives the input matrix <span class="math notranslate nohighlight">\(\mathbf{X} \in \mathbb{R}^{n \times d_{\text{model}}}\)</span>.</p>
+</section>
+<section id="positional-encoding">
+<h2>Positional Encoding<a class="headerlink" href="#positional-encoding" title="Link to this heading"></a></h2>
+<p>Since self-attention is permutation-equivariant (it has no notion of token order), we inject positional information. The original transformer uses fixed sinusoidal encodings:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{PE}(p, 2j)   &amp;= \sin\!\left(\frac{p}{10000^{\,2j / d_{\text{model}}}}\right) \\
+\text{PE}(p, 2j+1) &amp;= \cos\!\left(\frac{p}{10000^{\,2j / d_{\text{model}}}}\right)\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(p\)</span> is the position index and <span class="math notranslate nohighlight">\(j\)</span> the dimension index.</p>
+<p><strong>Why sinusoidal?</strong></p>
+<ul class="simple">
+<li><p>For any fixed offset <span class="math notranslate nohighlight">\(k\)</span>, <span class="math notranslate nohighlight">\(\text{PE}(p+k)\)</span> can be expressed as a linear function of <span class="math notranslate nohighlight">\(\text{PE}(p)\)</span>, which lets the model learn relative positions easily.</p></li>
+<li><p>The encodings have bounded magnitude, preventing scale imbalance with token embeddings.</p></li>
+</ul>
+<p>The combined input to the first transformer layer is:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{X}^{(0)} = \mathbf{X}_{\text{embed}} + \mathbf{PE} \in \mathbb{R}^{n \times d_{\text{model}}}\]</div>
+<figure class="align-center" id="id1" style="width: 75%">
+<img alt="Sinusoidal positional encoding heatmap" src="../_images/transformer_positional_encoding.png" />
+<figcaption>
+<p><span class="caption-text">Heatmap of sinusoidal positional encoding for positions <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(63\)</span> across <span class="math notranslate nohighlight">\(d_{\text{model}}=64\)</span> dimensions. Low-frequency sinusoids encode coarse position; high-frequency ones encode fine position.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="scaled-dot-product-attention">
+<h2>Scaled Dot-Product Attention<a class="headerlink" href="#scaled-dot-product-attention" title="Link to this heading"></a></h2>
+<p>The fundamental building block. Given a set of queries, keys, and values:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{Q} \in \mathbb{R}^{n \times d_k}, \quad
+\mathbf{K} \in \mathbb{R}^{n \times d_k}, \quad
+\mathbf{V} \in \mathbb{R}^{n \times d_v}\]</div>
+<p>the attention output is:</p>
+<div class="math notranslate nohighlight">
+\[\text{Attention}(\mathbf{Q}, \mathbf{K}, \mathbf{V}) = \text{softmax}\!\left(\frac{\mathbf{Q}\mathbf{K}^T}{\sqrt{d_k}}\right) \mathbf{V}\]</div>
+<p><strong>Step by step:</strong></p>
+<ol class="arabic">
+<li><p><strong>Score matrix:</strong> Compute pairwise similarity scores:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{S} = \mathbf{Q}\mathbf{K}^T \in \mathbb{R}^{n \times n}\]</div>
+<p>Element <span class="math notranslate nohighlight">\(S_{ij}\)</span> measures how much query <span class="math notranslate nohighlight">\(i\)</span> should attend to key <span class="math notranslate nohighlight">\(j\)</span>.</p>
+</li>
+<li><p><strong>Scaling:</strong> Divide by <span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span> to keep the variance of the scores in a stable range. Without scaling, when <span class="math notranslate nohighlight">\(d_k\)</span> is large, the dot products grow in magnitude, pushing softmax into saturated regions with near-zero gradients.</p>
+<p>To see why: if entries of <span class="math notranslate nohighlight">\(\mathbf{Q}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{K}\)</span> have zero mean and unit variance, then <span class="math notranslate nohighlight">\(\text{Var}(q^T k) = d_k\)</span>. Dividing by <span class="math notranslate nohighlight">\(\sqrt{d_k}\)</span> normalizes the variance back to <span class="math notranslate nohighlight">\(1\)</span>.</p>
+</li>
+<li><p><strong>Softmax:</strong> Convert scores to a probability distribution (each row sums to 1):</p>
+<div class="math notranslate nohighlight">
+\[\alpha_{ij} = \frac{\exp(S_{ij}/\sqrt{d_k})}{\sum_{l=1}^n \exp(S_{il}/\sqrt{d_k})}\]</div>
+<p>The resulting attention weight matrix <span class="math notranslate nohighlight">\(\mathbf{A} \in \mathbb{R}^{n \times n}\)</span> has <span class="math notranslate nohighlight">\(\mathbf{A}_{ij} = \alpha_{ij}\)</span>.</p>
+</li>
+<li><p><strong>Weighted sum:</strong> The output for position <span class="math notranslate nohighlight">\(i\)</span> is a weighted sum of all value vectors:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{o}_i = \sum_{j=1}^n \alpha_{ij} \, \mathbf{v}_j\]</div>
+</li>
+</ol>
+<figure class="align-center" id="id2" style="width: 65%">
+<img alt="Attention weight matrix heatmap" src="../_images/transformer_attention_matrix.png" />
+<figcaption>
+<p><span class="caption-text">Example attention weight matrix for a short sequence. Each row is a probability distribution over keys. Bright cells indicate strong attention.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="why-attention-works">
+<h2>Why Attention Works<a class="headerlink" href="#why-attention-works" title="Link to this heading"></a></h2>
+<p><strong>1. Content-based addressing.</strong> Unlike RNNs that must compress everything into a fixed-size hidden state, attention allows each position to directly query every other position and selectively extract relevant information. The model learns <em>what</em> to attend to through the <span class="math notranslate nohighlight">\(\mathbf{Q}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{K}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> projections.</p>
+<p><strong>2. No information bottleneck.</strong> In an RNN, information about token <span class="math notranslate nohighlight">\(t_1\)</span> reaching token <span class="math notranslate nohighlight">\(t_n\)</span> must pass through <span class="math notranslate nohighlight">\(n-1\)</span> hidden states, each applied as a lossy compression. In self-attention, the path length is <span class="math notranslate nohighlight">\(O(1)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\text{RNN: } t_1 \to h_1 \to h_2 \to \cdots \to h_n \qquad (O(n) \text{ path length})\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Self-Attention: } t_1 \to t_n \qquad (O(1) \text{ via attention weight } \alpha_{n,1})\]</div>
+<p><strong>3. Dynamic connectivity.</strong> The attention weights <span class="math notranslate nohighlight">\(\alpha_{ij}\)</span> are input-dependent: different inputs produce different connectivity patterns. This makes transformers far more flexible than fixed convolution filters.</p>
+<p><strong>4. Parallelism.</strong> All attention scores can be computed simultaneously via matrix multiplication, unlike the inherently sequential RNN updates.</p>
+<p><strong>5. Gradient flow.</strong> Short, direct paths between any pair of positions provide strong gradient signal during backpropagation, alleviating the vanishing gradient problem that plagues deep RNNs.</p>
+</section>
+<section id="multi-head-attention">
+<h2>Multi-Head Attention<a class="headerlink" href="#multi-head-attention" title="Link to this heading"></a></h2>
+<p>A single attention head captures one type of relationship. Multi-head attention runs <span class="math notranslate nohighlight">\(h\)</span> attention heads in parallel, each with its own learned projections, and concatenates the results:</p>
+<div class="math notranslate nohighlight">
+\[\text{head}_i = \text{Attention}(\mathbf{X}\mathbf{W}_i^Q, \; \mathbf{X}\mathbf{W}_i^K, \; \mathbf{X}\mathbf{W}_i^V)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{W}_i^Q, \mathbf{W}_i^K \in \mathbb{R}^{d_{\text{model}} \times d_k}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{W}_i^V \in \mathbb{R}^{d_{\text{model}} \times d_v}\)</span>.</p>
+<p>Typically <span class="math notranslate nohighlight">\(d_k = d_v = d_{\text{model}} / h\)</span>, so the total computation cost is similar to a single head with full dimensionality.</p>
+<p><strong>Concatenation and projection:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{MultiHead}(\mathbf{X}) = \text{Concat}(\text{head}_1, \ldots, \text{head}_h) \, \mathbf{W}^O\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{W}^O \in \mathbb{R}^{hd_v \times d_{\text{model}}}\)</span>.</p>
+<p><strong>Why multiple heads?</strong> Different heads can learn to attend to different aspects: syntactic relationships in one head, semantic similarity in another, positional proximity in a third, etc.</p>
+<figure class="align-center" id="id3" style="width: 75%">
+<img alt="Multi-head attention diagram showing parallel heads" src="../_images/transformer_multihead_attention.png" />
+<figcaption>
+<p><span class="caption-text">Multi-head attention: each head learns a different projection and attention pattern. Outputs are concatenated and linearly projected.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="layer-normalization">
+<h2>Layer Normalization<a class="headerlink" href="#layer-normalization" title="Link to this heading"></a></h2>
+<p>After each sub-layer (attention or feed-forward), the transformer applies <strong>layer normalization</strong>:</p>
+<div class="math notranslate nohighlight">
+\[\text{LayerNorm}(\mathbf{x}) = \frac{\mathbf{x} - \mu}{\sqrt{\sigma^2 + \epsilon}} \odot \boldsymbol\gamma + \boldsymbol\beta\]</div>
+<p>where, for a single vector <span class="math notranslate nohighlight">\(\mathbf{x} \in \mathbb{R}^{d_{\text{model}}}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\mu = \frac{1}{d_{\text{model}}} \sum_{j=1}^{d_{\text{model}}} x_j, \qquad
+\sigma^2 = \frac{1}{d_{\text{model}}} \sum_{j=1}^{d_{\text{model}}} (x_j - \mu)^2\]</div>
+<p>and <span class="math notranslate nohighlight">\(\boldsymbol\gamma, \boldsymbol\beta \in \mathbb{R}^{d_{\text{model}}}\)</span> are learned scale and shift parameters.</p>
+<p>Layer normalization stabilizes training by normalizing activations across the feature dimension for each token independently, ensuring that the mean and variance remain controlled as the network gets deeper.</p>
+</section>
+<section id="residual-connections">
+<h2>Residual Connections<a class="headerlink" href="#residual-connections" title="Link to this heading"></a></h2>
+<p>Each sub-layer output is combined with its input via a residual (skip) connection:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{X}^{\text{out}} = \text{LayerNorm}(\mathbf{X} + \text{SubLayer}(\mathbf{X}))\]</div>
+<p>Residual connections serve two purposes:</p>
+<ol class="arabic simple">
+<li><p><strong>Gradient highway:</strong> Gradients flow directly through the addition, bypassing the sub-layer. This prevents vanishing gradients in deep networks.</p></li>
+<li><p><strong>Easier optimization:</strong> The sub-layer only needs to learn a correction <span class="math notranslate nohighlight">\(\Delta \mathbf{X} = \text{SubLayer}(\mathbf{X})\)</span> rather than the full transformation.</p></li>
+</ol>
+</section>
+<section id="position-wise-feed-forward-network">
+<h2>Position-wise Feed-Forward Network<a class="headerlink" href="#position-wise-feed-forward-network" title="Link to this heading"></a></h2>
+<p>After the attention sub-layer, each position independently passes through a two-layer MLP:</p>
+<div class="math notranslate nohighlight">
+\[\text{FFN}(\mathbf{x}) = \max(0, \; \mathbf{x}\mathbf{W}_1 + \mathbf{b}_1)\,\mathbf{W}_2 + \mathbf{b}_2\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{W}_1 \in \mathbb{R}^{d_{\text{model}} \times d_{\text{ff}}}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{b}_1 \in \mathbb{R}^{d_{\text{ff}}}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{W}_2 \in \mathbb{R}^{d_{\text{ff}} \times d_{\text{model}}}\)</span>, <span class="math notranslate nohighlight">\(\mathbf{b}_2 \in \mathbb{R}^{d_{\text{model}}}\)</span></p></li>
+<li><p>ReLU activation between layers</p></li>
+</ul>
+<p>Typically <span class="math notranslate nohighlight">\(d_{\text{ff}} = 4 \, d_{\text{model}}\)</span>. The expansion-contraction structure lets the network learn rich nonlinear transformations at each position.</p>
+<p><strong>“Position-wise”</strong> means the same weights are applied at every position (like a 1×1 convolution), but there is no interaction between positions — that was already handled by attention.</p>
+</section>
+<section id="full-transformer-block">
+<h2>Full Transformer Block<a class="headerlink" href="#full-transformer-block" title="Link to this heading"></a></h2>
+<p>A single transformer encoder block chains these components:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{H}_1 &amp;= \text{LayerNorm}\!\left(\mathbf{X} + \text{MultiHead}(\mathbf{X})\right) \\
+\mathbf{H}_2 &amp;= \text{LayerNorm}\!\left(\mathbf{H}_1 + \text{FFN}(\mathbf{H}_1)\right)\end{split}\]</div>
+<p>Stacking <span class="math notranslate nohighlight">\(L\)</span> such blocks yields the full encoder:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{X}^{(0)} &amp;= \text{Embed}(\text{tokens}) + \text{PE} \\
+\mathbf{X}^{(l)} &amp;= \text{TransformerBlock}^{(l)}(\mathbf{X}^{(l-1)}), \quad l = 1, \ldots, L\end{split}\]</div>
+<figure class="align-center" id="id4" style="width: 55%">
+<img alt="Transformer encoder block architecture" src="../_images/transformer_block_diagram.png" />
+<figcaption>
+<p><span class="caption-text">Architecture of a single transformer encoder block: multi-head self-attention → Add &amp; LayerNorm → feed-forward → Add &amp; LayerNorm.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="causal-decoder-masking">
+<h2>Causal (Decoder) Masking<a class="headerlink" href="#causal-decoder-masking" title="Link to this heading"></a></h2>
+<p>For autoregressive tasks (language modeling), position <span class="math notranslate nohighlight">\(i\)</span> must only attend to positions <span class="math notranslate nohighlight">\(\leq i\)</span>. This is enforced via a causal mask applied before softmax:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{M}_{ij} =
+\begin{cases}
+0 &amp; \text{if } j \leq i \\
+-\infty &amp; \text{if } j &gt; i
+\end{cases}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Attention}_{\text{causal}} = \text{softmax}\!\left(\frac{\mathbf{Q}\mathbf{K}^T + \mathbf{M}}{\sqrt{d_k}}\right) \mathbf{V}\]</div>
+<p>Setting entries to <span class="math notranslate nohighlight">\(-\infty\)</span> makes the corresponding softmax outputs exactly zero, preventing information leakage from future tokens.</p>
+</section>
+<section id="parameter-count-analysis">
+<h2>Parameter Count Analysis<a class="headerlink" href="#parameter-count-analysis" title="Link to this heading"></a></h2>
+<p>For a single transformer block with <span class="math notranslate nohighlight">\(h\)</span> heads:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 35.0%" />
+<col style="width: 35.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Component</p></th>
+<th class="head"><p>Parameters</p></th>
+<th class="head"><p>Count</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mathbf{W}^Q, \mathbf{W}^K, \mathbf{W}^V\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(3 \times d_{\text{model}}^2\)</span> (split across heads)</p></td>
+<td><p><span class="math notranslate nohighlight">\(3 d_{\text{model}}^2\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mathbf{W}^O\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(d_{\text{model}} \times d_{\text{model}}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(d_{\text{model}}^2\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>FFN <span class="math notranslate nohighlight">\(\mathbf{W}_1, \mathbf{W}_2\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(2 \times d_{\text{model}} \times d_{\text{ff}}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(8 d_{\text{model}}^2\)</span> (if <span class="math notranslate nohighlight">\(d_{\text{ff}}=4d_{\text{model}}\)</span>)</p></td>
+</tr>
+<tr class="row-odd"><td><p>LayerNorm (×2)</p></td>
+<td><p><span class="math notranslate nohighlight">\(2 \times 2 d_{\text{model}}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(4 d_{\text{model}}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Biases</p></td>
+<td><p><span class="math notranslate nohighlight">\(d_{\text{model}} + d_{\text{ff}} + d_{\text{model}}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\approx 2d_{\text{model}} + d_{\text{ff}}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>Total per block</strong></p></td>
+<td></td>
+<td><p><span class="math notranslate nohighlight">\(\approx 12 d_{\text{model}}^2\)</span></p></td>
+</tr>
+</tbody>
+</table>
+<p>For <span class="math notranslate nohighlight">\(L\)</span> blocks: <span class="math notranslate nohighlight">\(\sim 12 L \, d_{\text{model}}^2\)</span> parameters (excluding embeddings).</p>
+</section>
+<section id="numpy-reference-implementation">
+<h2>NumPy Reference Implementation<a class="headerlink" href="#numpy-reference-implementation" title="Link to this heading"></a></h2>
+<p>A minimal decoder-only (GPT-style) transformer trained on a <strong>sequence-reversal task</strong>: given tokens <code class="docutils literal notranslate"><span class="pre">[a,</span> <span class="pre">b,</span> <span class="pre">c,</span> <span class="pre">d]</span></code>, predict the reversed sequence <code class="docutils literal notranslate"><span class="pre">[d,</span> <span class="pre">c,</span> <span class="pre">b,</span> <span class="pre">a]</span></code>. This exercises all core components — the model must learn position-dependent attention patterns to reverse the ordering.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># ─── Utilities ──────────────────────────────────────────────────────</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">softmax</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Numerically stable softmax.&quot;&quot;&quot;</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">e</span> <span class="o">/</span> <span class="n">e</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">relu</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">relu_grad</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">layer_norm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Layer normalization over last axis.&quot;&quot;&quot;</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">var</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">x_hat</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">x_hat</span> <span class="o">+</span> <span class="n">beta</span><span class="p">,</span> <span class="n">x_hat</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">var</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cross_entropy_loss</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cross-entropy for integer targets. logits: (n, V), targets: (n,).&quot;&quot;&quot;</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span><span class="n">logits</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">log_probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">targets</span><span class="p">]</span> <span class="o">+</span> <span class="mf">1e-9</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="o">-</span><span class="n">log_probs</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">probs</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">grad</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">targets</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="n">grad</span> <span class="o">/=</span> <span class="n">n</span>
+    <span class="k">return</span> <span class="n">loss</span><span class="p">,</span> <span class="n">grad</span>
+
+<span class="c1"># ─── Positional Encoding ────────────────────────────────────────────</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">sinusoidal_pe</span><span class="p">(</span><span class="n">max_len</span><span class="p">,</span> <span class="n">d_model</span><span class="p">):</span>
+    <span class="n">pe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">max_len</span><span class="p">,</span> <span class="n">d_model</span><span class="p">))</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">max_len</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+    <span class="n">div</span> <span class="o">=</span> <span class="mf">10000.0</span> <span class="o">**</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">d_model</span><span class="p">)[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">d_model</span><span class="p">)</span>
+    <span class="n">pe</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">pos</span> <span class="o">/</span> <span class="n">div</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">::</span><span class="mi">2</span><span class="p">])</span>
+    <span class="n">pe</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">pos</span> <span class="o">/</span> <span class="n">div</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">pe</span>
+
+<span class="c1"># ─── Single-Head Attention (forward + backward) ─────────────────────</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">attention_forward</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Scaled dot-product attention.</span>
+<span class="sd">    Q, K: (n, d_k)  V: (n, d_v)</span>
+<span class="sd">    Returns: output (n, d_v), cache</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d_k</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">Q</span> <span class="o">@</span> <span class="n">K</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d_k</span><span class="p">)</span>  <span class="c1"># (n, n)</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">scores</span> <span class="o">+</span> <span class="n">mask</span>
+    <span class="n">attn</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>             <span class="c1"># (n, n)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">attn</span> <span class="o">@</span> <span class="n">V</span>                     <span class="c1"># (n, d_v)</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">attn</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">cache</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">attention_backward</span><span class="p">(</span><span class="n">d_out</span><span class="p">,</span> <span class="n">cache</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Backward pass for scaled dot-product attention.&quot;&quot;&quot;</span>
+    <span class="n">Q</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">V</span><span class="p">,</span> <span class="n">attn</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">cache</span>
+    <span class="n">d_k</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># Gradient through attn @ V</span>
+    <span class="n">d_attn</span> <span class="o">=</span> <span class="n">d_out</span> <span class="o">@</span> <span class="n">V</span><span class="o">.</span><span class="n">T</span>            <span class="c1"># (n, n)</span>
+    <span class="n">d_V</span> <span class="o">=</span> <span class="n">attn</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">d_out</span>            <span class="c1"># (n, d_v)</span>
+    <span class="c1"># Gradient through softmax</span>
+    <span class="n">d_scores</span> <span class="o">=</span> <span class="n">attn</span> <span class="o">*</span> <span class="p">(</span><span class="n">d_attn</span> <span class="o">-</span> <span class="p">(</span><span class="n">d_attn</span> <span class="o">*</span> <span class="n">attn</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+    <span class="n">d_scores</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">d_k</span><span class="p">)</span>
+    <span class="c1"># Gradient through Q @ K.T</span>
+    <span class="n">d_Q</span> <span class="o">=</span> <span class="n">d_scores</span> <span class="o">@</span> <span class="n">K</span>              <span class="c1"># (n, d_k)</span>
+    <span class="n">d_K</span> <span class="o">=</span> <span class="n">d_scores</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Q</span>            <span class="c1"># (n, d_k)</span>
+    <span class="k">return</span> <span class="n">d_Q</span><span class="p">,</span> <span class="n">d_K</span><span class="p">,</span> <span class="n">d_V</span>
+
+<span class="c1"># ─── Multi-Head Attention ───────────────────────────────────────────</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">multihead_attention_forward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">n_heads</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    X: (n, d_model)</span>
+<span class="sd">    params: dict with Wq, Wk, Wv, Wo (and biases bq, bk, bv, bo)</span>
+<span class="sd">    Returns: output (n, d_model), cache</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Wq</span><span class="p">,</span> <span class="n">Wk</span><span class="p">,</span> <span class="n">Wv</span><span class="p">,</span> <span class="n">Wo</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;Wq&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;Wk&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;Wv&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;Wo&#39;</span><span class="p">]</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">d_model</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">d_k</span> <span class="o">=</span> <span class="n">d_model</span> <span class="o">//</span> <span class="n">n_heads</span>
+
+    <span class="n">Q_all</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">Wq</span>   <span class="c1"># (n, d_model)</span>
+    <span class="n">K_all</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">Wk</span>
+    <span class="n">V_all</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">Wv</span>
+
+    <span class="c1"># Split into heads: reshape to (n_heads, n, d_k)</span>
+    <span class="n">Q_heads</span> <span class="o">=</span> <span class="n">Q_all</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n_heads</span><span class="p">,</span> <span class="n">d_k</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">K_heads</span> <span class="o">=</span> <span class="n">K_all</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n_heads</span><span class="p">,</span> <span class="n">d_k</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">V_heads</span> <span class="o">=</span> <span class="n">V_all</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n_heads</span><span class="p">,</span> <span class="n">d_k</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">head_outs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">head_caches</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_heads</span><span class="p">):</span>
+        <span class="n">out_i</span><span class="p">,</span> <span class="n">cache_i</span> <span class="o">=</span> <span class="n">attention_forward</span><span class="p">(</span><span class="n">Q_heads</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">K_heads</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">V_heads</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">mask</span><span class="p">)</span>
+        <span class="n">head_outs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">out_i</span><span class="p">)</span>
+        <span class="n">head_caches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cache_i</span><span class="p">)</span>
+
+    <span class="n">concat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">head_outs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># (n, d_model)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">concat</span> <span class="o">@</span> <span class="n">Wo</span>                          <span class="c1"># (n, d_model)</span>
+
+    <span class="n">cache</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Q_all</span><span class="p">,</span> <span class="n">K_all</span><span class="p">,</span> <span class="n">V_all</span><span class="p">,</span> <span class="n">concat</span><span class="p">,</span> <span class="n">head_caches</span><span class="p">,</span> <span class="n">n_heads</span><span class="p">,</span> <span class="n">d_k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output</span><span class="p">,</span> <span class="n">cache</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">multihead_attention_backward</span><span class="p">(</span><span class="n">d_out</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="n">Wo</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;Wo&#39;</span><span class="p">]</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">Q_all</span><span class="p">,</span> <span class="n">K_all</span><span class="p">,</span> <span class="n">V_all</span><span class="p">,</span> <span class="n">concat</span><span class="p">,</span> <span class="n">head_caches</span><span class="p">,</span> <span class="n">n_heads</span><span class="p">,</span> <span class="n">d_k</span> <span class="o">=</span> <span class="n">cache</span>
+    <span class="n">Wq</span><span class="p">,</span> <span class="n">Wk</span><span class="p">,</span> <span class="n">Wv</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;Wq&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;Wk&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;Wv&#39;</span><span class="p">]</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">d_model</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="c1"># Gradient through output projection</span>
+    <span class="n">d_concat</span> <span class="o">=</span> <span class="n">d_out</span> <span class="o">@</span> <span class="n">Wo</span><span class="o">.</span><span class="n">T</span>        <span class="c1"># (n, d_model)</span>
+    <span class="n">d_Wo</span> <span class="o">=</span> <span class="n">concat</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">d_out</span>        <span class="c1"># (d_model, d_model)</span>
+
+    <span class="c1"># Split d_concat into heads</span>
+    <span class="n">d_heads</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">d_concat</span><span class="p">,</span> <span class="n">n_heads</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># list of (n, d_k)</span>
+
+    <span class="n">d_Q_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">Q_all</span><span class="p">)</span>
+    <span class="n">d_K_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">K_all</span><span class="p">)</span>
+    <span class="n">d_V_all</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">V_all</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_heads</span><span class="p">):</span>
+        <span class="n">d_Qi</span><span class="p">,</span> <span class="n">d_Ki</span><span class="p">,</span> <span class="n">d_Vi</span> <span class="o">=</span> <span class="n">attention_backward</span><span class="p">(</span><span class="n">d_heads</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">head_caches</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">d_Q_all</span><span class="p">[:,</span> <span class="n">i</span><span class="o">*</span><span class="n">d_k</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">d_k</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_Qi</span>
+        <span class="n">d_K_all</span><span class="p">[:,</span> <span class="n">i</span><span class="o">*</span><span class="n">d_k</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">d_k</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_Ki</span>
+        <span class="n">d_V_all</span><span class="p">[:,</span> <span class="n">i</span><span class="o">*</span><span class="n">d_k</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">d_k</span><span class="p">]</span> <span class="o">=</span> <span class="n">d_Vi</span>
+
+    <span class="n">d_Wq</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">d_Q_all</span>
+    <span class="n">d_Wk</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">d_K_all</span>
+    <span class="n">d_Wv</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">d_V_all</span>
+    <span class="n">d_X</span> <span class="o">=</span> <span class="n">d_Q_all</span> <span class="o">@</span> <span class="n">Wq</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">d_K_all</span> <span class="o">@</span> <span class="n">Wk</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">d_V_all</span> <span class="o">@</span> <span class="n">Wv</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="n">grads</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Wq&#39;</span><span class="p">:</span> <span class="n">d_Wq</span><span class="p">,</span> <span class="s1">&#39;Wk&#39;</span><span class="p">:</span> <span class="n">d_Wk</span><span class="p">,</span> <span class="s1">&#39;Wv&#39;</span><span class="p">:</span> <span class="n">d_Wv</span><span class="p">,</span> <span class="s1">&#39;Wo&#39;</span><span class="p">:</span> <span class="n">d_Wo</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">d_X</span><span class="p">,</span> <span class="n">grads</span>
+
+<span class="c1"># ─── Feed-Forward Network ──────────────────────────────────────────</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ffn_forward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="n">W1</span><span class="p">,</span> <span class="n">b1</span><span class="p">,</span> <span class="n">W2</span><span class="p">,</span> <span class="n">b2</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;W1&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;b1&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;W2&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;b2&#39;</span><span class="p">]</span>
+    <span class="n">z1</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">W1</span> <span class="o">+</span> <span class="n">b1</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">z1</span><span class="p">)</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="n">a1</span> <span class="o">@</span> <span class="n">W2</span> <span class="o">+</span> <span class="n">b2</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">a1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">z2</span><span class="p">,</span> <span class="n">cache</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ffn_backward</span><span class="p">(</span><span class="n">d_out</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">cache</span>
+    <span class="n">W1</span><span class="p">,</span> <span class="n">W2</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;W1&#39;</span><span class="p">],</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;W2&#39;</span><span class="p">]</span>
+    <span class="n">d_a1</span> <span class="o">=</span> <span class="n">d_out</span> <span class="o">@</span> <span class="n">W2</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">d_z1</span> <span class="o">=</span> <span class="n">d_a1</span> <span class="o">*</span> <span class="n">relu_grad</span><span class="p">(</span><span class="n">z1</span><span class="p">)</span>
+    <span class="n">d_W2</span> <span class="o">=</span> <span class="n">a1</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">d_out</span>
+    <span class="n">d_b2</span> <span class="o">=</span> <span class="n">d_out</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">d_W1</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">d_z1</span>
+    <span class="n">d_b1</span> <span class="o">=</span> <span class="n">d_z1</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">d_X</span> <span class="o">=</span> <span class="n">d_z1</span> <span class="o">@</span> <span class="n">W1</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">grads</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;W1&#39;</span><span class="p">:</span> <span class="n">d_W1</span><span class="p">,</span> <span class="s1">&#39;b1&#39;</span><span class="p">:</span> <span class="n">d_b1</span><span class="p">,</span> <span class="s1">&#39;W2&#39;</span><span class="p">:</span> <span class="n">d_W2</span><span class="p">,</span> <span class="s1">&#39;b2&#39;</span><span class="p">:</span> <span class="n">d_b2</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">d_X</span><span class="p">,</span> <span class="n">grads</span>
+
+<span class="c1"># ─── Layer Normalization (forward + backward) ───────────────────────</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ln_forward</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+    <span class="n">mu</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">var</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">x_hat</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">x_hat</span> <span class="o">+</span> <span class="n">beta</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_hat</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span> <span class="o">+</span> <span class="n">eps</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">cache</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ln_backward</span><span class="p">(</span><span class="n">d_out</span><span class="p">,</span> <span class="n">cache</span><span class="p">):</span>
+    <span class="n">x_hat</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">std</span> <span class="o">=</span> <span class="n">cache</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">x_hat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">d_x_hat</span> <span class="o">=</span> <span class="n">d_out</span> <span class="o">*</span> <span class="n">gamma</span>
+    <span class="n">d_gamma</span> <span class="o">=</span> <span class="p">(</span><span class="n">d_out</span> <span class="o">*</span> <span class="n">x_hat</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">d_beta</span> <span class="o">=</span> <span class="n">d_out</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">d_x</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">d</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span> <span class="o">*</span> <span class="p">(</span>
+        <span class="n">d</span> <span class="o">*</span> <span class="n">d_x_hat</span> <span class="o">-</span> <span class="n">d_x_hat</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="o">-</span> <span class="n">x_hat</span> <span class="o">*</span> <span class="p">(</span><span class="n">d_x_hat</span> <span class="o">*</span> <span class="n">x_hat</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">d_x</span><span class="p">,</span> <span class="n">d_gamma</span><span class="p">,</span> <span class="n">d_beta</span>
+
+<span class="c1"># ─── Transformer Block ─────────────────────────────────────────────</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">transformer_block_forward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">attn_params</span><span class="p">,</span> <span class="n">ffn_params</span><span class="p">,</span> <span class="n">ln1_params</span><span class="p">,</span> <span class="n">ln2_params</span><span class="p">,</span>
+                               <span class="n">n_heads</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># Self-attention sub-layer</span>
+    <span class="n">attn_out</span><span class="p">,</span> <span class="n">attn_cache</span> <span class="o">=</span> <span class="n">multihead_attention_forward</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">attn_params</span><span class="p">,</span> <span class="n">n_heads</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="n">res1</span> <span class="o">=</span> <span class="n">X</span> <span class="o">+</span> <span class="n">attn_out</span>
+    <span class="n">ln1_out</span><span class="p">,</span> <span class="n">ln1_cache</span> <span class="o">=</span> <span class="n">ln_forward</span><span class="p">(</span><span class="n">res1</span><span class="p">,</span> <span class="n">ln1_params</span><span class="p">[</span><span class="s1">&#39;gamma&#39;</span><span class="p">],</span> <span class="n">ln1_params</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">])</span>
+
+    <span class="c1"># Feed-forward sub-layer</span>
+    <span class="n">ffn_out</span><span class="p">,</span> <span class="n">ffn_cache</span> <span class="o">=</span> <span class="n">ffn_forward</span><span class="p">(</span><span class="n">ln1_out</span><span class="p">,</span> <span class="n">ffn_params</span><span class="p">)</span>
+    <span class="n">res2</span> <span class="o">=</span> <span class="n">ln1_out</span> <span class="o">+</span> <span class="n">ffn_out</span>
+    <span class="n">ln2_out</span><span class="p">,</span> <span class="n">ln2_cache</span> <span class="o">=</span> <span class="n">ln_forward</span><span class="p">(</span><span class="n">res2</span><span class="p">,</span> <span class="n">ln2_params</span><span class="p">[</span><span class="s1">&#39;gamma&#39;</span><span class="p">],</span> <span class="n">ln2_params</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">])</span>
+
+    <span class="n">cache</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">attn_cache</span><span class="p">,</span> <span class="n">ln1_cache</span><span class="p">,</span> <span class="n">ln1_out</span><span class="p">,</span> <span class="n">ffn_cache</span><span class="p">,</span> <span class="n">ln2_cache</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ln2_out</span><span class="p">,</span> <span class="n">cache</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">transformer_block_backward</span><span class="p">(</span><span class="n">d_out</span><span class="p">,</span> <span class="n">cache</span><span class="p">,</span> <span class="n">attn_params</span><span class="p">,</span> <span class="n">ffn_params</span><span class="p">,</span>
+                                <span class="n">ln1_params</span><span class="p">,</span> <span class="n">ln2_params</span><span class="p">):</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">attn_cache</span><span class="p">,</span> <span class="n">ln1_cache</span><span class="p">,</span> <span class="n">ln1_out</span><span class="p">,</span> <span class="n">ffn_cache</span><span class="p">,</span> <span class="n">ln2_cache</span> <span class="o">=</span> <span class="n">cache</span>
+
+    <span class="c1"># Backward through LN2</span>
+    <span class="n">d_res2</span><span class="p">,</span> <span class="n">d_ln2_gamma</span><span class="p">,</span> <span class="n">d_ln2_beta</span> <span class="o">=</span> <span class="n">ln_backward</span><span class="p">(</span><span class="n">d_out</span><span class="p">,</span> <span class="n">ln2_cache</span><span class="p">)</span>
+    <span class="c1"># Residual split</span>
+    <span class="n">d_ln1_out</span> <span class="o">=</span> <span class="n">d_res2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">d_ffn_out</span> <span class="o">=</span> <span class="n">d_res2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1"># Backward through FFN</span>
+    <span class="n">d_ffn_in</span><span class="p">,</span> <span class="n">ffn_grads</span> <span class="o">=</span> <span class="n">ffn_backward</span><span class="p">(</span><span class="n">d_ffn_out</span><span class="p">,</span> <span class="n">ffn_cache</span><span class="p">,</span> <span class="n">ffn_params</span><span class="p">)</span>
+    <span class="n">d_ln1_out</span> <span class="o">+=</span> <span class="n">d_ffn_in</span>
+    <span class="c1"># Backward through LN1</span>
+    <span class="n">d_res1</span><span class="p">,</span> <span class="n">d_ln1_gamma</span><span class="p">,</span> <span class="n">d_ln1_beta</span> <span class="o">=</span> <span class="n">ln_backward</span><span class="p">(</span><span class="n">d_ln1_out</span><span class="p">,</span> <span class="n">ln1_cache</span><span class="p">)</span>
+    <span class="c1"># Residual split</span>
+    <span class="n">d_X</span> <span class="o">=</span> <span class="n">d_res1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">d_attn_out</span> <span class="o">=</span> <span class="n">d_res1</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1"># Backward through multi-head attention</span>
+    <span class="n">d_attn_in</span><span class="p">,</span> <span class="n">attn_grads</span> <span class="o">=</span> <span class="n">multihead_attention_backward</span><span class="p">(</span><span class="n">d_attn_out</span><span class="p">,</span> <span class="n">attn_cache</span><span class="p">,</span>
+                                                          <span class="n">attn_params</span><span class="p">)</span>
+    <span class="n">d_X</span> <span class="o">+=</span> <span class="n">d_attn_in</span>
+
+    <span class="n">ln1_grads</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;gamma&#39;</span><span class="p">:</span> <span class="n">d_ln1_gamma</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="n">d_ln1_beta</span><span class="p">}</span>
+    <span class="n">ln2_grads</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;gamma&#39;</span><span class="p">:</span> <span class="n">d_ln2_gamma</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="n">d_ln2_beta</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">d_X</span><span class="p">,</span> <span class="n">attn_grads</span><span class="p">,</span> <span class="n">ffn_grads</span><span class="p">,</span> <span class="n">ln1_grads</span><span class="p">,</span> <span class="n">ln2_grads</span>
+
+<span class="c1"># ─── Full Model (1-block decoder-only transformer) ──────────────────</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ToyTransformer</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Minimal 1-block decoder-only transformer for next-token prediction.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">n_heads</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">,</span> <span class="n">max_len</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">):</span>
+        <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">/</span> <span class="n">d_model</span><span class="p">)</span>  <span class="c1"># He-like init scale</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_model</span> <span class="o">=</span> <span class="n">d_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_heads</span> <span class="o">=</span> <span class="n">n_heads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vocab_size</span> <span class="o">=</span> <span class="n">vocab_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_len</span> <span class="o">=</span> <span class="n">max_len</span>
+
+        <span class="c1"># Token embedding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W_emb</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">d_model</span><span class="p">))</span>
+        <span class="c1"># Positional encoding (fixed, not trained)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">PE</span> <span class="o">=</span> <span class="n">sinusoidal_pe</span><span class="p">(</span><span class="n">max_len</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)</span>
+        <span class="c1"># Attention projections</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attn</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;Wq&#39;</span><span class="p">:</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)),</span>
+            <span class="s1">&#39;Wk&#39;</span><span class="p">:</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)),</span>
+            <span class="s1">&#39;Wv&#39;</span><span class="p">:</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)),</span>
+            <span class="s1">&#39;Wo&#39;</span><span class="p">:</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)),</span>
+        <span class="p">}</span>
+        <span class="c1"># FFN</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ffn</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;W1&#39;</span><span class="p">:</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">d_model</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">)),</span>
+            <span class="s1">&#39;b1&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d_ff</span><span class="p">),</span>
+            <span class="s1">&#39;W2&#39;</span><span class="p">:</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="n">s</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">d_ff</span><span class="p">,</span> <span class="n">d_model</span><span class="p">)),</span>
+            <span class="s1">&#39;b2&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d_model</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="c1"># Layer norms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln1</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;gamma&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">d_model</span><span class="p">),</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d_model</span><span class="p">)}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln2</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;gamma&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">d_model</span><span class="p">),</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">d_model</span><span class="p">)}</span>
+        <span class="c1"># Output projection (tied with embedding)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_emb</span>  <span class="c1"># weight tying</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;tokens: (n,) integer array. Returns logits (n, vocab_size).&quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+        <span class="c1"># Embedding + positional encoding</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_emb</span><span class="p">[</span><span class="n">tokens</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_model</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">PE</span><span class="p">[:</span><span class="n">n</span><span class="p">]</span>
+        <span class="c1"># No causal mask: encoder-style bidirectional attention</span>
+        <span class="c1"># (the reversal task requires seeing all positions)</span>
+        <span class="c1"># Transformer block</span>
+        <span class="n">H</span><span class="p">,</span> <span class="n">block_cache</span> <span class="o">=</span> <span class="n">transformer_block_forward</span><span class="p">(</span>
+            <span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ffn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ln1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ln2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_heads</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="c1"># Output logits</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="n">H</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_out</span><span class="o">.</span><span class="n">T</span>  <span class="c1"># (n, vocab_size)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">block_cache</span><span class="p">,</span> <span class="n">H</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">logits</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_logits</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute gradients given d_logits (n, vocab_size).&quot;&quot;&quot;</span>
+        <span class="n">tokens</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">block_cache</span><span class="p">,</span> <span class="n">H</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+
+        <span class="c1"># Gradient through output projection (tied weights)</span>
+        <span class="n">d_H</span> <span class="o">=</span> <span class="n">d_logits</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_out</span>                 <span class="c1"># (n, d_model)</span>
+        <span class="n">d_W_out</span> <span class="o">=</span> <span class="n">d_logits</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">H</span>                     <span class="c1"># (vocab, d_model)</span>
+
+        <span class="c1"># Gradient through transformer block</span>
+        <span class="n">d_X</span><span class="p">,</span> <span class="n">attn_grads</span><span class="p">,</span> <span class="n">ffn_grads</span><span class="p">,</span> <span class="n">ln1_grads</span><span class="p">,</span> <span class="n">ln2_grads</span> <span class="o">=</span> \
+            <span class="n">transformer_block_backward</span><span class="p">(</span><span class="n">d_H</span><span class="p">,</span> <span class="n">block_cache</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ffn</span><span class="p">,</span>
+                                       <span class="bp">self</span><span class="o">.</span><span class="n">ln1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ln2</span><span class="p">)</span>
+
+        <span class="c1"># Gradient through embedding</span>
+        <span class="n">d_W_emb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">W_emb</span><span class="p">)</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">d_model</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+            <span class="n">d_W_emb</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">+=</span> <span class="n">d_X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span>
+        <span class="n">d_W_emb</span> <span class="o">+=</span> <span class="n">d_W_out</span>  <span class="c1"># weight tying</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_grads</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;W_emb&#39;</span><span class="p">:</span> <span class="n">d_W_emb</span><span class="p">,</span>
+            <span class="s1">&#39;attn&#39;</span><span class="p">:</span> <span class="n">attn_grads</span><span class="p">,</span>
+            <span class="s1">&#39;ffn&#39;</span><span class="p">:</span> <span class="n">ffn_grads</span><span class="p">,</span>
+            <span class="s1">&#39;ln1&#39;</span><span class="p">:</span> <span class="n">ln1_grads</span><span class="p">,</span>
+            <span class="s1">&#39;ln2&#39;</span><span class="p">:</span> <span class="n">ln2_grads</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Simple SGD update.&quot;&quot;&quot;</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grads</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W_emb</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">g</span><span class="p">[</span><span class="s1">&#39;W_emb&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">W_out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">W_emb</span>  <span class="c1"># keep tied</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">attn</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">attn</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">g</span><span class="p">[</span><span class="s1">&#39;attn&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ffn</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ffn</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">g</span><span class="p">[</span><span class="s1">&#39;ffn&#39;</span><span class="p">][</span><span class="n">k</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln1</span><span class="p">[</span><span class="s1">&#39;gamma&#39;</span><span class="p">]</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">g</span><span class="p">[</span><span class="s1">&#39;ln1&#39;</span><span class="p">][</span><span class="s1">&#39;gamma&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln1</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span>  <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">g</span><span class="p">[</span><span class="s1">&#39;ln1&#39;</span><span class="p">][</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln2</span><span class="p">[</span><span class="s1">&#39;gamma&#39;</span><span class="p">]</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">g</span><span class="p">[</span><span class="s1">&#39;ln2&#39;</span><span class="p">][</span><span class="s1">&#39;gamma&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ln2</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span>  <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">g</span><span class="p">[</span><span class="s1">&#39;ln2&#39;</span><span class="p">][</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span>
+
+<span class="c1"># ─── Training on Sequence-Reversal Task ─────────────────────────────</span>
+<span class="n">vocab_size</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="n">seq_len</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">d_model</span> <span class="o">=</span> <span class="mi">64</span>
+<span class="n">n_heads</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">d_ff</span> <span class="o">=</span> <span class="mi">128</span>
+<span class="n">n_epochs</span> <span class="o">=</span> <span class="mi">4000</span>
+<span class="n">lr</span> <span class="o">=</span> <span class="mf">1e-3</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">ToyTransformer</span><span class="p">(</span><span class="n">vocab_size</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">n_heads</span><span class="p">,</span> <span class="n">d_ff</span><span class="p">,</span> <span class="n">max_len</span><span class="o">=</span><span class="n">seq_len</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Fixed training set (50 random sequences)</span>
+<span class="n">train_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">integers</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">vocab_size</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">seq_len</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">50</span><span class="p">)]</span>
+
+<span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_epochs</span><span class="p">):</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[</span><span class="n">epoch</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">)]</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">seq</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># reverse the sequence</span>
+
+    <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+    <span class="n">loss</span><span class="p">,</span> <span class="n">d_logits</span> <span class="o">=</span> <span class="n">cross_entropy_loss</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">backward</span><span class="p">(</span><span class="n">d_logits</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>   <span class="c1"># uses Adam internally</span>
+    <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="mi">500</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">preds</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">preds</span> <span class="o">==</span> <span class="n">target</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2">  loss=</span><span class="si">{</span><span class="n">loss</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  acc=</span><span class="si">{</span><span class="n">acc</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Final evaluation</span>
+<span class="k">for</span> <span class="n">seq</span> <span class="ow">in</span> <span class="n">train_data</span><span class="p">[:</span><span class="mi">5</span><span class="p">]:</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">seq</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;input=</span><span class="si">{</span><span class="n">seq</span><span class="si">}</span><span class="s2">  target=</span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">  predicted=</span><span class="si">{</span><span class="n">preds</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="training-walkthrough">
+<h2>Training walkthrough<a class="headerlink" href="#training-walkthrough" title="Link to this heading"></a></h2>
+<p>The implementation above trains a single-block, 4-head decoder-only transformer on a <strong>sequence-reversal task</strong>: given input sequence <span class="math notranslate nohighlight">\([a, b, c, d]\)</span>, predict <span class="math notranslate nohighlight">\([d, c, b, a]\)</span>.</p>
+<p><strong>Epoch-by-epoch behavior:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Epoch 0:</strong> Random predictions; loss near <span class="math notranslate nohighlight">\(\ln V \approx 2.08\)</span> (uniform distribution over 8 tokens).</p></li>
+<li><p><strong>Epoch 200–600:</strong> Attention heads begin learning position-dependent patterns. Loss drops significantly.</p></li>
+<li><p><strong>Epoch 1000+:</strong> The model converges, memorising the training set with high accuracy.</p></li>
+</ol>
+<p><strong>What each component learns:</strong></p>
+<ul class="simple">
+<li><p><strong>Embedding layer:</strong> Maps discrete tokens to <span class="math notranslate nohighlight">\(\mathbb{R}^{64}\)</span> vectors. Tokens that commonly appear at the same positions develop similar sub-space representations.</p></li>
+<li><p><strong>Positional encoding:</strong> Provides absolute position information. Since the task requires reversing positions, the model must learn to combine positional and content information.</p></li>
+<li><p><strong>Attention heads:</strong> Different heads learn to attend to different reversed positions. A well-trained head for this task shows a strong anti-diagonal pattern: query at position <span class="math notranslate nohighlight">\(i\)</span> attends heavily to key at position <span class="math notranslate nohighlight">\(n-1-i\)</span>.</p></li>
+<li><p><strong>FFN:</strong> Refines the token representations, learning the final mapping from “attended context” to the correct reversed-token prediction.</p></li>
+<li><p><strong>Output projection:</strong> Converts <span class="math notranslate nohighlight">\(d_{\text{model}}\)</span>-dimensional representations back to vocabulary logits.</p></li>
+</ul>
+</section>
+<section id="computational-complexity">
+<h2>Computational Complexity<a class="headerlink" href="#computational-complexity" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 37.5%" />
+<col style="width: 31.2%" />
+<col style="width: 31.2%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Operation</p></th>
+<th class="head"><p>Time</p></th>
+<th class="head"><p>Memory</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Self-attention</p></td>
+<td><p><span class="math notranslate nohighlight">\(O(n^2 d_{\text{model}})\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(O(n^2 + n \, d_{\text{model}})\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>FFN</p></td>
+<td><p><span class="math notranslate nohighlight">\(O(n \, d_{\text{model}} \, d_{\text{ff}})\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(O(n \, d_{\text{ff}})\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p>Full block</p></td>
+<td><p><span class="math notranslate nohighlight">\(O(n^2 d_{\text{model}} + n \, d_{\text{model}} \, d_{\text{ff}})\)</span></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(L\)</span> blocks</p></td>
+<td><p><span class="math notranslate nohighlight">\(O(L(n^2 d_{\text{model}} + n \, d_{\text{model}} \, d_{\text{ff}}))\)</span></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>The <span class="math notranslate nohighlight">\(O(n^2)\)</span> attention cost is the main limitation for very long sequences, motivating efficient attention variants (Linformer, Flash Attention, etc.).</p>
+</section>
+<section id="figures">
+<h2>Figures<a class="headerlink" href="#figures" title="Link to this heading"></a></h2>
+<p>The accompanying script generates:</p>
+<ul class="simple">
+<li><p>Training loss curve showing convergence on the sequence-reversal task</p></li>
+<li><p>Positional encoding heatmap</p></li>
+<li><p>Attention weight matrices for each head</p></li>
+<li><p>Transformer block architecture diagram</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/transformer_loss_curve.png"><img alt="Training loss curve for toy transformer" class="align-center" src="../_images/transformer_loss_curve.png" style="width: 100%;" />
+</a>
+<a class="reference internal image-reference" href="../_images/transformer_attention_heads.png"><img alt="Attention weight matrices for each head after training" class="align-center" src="../_images/transformer_attention_heads.png" style="width: 100%;" />
+</a>
+</section>
+<section id="reproduce-the-figures">
+<h2>Reproduce the figures<a class="headerlink" href="#reproduce-the-figures" title="Link to this heading"></a></h2>
+<p>Run the generator script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>docs/_static_files/codes/transformers.py
+</pre></div>
+</div>
+<p>It will write the PNGs under <code class="docutils literal notranslate"><span class="pre">docs/_static_files/images</span></code> and print training progress.</p>
+</section>
+<section id="references-and-further-reading">
+<h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Vaswani, A., Shazeer, N., Parmar, N., et al.</strong> (2017). Attention Is All You Need. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 30. The foundational transformer paper.</p></li>
+<li><p><strong>Devlin, J., Chang, M.-W., Lee, K., &amp; Toutanova, K.</strong> (2019). BERT: Pre-training of deep bidirectional transformers for language understanding. <em>NAACL-HLT</em>. Encoder-only transformer for NLP tasks.</p></li>
+<li><p><strong>Radford, A., Wu, J., Child, R., et al.</strong> (2019). Language models are unsupervised multitask learners. Technical report, OpenAI (GPT-2). Decoder-only autoregressive transformer.</p></li>
+<li><p><strong>Ba, J. L., Kiros, J. R., &amp; Hinton, G. E.</strong> (2016). Layer normalization. <em>arXiv:1607.06450</em>. Motivation and analysis of layer normalization.</p></li>
+<li><p><strong>He, K., Zhang, X., Ren, S., &amp; Sun, J.</strong> (2016). Deep residual learning for image recognition. <em>CVPR</em>. Residual connections that transformers rely upon.</p></li>
+<li><p><strong>Goodfellow, I., Bengio, Y., &amp; Courville, A.</strong> (2016). <em>Deep Learning</em>. MIT Press. Chapters on attention mechanisms and sequence modeling.</p></li>
+<li><p><strong>Phuong, M. &amp; Hutter, M.</strong> (2022). Formal algorithms for transformers. <em>arXiv:2207.09238</em>. Rigorous mathematical description of transformer components.</p></li>
+<li><p><strong>Elhage, N., Nanda, N., Olsson, C., et al.</strong> (2021). A mathematical framework for transformer circuits. <em>Anthropic research</em>. Mechanistic interpretability of attention heads.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pca.html" class="btn btn-neutral float-left" title="Principal Component Analysis (PCA)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright J. V. V. Cassiano.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -8,4 +8,5 @@ Math
 
    functions
    limits
+   integrals
    residue_theorem

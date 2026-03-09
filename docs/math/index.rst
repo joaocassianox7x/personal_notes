@@ -9,4 +9,5 @@ Math
    functions
    limits
    integrals
+   stokes_theorem
    residue_theorem

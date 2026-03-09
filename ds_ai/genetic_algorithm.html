@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Principal Component Analysis (PCA) &mdash; Personal Notes</title>
+  <title>Genetic Algorithms &mdash; Personal Notes</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=65e9e8ab" />
@@ -22,8 +22,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Understanding Transformers" href="transformers.html" />
-    <link rel="prev" title="Backpropagation" href="backpropagation.html" /> 
+    <link rel="next" title="Bias - Variance Decomposition" href="bias_variance.html" />
+    <link rel="prev" title="Logistic Regression" href="logistic_regression.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -307,30 +307,30 @@
 <li class="toctree-l2"><a class="reference internal" href="logistic_regression.html#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="genetic_algorithm.html">Genetic Algorithms</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#core-idea">Core Idea</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#the-basic-loop">The Basic Loop</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#main-components">Main Components</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#method-1-binary-coded-genetic-algorithm">Method 1: Binary-Coded Genetic Algorithm</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="genetic_algorithm.html#binary-operators">Binary operators</a></li>
-<li class="toctree-l3"><a class="reference internal" href="genetic_algorithm.html#binary-advantages">Binary advantages</a></li>
-<li class="toctree-l3"><a class="reference internal" href="genetic_algorithm.html#binary-limitations">Binary limitations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Genetic Algorithms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#core-idea">Core Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-basic-loop">The Basic Loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#main-components">Main Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#method-1-binary-coded-genetic-algorithm">Method 1: Binary-Coded Genetic Algorithm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#binary-operators">Binary operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#binary-advantages">Binary advantages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#binary-limitations">Binary limitations</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#method-2-real-coded-genetic-algorithm">Method 2: Real-Coded Genetic Algorithm</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="genetic_algorithm.html#real-coded-operators">Real-coded operators</a></li>
-<li class="toctree-l3"><a class="reference internal" href="genetic_algorithm.html#real-coded-advantages">Real-coded advantages</a></li>
-<li class="toctree-l3"><a class="reference internal" href="genetic_algorithm.html#real-coded-limitations">Real-coded limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#method-2-real-coded-genetic-algorithm">Method 2: Real-Coded Genetic Algorithm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#real-coded-operators">Real-coded operators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#real-coded-advantages">Real-coded advantages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#real-coded-limitations">Real-coded limitations</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#visual-view-of-the-operators">Visual View of the Operators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#toy-optimization-example">Toy Optimization Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#convergence-behavior">Convergence Behavior</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#binary-vs-real-coded-when-to-use-each">Binary vs Real-Coded: When to Use Each</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#where-genetic-algorithms-fit-in-ds-ai">Where Genetic Algorithms Fit in DS/AI</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#common-pitfalls">Common Pitfalls</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#reproduce-the-figures">Reproduce the Figures</a></li>
-<li class="toctree-l2"><a class="reference internal" href="genetic_algorithm.html#references-and-further-reading">References and Further Reading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visual-view-of-the-operators">Visual View of the Operators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#toy-optimization-example">Toy Optimization Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#convergence-behavior">Convergence Behavior</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#binary-vs-real-coded-when-to-use-each">Binary vs Real-Coded: When to Use Each</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#where-genetic-algorithms-fit-in-ds-ai">Where Genetic Algorithms Fit in DS/AI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#common-pitfalls">Common Pitfalls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reproduce-the-figures">Reproduce the Figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="bias_variance.html">Bias - Variance Decomposition</a><ul>
@@ -392,18 +392,18 @@
 <li class="toctree-l2"><a class="reference internal" href="backpropagation.html#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Principal Component Analysis (PCA)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#core-idea">Core Idea</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#matrix-definition">Matrix Definition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#algebraic-definition">Algebraic Definition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#key-tests-and-definitions">Key Tests and Definitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#optimal-number-of-dimensions">Optimal Number of Dimensions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#step-by-step-example-3d-to-1d">Step-by-Step Example: 3D to 1D</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#numpy-implementation">NumPy Implementation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#visualizations-and-interpretations">Visualizations and Interpretations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#common-pitfalls-and-best-practices">Common Pitfalls and Best Practices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#applications">Applications</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#references-and-further-reading">References and Further Reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pca.html">Principal Component Analysis (PCA)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#core-idea">Core Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#matrix-definition">Matrix Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#algebraic-definition">Algebraic Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#key-tests-and-definitions">Key Tests and Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#optimal-number-of-dimensions">Optimal Number of Dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#step-by-step-example-3d-to-1d">Step-by-Step Example: 3D to 1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#numpy-implementation">NumPy Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#visualizations-and-interpretations">Visualizations and Interpretations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#common-pitfalls-and-best-practices">Common Pitfalls and Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#references-and-further-reading">References and Further Reading</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="transformers.html">Understanding Transformers</a><ul>
@@ -444,9 +444,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Principal Component Analysis (PCA)</li>
+      <li class="breadcrumb-item active">Genetic Algorithms</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/ds_ai/pca.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/ds_ai/genetic_algorithm.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -454,299 +454,263 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="principal-component-analysis-pca">
-<h1>Principal Component Analysis (PCA)<a class="headerlink" href="#principal-component-analysis-pca" title="Link to this heading"></a></h1>
+  <section id="genetic-algorithms">
+<h1>Genetic Algorithms<a class="headerlink" href="#genetic-algorithms" title="Link to this heading"></a></h1>
 <section id="core-idea">
 <h2>Core Idea<a class="headerlink" href="#core-idea" title="Link to this heading"></a></h2>
-<p>PCA is an unsupervised dimensionality reduction technique that identifies the directions of maximum variance in data. It transforms high-dimensional data into a lower-dimensional space while preserving as much information (variance) as possible.</p>
-<p><strong>Main Goal:</strong> Find a set of orthogonal directions (principal components) along which the data has the highest variance, allowing us to:</p>
+<p>A genetic algorithm (GA) is a population-based optimization method inspired by
+selection, reproduction, and mutation in biology.</p>
+<p>Instead of improving a single solution at a time, a GA keeps a population</p>
+<div class="math notranslate nohighlight">
+\[P^{(t)} = \{x_1^{(t)}, x_2^{(t)}, \dots, x_N^{(t)}\}\]</div>
+<p>at generation <span class="math notranslate nohighlight">\(t\)</span>, evaluates the quality of each candidate with a fitness
+function <span class="math notranslate nohighlight">\(f(x)\)</span>, and produces a new population by repeatedly applying:</p>
 <ul class="simple">
-<li><p>Reduce dimensionality while retaining maximum information</p></li>
-<li><p>Remove noise and redundancy</p></li>
-<li><p>Visualize high-dimensional data</p></li>
-<li><p>Accelerate downstream machine learning algorithms</p></li>
-<li><p>Handle multicollinearity</p></li>
+<li><p>selection,</p></li>
+<li><p>crossover,</p></li>
+<li><p>mutation,</p></li>
+<li><p>elitism.</p></li>
 </ul>
+<p>The main advantage is that GAs can explore complicated, non-convex, and even
+discrete search spaces where gradient-based methods are unavailable or unreliable.</p>
 </section>
-<section id="matrix-definition">
-<h2>Matrix Definition<a class="headerlink" href="#matrix-definition" title="Link to this heading"></a></h2>
-<p>Assume we have <span class="math notranslate nohighlight">\(n\)</span> samples and <span class="math notranslate nohighlight">\(p\)</span> features organized in a data matrix:</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{X} \in \mathbb{R}^{n \times p}\]</div>
-<p>where each row is a sample and each column is a feature.</p>
-<p><strong>Centering:</strong> Subtract the mean from each feature (typically done as preprocessing):</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{X}_c = \mathbf{X} - \mathbf{1}\boldsymbol{\mu}^\top\]</div>
-<p>where <span class="math notranslate nohighlight">\(\boldsymbol{\mu} = \frac{1}{n}\sum_{i=1}^n \mathbf{x}_i\)</span> is the mean vector and <span class="math notranslate nohighlight">\(\mathbf{1}\)</span> is a column vector of ones.</p>
-<p><strong>Sample Covariance Matrix:</strong></p>
-<p>The covariance matrix captures the variance and correlations in the data:</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{C} = \frac{1}{n-1}\mathbf{X}_c^\top \mathbf{X}_c \in \mathbb{R}^{p \times p}\]</div>
-<p>Each element <span class="math notranslate nohighlight">\(C_{ij}\)</span> represents:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(C_{ii}\)</span> = variance of feature <span class="math notranslate nohighlight">\(i\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(C_{ij}\)</span> = covariance between features <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span></p></li>
-</ul>
-</section>
-<section id="algebraic-definition">
-<h2>Algebraic Definition<a class="headerlink" href="#algebraic-definition" title="Link to this heading"></a></h2>
-<p><strong>Principal Components</strong> are defined as:</p>
-<ol class="arabic">
-<li><p><strong>First PC:</strong> The direction <span class="math notranslate nohighlight">\(\mathbf{w}_1\)</span> that maximizes variance:</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{w}_1 = \arg\max_{\mathbf{w}: \|\mathbf{w}\|_2=1} \frac{1}{n-1}\left\|\mathbf{X}_c \mathbf{w}\right\|_2^2 = \arg\max_{\mathbf{w}: \|\mathbf{w}\|_2=1} \mathbf{w}^\top \mathbf{C} \mathbf{w}\]</div>
-</li>
-<li><p><strong>Subsequent PCs:</strong> The <span class="math notranslate nohighlight">\(k\)</span>-th PC is the direction of maximum variance orthogonal to the first <span class="math notranslate nohighlight">\(k-1\)</span> PCs:</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{w}_k = \arg\max_{\mathbf{w}: \|\mathbf{w}\|_2=1, \mathbf{w}^\top \mathbf{w}_j = 0 \text{ for } j &lt; k} \mathbf{w}^\top \mathbf{C} \mathbf{w}\]</div>
-</li>
+<section id="the-basic-loop">
+<h2>The Basic Loop<a class="headerlink" href="#the-basic-loop" title="Link to this heading"></a></h2>
+<p>For a maximization problem, the standard genetic algorithm is:</p>
+<ol class="arabic simple">
+<li><p>Initialize a random population.</p></li>
+<li><p>Evaluate fitness <span class="math notranslate nohighlight">\(f(x_i)\)</span> for every individual.</p></li>
+<li><p>Select better individuals with higher probability.</p></li>
+<li><p>Recombine parents with crossover to create offspring.</p></li>
+<li><p>Mutate offspring to maintain diversity.</p></li>
+<li><p>Copy a few elite individuals unchanged.</p></li>
+<li><p>Repeat until a stopping criterion is met.</p></li>
 </ol>
-<p><strong>Solution via Eigendecomposition:</strong></p>
-<p>The directions <span class="math notranslate nohighlight">\(\{\mathbf{w}_1, \mathbf{w}_2, \ldots, \mathbf{w}_p\}\)</span> are the <strong>eigenvectors</strong> of <span class="math notranslate nohighlight">\(\mathbf{C}\)</span>, and the corresponding <strong>eigenvalues</strong> <span class="math notranslate nohighlight">\(\lambda_1 \geq \lambda_2 \geq \cdots \geq \lambda_p \geq 0\)</span> represent the variance explained along each principal component:</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{C} = \mathbf{W}\boldsymbol{\Lambda}\mathbf{W}^\top\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{W} = [\mathbf{w}_1 \mid \mathbf{w}_2 \mid \cdots \mid \mathbf{w}_p]\)</span> and <span class="math notranslate nohighlight">\(\boldsymbol{\Lambda} = \text{diag}(\lambda_1, \lambda_2, \ldots, \lambda_p)\)</span>.</p>
-<p><strong>Transformed Data (Scores):</strong></p>
-<p>Project the centered data onto the first <span class="math notranslate nohighlight">\(k\)</span> principal components:</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{Z} = \mathbf{X}_c \mathbf{W}_k \in \mathbb{R}^{n \times k}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{W}_k\)</span> contains the first <span class="math notranslate nohighlight">\(k\)</span> columns (eigenvectors) of <span class="math notranslate nohighlight">\(\mathbf{W}\)</span>.</p>
-</section>
-<section id="key-tests-and-definitions">
-<h2>Key Tests and Definitions<a class="headerlink" href="#key-tests-and-definitions" title="Link to this heading"></a></h2>
-<p><strong>Variance Explained by Each Component:</strong></p>
-<p>The variance explained by the <span class="math notranslate nohighlight">\(k\)</span>-th component is proportional to its eigenvalue:</p>
-<div class="math notranslate nohighlight">
-\[\text{Var}_k = \frac{\lambda_k}{\sum_{j=1}^p \lambda_j}\]</div>
-<p><strong>Cumulative Variance Explained:</strong></p>
-<div class="math notranslate nohighlight">
-\[\text{CumVar}_K = \frac{\sum_{j=1}^K \lambda_j}{\sum_{j=1}^p \lambda_j}\]</div>
-<p>This quantity helps determine how many components are needed to explain a desired percentage (e.g., 95%) of the variance.</p>
-<p><strong>Kaiser Criterion:</strong></p>
-<p>Keep components with eigenvalues <span class="math notranslate nohighlight">\(\lambda_k \geq 1\)</span> (assumes standardized features). Eigenvalues less than 1 contribute less variance than a single original feature.</p>
-<p><strong>Scree Plot:</strong></p>
-<p>A plot of eigenvalues or cumulative variance explained against component number. Look for an “elbow” where additional components provide diminishing returns.</p>
-<p><strong>Loadings:</strong></p>
-<p>The correlation between original features and principal components:</p>
-<div class="math notranslate nohighlight">
-\[\text{Loadings}_{ij} = \sqrt{\lambda_j} \cdot w_{ij}\]</div>
-<p>High loadings indicate which features contribute most to each component.</p>
-<p><strong>Biplot:</strong></p>
-<p>A visualization showing both samples (scores) and features (loadings) simultaneously, revealing relationships between variables and observations.</p>
-</section>
-<section id="optimal-number-of-dimensions">
-<h2>Optimal Number of Dimensions<a class="headerlink" href="#optimal-number-of-dimensions" title="Link to this heading"></a></h2>
-<p>Choosing the right number of components <span class="math notranslate nohighlight">\(k\)</span> is crucial. Several approaches exist:</p>
-<p><strong>1. Explained Variance Threshold</strong></p>
-<p>Select <span class="math notranslate nohighlight">\(k\)</span> such that the cumulative variance explained exceeds a threshold (commonly 95%):</p>
-<div class="math notranslate nohighlight">
-\[k = \min\left\{K : \frac{\sum_{j=1}^K \lambda_j}{\sum_{j=1}^p \lambda_j} \geq 0.95\right\}\]</div>
-<p><strong>2. Scree Plot / Elbow Method</strong></p>
-<p>Plot eigenvalues or cumulative variance and look for an “elbow” where the curve flattens.</p>
-<p><strong>3. Kaiser Criterion</strong></p>
-<p>Retain components with <span class="math notranslate nohighlight">\(\lambda_k \geq 1\)</span> (if features are standardized).</p>
-<p><strong>4. Cross-Validation</strong></p>
-<p>For supervised tasks, use cross-validation to select <span class="math notranslate nohighlight">\(k\)</span> that minimizes prediction error on a downstream task.</p>
-<p><strong>5. Domain Knowledge</strong></p>
-<p>Consider the practical constraints:</p>
-<ul class="simple">
-<li><p>Visualization needs (2D or 3D for plotting)</p></li>
-<li><p>Computational cost</p></li>
-<li><p>Interpretability requirements</p></li>
-</ul>
-</section>
-<section id="step-by-step-example-3d-to-1d">
-<h2>Step-by-Step Example: 3D to 1D<a class="headerlink" href="#step-by-step-example-3d-to-1d" title="Link to this heading"></a></h2>
-<p>Let’s walk through a concrete example reducing 3D data to 1D.</p>
-<p><strong>Step 1: Original 3D Data</strong></p>
-<p>Consider three correlated features:</p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\mathbf{X} = \begin{bmatrix}
-2.0 &amp; 3.0 &amp; 4.5 \\
-2.1 &amp; 3.2 &amp; 4.7 \\
-3.0 &amp; 4.5 &amp; 6.2 \\
-3.1 &amp; 4.6 &amp; 6.3 \\
-4.0 &amp; 6.0 &amp; 8.0
-\end{bmatrix}\end{split}\]</div>
-<p><strong>Step 2: Center the Data</strong></p>
-<p>Compute means: <span class="math notranslate nohighlight">\(\mu_1 = 2.84, \mu_2 = 4.26, \mu_3 = 5.94\)</span></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\mathbf{X}_c = \begin{bmatrix}
--0.84 &amp; -1.26 &amp; -1.44 \\
--0.74 &amp; -1.06 &amp; -1.24 \\
-0.16 &amp; 0.24 &amp; 0.26 \\
-0.26 &amp; 0.34 &amp; 0.36 \\
-1.16 &amp; 1.74 &amp; 2.06
-\end{bmatrix}\end{split}\]</div>
-<p><strong>Step 3: Compute Covariance Matrix</strong></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\mathbf{C} = \frac{1}{4}\mathbf{X}_c^\top \mathbf{X}_c = \begin{bmatrix}
-0.645 &amp; 0.968 &amp; 1.189 \\
-0.968 &amp; 1.453 &amp; 1.781 \\
-1.189 &amp; 1.781 &amp; 2.186
-\end{bmatrix}\end{split}\]</div>
-<p><strong>Step 4: Eigendecomposition</strong></p>
-<p>Compute eigenvalues and eigenvectors of <span class="math notranslate nohighlight">\(\mathbf{C}\)</span>:</p>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split}\lambda_1 \approx 4.842, \quad \mathbf{w}_1 \approx \begin{bmatrix} 0.373 \\ 0.560 \\ 0.687 \end{bmatrix}\end{split}\\\begin{split}\lambda_2 \approx 0.148, \quad \mathbf{w}_2 \approx \begin{bmatrix} 0.746 \\ -0.667 \\ -0.000 \end{bmatrix}\end{split}\\\begin{split}\lambda_3 \approx 0.006, \quad \mathbf{w}_3 \approx \begin{bmatrix} 0.558 \\ 0.488 \\ -0.668 \end{bmatrix}\end{split}\end{aligned}\end{align} \]</div>
-<p><strong>Step 5: Variance Explained</strong></p>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\text{Var}_1 = \frac{4.842}{4.842 + 0.148 + 0.006} = 96.9\%\\\text{Var}_2 = \frac{0.148}{4.996} = 2.96\%\\\text{Var}_3 = \frac{0.006}{4.996} = 0.12\%\end{aligned}\end{align} \]</div>
-<p>Since the first component explains ~97% of variance, we choose <span class="math notranslate nohighlight">\(k=1\)</span>.</p>
-<p><strong>Step 6: Project onto First PC</strong></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\mathbf{z}_1 = \mathbf{X}_c \mathbf{w}_1 = \begin{bmatrix} -1.75 \\ -1.54 \\ 0.18 \\ 0.33 \\ 2.78 \end{bmatrix}\end{split}\]</div>
-<p><strong>Result:</strong> The original 3D data is now represented as a 1D array, with each entry being the projection of the corresponding sample onto the direction of maximum variance.</p>
-<p><strong>Reconstruction (if needed):</strong></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\hat{\mathbf{X}}_c = \mathbf{Z} \mathbf{w}_1^\top \approx \begin{bmatrix} -0.653 &amp; -0.979 &amp; -1.201 \\ -0.575 &amp; -0.863 &amp; -1.057 \\ 0.067 &amp; 0.101 &amp; 0.124 \\ 0.123 &amp; 0.185 &amp; 0.227 \\ 1.038 &amp; 1.556 &amp; 1.906 \end{bmatrix}\end{split}\]</div>
-<p>The reconstructed data captures the main direction of variation but loses information along the other two principal components.</p>
-</section>
-<section id="numpy-implementation">
-<h2>NumPy Implementation<a class="headerlink" href="#numpy-implementation" title="Link to this heading"></a></h2>
-<p>Below is a minimal NumPy implementation of PCA with functions for fitting, transforming, and analyzing results.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<p>In pseudocode:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>initialize population P
+evaluate fitness on P
 
-<span class="k">class</span><span class="w"> </span><span class="nc">PCA</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Principal Component Analysis&quot;&quot;&quot;</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="n">n_components</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mean_</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">components_</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">explained_variance_</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">explained_variance_ratio_</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Fit PCA model to data.</span>
-
-<span class="sd">        Parameters:</span>
-<span class="sd">        X : (n_samples, n_features)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># Center the data</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mean_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">X_centered</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_</span>
-
-        <span class="c1"># Compute covariance matrix</span>
-        <span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cov</span><span class="p">(</span><span class="n">X_centered</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
-
-        <span class="c1"># Eigendecomposition</span>
-        <span class="n">eigenvalues</span><span class="p">,</span> <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">cov</span><span class="p">)</span>
-
-        <span class="c1"># Sort by eigenvalues (descending)</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">eigenvalues</span> <span class="o">=</span> <span class="n">eigenvalues</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-        <span class="n">eigenvectors</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="n">idx</span><span class="p">]</span>
-
-        <span class="c1"># Select number of components</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">n_components</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">components_</span> <span class="o">=</span> <span class="n">eigenvectors</span><span class="p">[:,</span> <span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">explained_variance_</span> <span class="o">=</span> <span class="n">eigenvalues</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">n_components</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">explained_variance_ratio_</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">explained_variance_</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">eigenvalues</span><span class="p">)</span>
-        <span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Project data onto principal components.&quot;&quot;&quot;</span>
-        <span class="n">X_centered</span> <span class="o">=</span> <span class="n">X</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_</span>
-        <span class="k">return</span> <span class="n">X_centered</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">components_</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit PCA and transform data.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Z</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reconstruct data from scores.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">Z</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">components_</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_cumulative_variance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get cumulative explained variance ratio.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
-
-<span class="c1"># Example usage</span>
-<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">X</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-
-<span class="c1"># Fit PCA to keep 2 components</span>
-<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">Z</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Explained variance ratio: </span><span class="si">{</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cumulative variance: </span><span class="si">{</span><span class="n">pca</span><span class="o">.</span><span class="n">get_cumulative_variance</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-<span class="c1"># Reconstruct</span>
-<span class="n">X_reconstructed</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
-<span class="n">reconstruction_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_reconstructed</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reconstruction error: </span><span class="si">{</span><span class="n">reconstruction_error</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+while not stop:
+    keep elites
+    while new population not full:
+        parent1, parent2 = selection(P)
+        child1, child2 = crossover(parent1, parent2)
+        child1 = mutation(child1)
+        child2 = mutation(child2)
+        add children
+    P = new population
+    evaluate fitness on P
 </pre></div>
 </div>
 </section>
-<section id="visualizations-and-interpretations">
-<h2>Visualizations and Interpretations<a class="headerlink" href="#visualizations-and-interpretations" title="Link to this heading"></a></h2>
-<a class="reference internal image-reference" href="../_images/pca_variance_explained.png"><img alt="Scree plot showing variance explained by each component" class="align-center" src="../_images/pca_variance_explained.png" style="width: 80%;" />
-</a>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<a class="reference internal image-reference" href="../_images/pca_2d_projection.png"><img alt="2D projection of high-dimensional data via first two PCs" class="align-center" src="../_images/pca_2d_projection.png" style="width: 80%;" />
-</a>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<a class="reference internal image-reference" href="../_images/pca_biplot.png"><img alt="Biplot showing both samples and feature loadings" class="align-center" src="../_images/pca_biplot.png" style="width: 80%;" />
-</a>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<a class="reference internal image-reference" href="../_images/pca_cumulative_variance.png"><img alt="Cumulative explained variance to determine optimal components" class="align-center" src="../_images/pca_cumulative_variance.png" style="width: 80%;" />
-</a>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-</section>
-<section id="common-pitfalls-and-best-practices">
-<h2>Common Pitfalls and Best Practices<a class="headerlink" href="#common-pitfalls-and-best-practices" title="Link to this heading"></a></h2>
-<p><strong>1. Standardization</strong></p>
-<p>Always standardize features (zero mean, unit variance) before PCA if they have different scales. Features with large variance will dominate principal components:</p>
+<section id="main-components">
+<h2>Main Components<a class="headerlink" href="#main-components" title="Link to this heading"></a></h2>
+<p><strong>Fitness</strong></p>
+<p>The algorithm needs a scalar score:</p>
 <div class="math notranslate nohighlight">
-\[\tilde{\mathbf{X}} = \frac{\mathbf{X} - \boldsymbol{\mu}}{\boldsymbol{\sigma}}\]</div>
-<p><strong>2. Interpretation of Components</strong></p>
-<p>Principal components are linear combinations of all original features. They may not have intuitive interpretations in complex datasets.</p>
-<p><strong>3. Information Loss</strong></p>
-<p>Reducing dimensionality always discards information. Monitor reconstruction error to ensure acceptable performance.</p>
-<p><strong>4. Computational Cost</strong></p>
-<p>Eigendecomposition of large covariance matrices can be expensive. For <span class="math notranslate nohighlight">\(n \gg p\)</span>, consider <strong>SVD</strong> directly on the data matrix:</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{X}_c = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^\top\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{V}\)</span> are the principal components and <span class="math notranslate nohighlight">\(\mathbf{U}\boldsymbol{\Sigma}\)</span> are the scores.</p>
-<p><strong>5. Outliers</strong></p>
-<p>Outliers can inflate variance and distort principal components. Consider robust PCA variants or outlier removal.</p>
-</section>
-<section id="applications">
-<h2>Applications<a class="headerlink" href="#applications" title="Link to this heading"></a></h2>
+\[f : \mathcal{X} \to \mathbb{R}\]</div>
+<p>that measures how good a candidate is.</p>
+<p>For minimization, a common practical trick is to optimize <span class="math notranslate nohighlight">\(-L(x)\)</span> or use a
+rank-based selection rule instead of raw values.</p>
+<p><strong>Selection</strong></p>
+<p>Selection gives better candidates more chances to reproduce.</p>
+<p>Common strategies:</p>
 <ul class="simple">
-<li><p><strong>Exploratory Data Analysis:</strong> Visualize high-dimensional data in 2D/3D</p></li>
-<li><p><strong>Feature Engineering:</strong> Create uncorrelated features for downstream models</p></li>
-<li><p><strong>Denoising:</strong> Remove low-variance components (assumed to be noise)</p></li>
-<li><p><strong>Image Compression:</strong> Reduce storage while preserving visual quality</p></li>
-<li><p><strong>Gene Expression Analysis:</strong> Identify dominant patterns in biological data</p></li>
-<li><p><strong>Anomaly Detection:</strong> Detect samples that project far from the data cloud</p></li>
+<li><p>roulette-wheel selection,</p></li>
+<li><p>rank selection,</p></li>
+<li><p>tournament selection.</p></li>
 </ul>
+<p>In tournament selection, we sample a few individuals and keep the best among them.
+This is simple, robust, and easy to implement.</p>
+<p><strong>Crossover</strong></p>
+<p>Crossover combines information from two parents to produce offspring. It is the
+main exploitation mechanism of a GA.</p>
+<p><strong>Mutation</strong></p>
+<p>Mutation injects random variation so that the population does not collapse too
+early around a bad local optimum.</p>
+<p><strong>Elitism</strong></p>
+<p>Elitism copies the best few individuals directly into the next generation. This
+prevents losing the best solution found so far.</p>
+</section>
+<section id="method-1-binary-coded-genetic-algorithm">
+<h2>Method 1: Binary-Coded Genetic Algorithm<a class="headerlink" href="#method-1-binary-coded-genetic-algorithm" title="Link to this heading"></a></h2>
+<p>In a binary-coded GA, each candidate is represented by a bit string:</p>
+<div class="math notranslate nohighlight">
+\[x \leftrightarrow b_1 b_2 \dots b_L, \qquad b_i \in \{0,1\}.\]</div>
+<p>If the true variable is continuous on <span class="math notranslate nohighlight">\([a,b]\)</span>, the bit string is decoded
+into an integer</p>
+<div class="math notranslate nohighlight">
+\[u = \sum_{k=1}^{L} b_k 2^{L-k}\]</div>
+<p>and then mapped to the interval:</p>
+<div class="math notranslate nohighlight">
+\[x = a + \frac{u}{2^L - 1}(b-a).\]</div>
+<p>This creates a discrete approximation of the continuous search space.</p>
+<section id="binary-operators">
+<h3>Binary operators<a class="headerlink" href="#binary-operators" title="Link to this heading"></a></h3>
+<p><strong>One-point crossover</strong></p>
+<p>Choose a cut point and swap the tails of two parents.</p>
+<p><strong>Bit-flip mutation</strong></p>
+<p>For each bit, apply:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}b_i' =
+\begin{cases}
+1-b_i, &amp; \text{with probability } p_m \\
+b_i, &amp; \text{otherwise}
+\end{cases}\end{split}\]</div>
+</section>
+<section id="binary-advantages">
+<h3>Binary advantages<a class="headerlink" href="#binary-advantages" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Simple and classical formulation.</p></li>
+<li><p>Natural for symbolic or combinatorial variables.</p></li>
+<li><p>Easy to reason about with discrete building blocks.</p></li>
+</ul>
+</section>
+<section id="binary-limitations">
+<h3>Binary limitations<a class="headerlink" href="#binary-limitations" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Continuous variables must be quantized.</p></li>
+<li><p>Small changes in the decoded value may require several bit changes.</p></li>
+<li><p>Resolution depends on chromosome length.</p></li>
+</ul>
+</section>
+</section>
+<section id="method-2-real-coded-genetic-algorithm">
+<h2>Method 2: Real-Coded Genetic Algorithm<a class="headerlink" href="#method-2-real-coded-genetic-algorithm" title="Link to this heading"></a></h2>
+<p>In a real-coded GA, each candidate stores the actual continuous parameters:</p>
+<div class="math notranslate nohighlight">
+\[x = (x_1, x_2, \dots, x_d) \in \mathbb{R}^d.\]</div>
+<p>There is no encoding/decoding step. This is usually a better fit for continuous
+optimization.</p>
+<section id="real-coded-operators">
+<h3>Real-coded operators<a class="headerlink" href="#real-coded-operators" title="Link to this heading"></a></h3>
+<p><strong>Arithmetic crossover</strong></p>
+<p>Given two parents <span class="math notranslate nohighlight">\(p_1\)</span> and <span class="math notranslate nohighlight">\(p_2\)</span>, generate offspring by interpolation:</p>
+<div class="math notranslate nohighlight">
+\[c_1 = \alpha p_1 + (1-\alpha)p_2,
+\qquad
+c_2 = (1-\alpha)p_1 + \alpha p_2,\]</div>
+<p>with <span class="math notranslate nohighlight">\(\alpha \in [0,1]\)</span>.</p>
+<p><strong>Gaussian mutation</strong></p>
+<p>Perturb the child with small random noise:</p>
+<div class="math notranslate nohighlight">
+\[x' = x + \epsilon, \qquad \epsilon \sim \mathcal{N}(0, \sigma^2).\]</div>
+</section>
+<section id="real-coded-advantages">
+<h3>Real-coded advantages<a class="headerlink" href="#real-coded-advantages" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Natural for continuous parameter search.</p></li>
+<li><p>No quantization error.</p></li>
+<li><p>Usually converges more smoothly in real-valued domains.</p></li>
+</ul>
+</section>
+<section id="real-coded-limitations">
+<h3>Real-coded limitations<a class="headerlink" href="#real-coded-limitations" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Operator design matters more.</p></li>
+<li><p>Poor mutation scale can make the search too random or too conservative.</p></li>
+<li><p>Constraints must often be handled explicitly by clipping, penalties, or repair.</p></li>
+</ul>
+</section>
+</section>
+<section id="visual-view-of-the-operators">
+<h2>Visual View of the Operators<a class="headerlink" href="#visual-view-of-the-operators" title="Link to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/genetic_algorithm_operators.png"><img alt="Binary-coded and real-coded genetic algorithm operators" class="align-center" src="../_images/genetic_algorithm_operators.png" style="width: 95%;" />
+</a>
+<p>The left panel shows the classical binary representation with one-point crossover
+and bit-flip mutation. The right panel shows a real-coded variant using arithmetic
+crossover followed by Gaussian mutation.</p>
+</section>
+<section id="toy-optimization-example">
+<h2>Toy Optimization Example<a class="headerlink" href="#toy-optimization-example" title="Link to this heading"></a></h2>
+<p>To compare the two methods, we optimize a 1D multimodal objective. The exact
+shape is not the point; what matters is that it has multiple local optima, so the
+algorithm must balance exploration and exploitation.</p>
+<p>The population starts spread across the full interval and progressively concentrates
+around the best region discovered so far.</p>
+<a class="reference internal image-reference" href="../_images/genetic_algorithm_landscape.png"><img alt="Binary and real-coded genetic algorithm populations moving on a multimodal function" class="align-center" src="../_images/genetic_algorithm_landscape.png" style="width: 100%;" />
+</a>
+<p>The binary-coded GA can only place individuals on a discrete grid induced by the
+bit representation. The real-coded GA can move continuously, which often makes
+fine adjustment easier near a good optimum.</p>
+</section>
+<section id="convergence-behavior">
+<h2>Convergence Behavior<a class="headerlink" href="#convergence-behavior" title="Link to this heading"></a></h2>
+<a class="reference internal image-reference" href="../_images/genetic_algorithm_convergence.png"><img alt="Convergence curves for binary-coded and real-coded genetic algorithms" class="align-center" src="../_images/genetic_algorithm_convergence.png" style="width: 90%;" />
+</a>
+<p>The solid curves show the best fitness in each generation, and the dashed curves
+show the population mean. In this toy example, both methods reach essentially the
+same optimum, but the real-coded version typically refines the location more
+smoothly because it is not limited by bit resolution.</p>
+</section>
+<section id="binary-vs-real-coded-when-to-use-each">
+<h2>Binary vs Real-Coded: When to Use Each<a class="headerlink" href="#binary-vs-real-coded-when-to-use-each" title="Link to this heading"></a></h2>
+<p>Use a <strong>binary-coded GA</strong> when:</p>
+<ul class="simple">
+<li><p>the search variables are naturally discrete,</p></li>
+<li><p>the problem is combinatorial,</p></li>
+<li><p>chromosome logic matters more than geometric distance in <span class="math notranslate nohighlight">\(\mathbb{R}^d\)</span>.</p></li>
+</ul>
+<p>Use a <strong>real-coded GA</strong> when:</p>
+<ul class="simple">
+<li><p>the parameters are continuous,</p></li>
+<li><p>you want smoother local refinement,</p></li>
+<li><p>decoding overhead is unnecessary.</p></li>
+</ul>
+<p>In modern ML and optimization practice, real-coded variants are usually preferred
+for continuous hyperparameters, controller tuning, and black-box objective search.</p>
+</section>
+<section id="where-genetic-algorithms-fit-in-ds-ai">
+<h2>Where Genetic Algorithms Fit in DS/AI<a class="headerlink" href="#where-genetic-algorithms-fit-in-ds-ai" title="Link to this heading"></a></h2>
+<p>Genetic algorithms are most useful when:</p>
+<ul class="simple">
+<li><p>the objective is non-differentiable,</p></li>
+<li><p>gradients are unavailable,</p></li>
+<li><p>the search space mixes discrete and continuous variables,</p></li>
+<li><p>the function is noisy or simulator-based,</p></li>
+<li><p>global exploration matters more than precise local convex optimization.</p></li>
+</ul>
+<p>Common examples:</p>
+<ul class="simple">
+<li><p>hyperparameter search,</p></li>
+<li><p>neural architecture search,</p></li>
+<li><p>feature subset selection,</p></li>
+<li><p>scheduling and routing,</p></li>
+<li><p>control parameter tuning,</p></li>
+<li><p>symbolic rule discovery.</p></li>
+</ul>
+</section>
+<section id="common-pitfalls">
+<h2>Common Pitfalls<a class="headerlink" href="#common-pitfalls" title="Link to this heading"></a></h2>
+<p><strong>Premature convergence</strong></p>
+<p>If selection pressure is too strong, the population becomes too similar too early.</p>
+<p><strong>Too little mutation</strong></p>
+<p>Without mutation, diversity collapses and the search may get stuck.</p>
+<p><strong>Too much mutation</strong></p>
+<p>If mutation is too aggressive, the algorithm behaves like random search.</p>
+<p><strong>Poor representation</strong></p>
+<p>The encoding must match the problem. A bad chromosome design makes good solutions
+hard to inherit.</p>
+<p><strong>Over-expensive fitness</strong></p>
+<p>GAs may require many evaluations, so they can be expensive when each evaluation is
+a full simulation or model training run.</p>
+</section>
+<section id="reproduce-the-figures">
+<h2>Reproduce the Figures<a class="headerlink" href="#reproduce-the-figures" title="Link to this heading"></a></h2>
+<p>Run the generator script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>docs/_static_files/codes/genetic_algorithm.py
+</pre></div>
+</div>
+<p>It writes the PNGs under <code class="docutils literal notranslate"><span class="pre">docs/_static_files/images</span></code> and prints the best solution
+found by each GA variant.</p>
 </section>
 <section id="references-and-further-reading">
 <h2>References and Further Reading<a class="headerlink" href="#references-and-further-reading" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p><strong>Pearson, K.</strong> (1901). On lines and planes of closest fit to systems of points in space. <em>Philosophical Magazine</em>, 2(11), 559–572. Classic foundational paper introducing PCA (then called “principal axes”).</p></li>
-<li><p><strong>Jolliffe, I. T.</strong> (2002). <em>Principal Component Analysis</em> (2nd ed.). Springer-Verlag. Comprehensive textbook covering theory, applications, and extensions of PCA with extensive examples.</p></li>
-<li><p><strong>Turk, M., &amp; Pentland, A.</strong> (1991). Eigenfaces for recognition. <em>Journal of Cognitive Neuroscience</em>, 3(1), 71–86. Landmark application of PCA to face recognition.</p></li>
-<li><p><strong>Wold, S., Esbensen, K., &amp; Geladi, P.</strong> (1987). Principal component analysis. <em>Chemometrics and Intelligent Laboratory Systems</em>, 2(1-3), 37–52. Practical guide to PCA in chemometrics with real-world examples.</p></li>
-<li><p><strong>Hastie, T., Tibshirani, R., &amp; Friedman, J.</strong> (2009). <em>The Elements of Statistical Learning: Data Mining, Inference, and Prediction</em> (2nd ed.). Springer. Chapter on unsupervised learning covers PCA in a modern statistical learning context.</p></li>
-<li><p><strong>Belkin, M., &amp; Niyogi, P.</strong> (2003). Laplacian eigenmaps for dimensionality reduction and data representation. <em>Neural Computation</em>, 15(6), 1373–1396. Extension of PCA using graph-based methods for nonlinear dimensionality reduction.</p></li>
+<li><p><strong>Holland, J. H.</strong> (1975). <em>Adaptation in Natural and Artificial Systems</em>. University of Michigan Press. Foundational text introducing the genetic algorithm framework.</p></li>
+<li><p><strong>Goldberg, D. E.</strong> (1989). <em>Genetic Algorithms in Search, Optimization, and Machine Learning</em>. Addison-Wesley. Classical engineering-oriented treatment of selection, crossover, and mutation.</p></li>
+<li><p><strong>Michalewicz, Z.</strong> (1996). <em>Genetic Algorithms + Data Structures = Evolution Programs</em> (3rd ed.). Springer. Strong practical reference on operators and representations.</p></li>
+<li><p><strong>Deb, K.</strong> (2001). <em>Multi-Objective Optimization Using Evolutionary Algorithms</em>. Wiley. Standard reference for evolutionary methods beyond single-objective search.</p></li>
 </ul>
 </section>
 </section>
@@ -755,8 +719,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="backpropagation.html" class="btn btn-neutral float-left" title="Backpropagation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="transformers.html" class="btn btn-neutral float-right" title="Understanding Transformers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="logistic_regression.html" class="btn btn-neutral float-left" title="Logistic Regression" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bias_variance.html" class="btn btn-neutral float-right" title="Bias - Variance Decomposition" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

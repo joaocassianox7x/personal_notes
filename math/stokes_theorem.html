@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Functions and Domains &mdash; Personal Notes</title>
+  <title>Stokes’ Theorem &mdash; Personal Notes</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=65e9e8ab" />
@@ -22,8 +22,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Limits" href="limits.html" />
-    <link rel="prev" title="Split-Operator Method (Quantum Time Propagation)" href="../physics/split_operator.html" /> 
+    <link rel="next" title="Residue Theorem" href="residue_theorem.html" />
+    <link rel="prev" title="Integrals" href="integrals.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -148,10 +148,10 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Math</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Functions and Domains</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#definition">Definition</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#notes">Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html">Functions and Domains</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#definition">Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="functions.html#notes">Notes</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="limits.html">Limits</a><ul>
@@ -222,19 +222,19 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="stokes_theorem.html">Stokes’ Theorem</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="stokes_theorem.html#what-the-theorem-says">What the theorem says</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stokes_theorem.html#geometric-meaning">Geometric meaning</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stokes_theorem.html#orientation-rule">Orientation rule</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stokes_theorem.html#when-to-use-it">When to use it</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stokes_theorem.html#practical-checklist">Practical checklist</a></li>
-<li class="toctree-l2"><a class="reference internal" href="stokes_theorem.html#worked-examples">Worked examples</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="stokes_theorem.html#example-1-closed-line-integral-on-a-circle">Example 1: closed line integral on a circle</a></li>
-<li class="toctree-l3"><a class="reference internal" href="stokes_theorem.html#example-2-triangle-in-an-oblique-plane">Example 2: triangle in an oblique plane</a></li>
-<li class="toctree-l3"><a class="reference internal" href="stokes_theorem.html#example-3-use-stokes-in-the-reverse-direction">Example 3: use Stokes in the reverse direction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Stokes’ Theorem</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-the-theorem-says">What the theorem says</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#geometric-meaning">Geometric meaning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#orientation-rule">Orientation rule</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#when-to-use-it">When to use it</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#practical-checklist">Practical checklist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#worked-examples">Worked examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#example-1-closed-line-integral-on-a-circle">Example 1: closed line integral on a circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-2-triangle-in-an-oblique-plane">Example 2: triangle in an oblique plane</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-3-use-stokes-in-the-reverse-direction">Example 3: use Stokes in the reverse direction</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="stokes_theorem.html#summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#summary">Summary</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="residue_theorem.html">Residue Theorem</a><ul>
@@ -444,9 +444,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Functions and Domains</li>
+      <li class="breadcrumb-item active">Stokes’ Theorem</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/math/functions.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/math/stokes_theorem.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -454,26 +454,213 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="functions-and-domains">
-<h1>Functions and Domains<a class="headerlink" href="#functions-and-domains" title="Link to this heading"></a></h1>
-<section id="definition">
-<h2>Definition<a class="headerlink" href="#definition" title="Link to this heading"></a></h2>
-<p>A function <span class="math notranslate nohighlight">\(f : A \to B\)</span> assigns each <span class="math notranslate nohighlight">\(x \in A\)</span> exactly one <span class="math notranslate nohighlight">\(f(x) \in B\)</span>.</p>
+  <section id="stokes-theorem">
+<h1>Stokes’ Theorem<a class="headerlink" href="#stokes-theorem" title="Link to this heading"></a></h1>
+<section id="what-the-theorem-says">
+<h2>What the theorem says<a class="headerlink" href="#what-the-theorem-says" title="Link to this heading"></a></h2>
+<p>Let <span class="math notranslate nohighlight">\(S\)</span> be an oriented smooth surface with positively oriented boundary
+<span class="math notranslate nohighlight">\(C = \partial S\)</span>. For a vector field <span class="math notranslate nohighlight">\(\mathbf{F}\)</span>, Stokes’ theorem says</p>
+<div class="math notranslate nohighlight">
+\[\oint_C \mathbf{F} \cdot d\mathbf{r}
+=
+\iint_S (\nabla \times \mathbf{F}) \cdot \mathbf{n}\, dS.\]</div>
+<p>The theorem converts:</p>
 <ul class="simple">
-<li><p>Domain: all <span class="math notranslate nohighlight">\(x\)</span> where <span class="math notranslate nohighlight">\(f(x)\)</span> is defined.</p></li>
-<li><p>Codomain <span class="math notranslate nohighlight">\(B\)</span> vs. range (actual outputs).</p></li>
+<li><p>a closed line integral into a surface integral of the curl, or</p></li>
+<li><p>a surface integral of the curl into a line integral along the boundary.</p></li>
+</ul>
+<p>It is one of the main tools for solving vector-calculus integrals.</p>
+</section>
+<section id="geometric-meaning">
+<h2>Geometric meaning<a class="headerlink" href="#geometric-meaning" title="Link to this heading"></a></h2>
+<p>The left-hand side measures circulation of <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> around the boundary
+<span class="math notranslate nohighlight">\(C\)</span>.</p>
+<p>The right-hand side measures how much the curl of <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> passes through
+the surface <span class="math notranslate nohighlight">\(S\)</span>.</p>
+<p>So Stokes’ theorem says:
+circulation around the edge equals total rotation through the surface.</p>
+</section>
+<section id="orientation-rule">
+<h2>Orientation rule<a class="headerlink" href="#orientation-rule" title="Link to this heading"></a></h2>
+<p>The orientation of the boundary and the orientation of the surface must match.</p>
+<p>Use the right-hand rule:</p>
+<ul class="simple">
+<li><p>point the thumb in the direction of the chosen normal <span class="math notranslate nohighlight">\(\mathbf{n}\)</span>,</p></li>
+<li><p>the fingers curl in the positive direction of the boundary.</p></li>
+</ul>
+<p>If the orientation is reversed, the sign of the integral changes.</p>
+</section>
+<section id="when-to-use-it">
+<h2>When to use it<a class="headerlink" href="#when-to-use-it" title="Link to this heading"></a></h2>
+<p>Stokes’ theorem is especially useful when:</p>
+<ul class="simple">
+<li><p>the line integral is over a closed curve in 3D,</p></li>
+<li><p>the boundary comes from a curved surface but can be replaced by an easier surface
+with the same boundary,</p></li>
+<li><p>the curl is simpler than a direct parametrization of the curve,</p></li>
+<li><p>the surface integral of <span class="math notranslate nohighlight">\(\nabla \times \mathbf{F}\)</span> is harder than the
+boundary integral.</p></li>
 </ul>
 </section>
-<section id="example">
-<h2>Example<a class="headerlink" href="#example" title="Link to this heading"></a></h2>
-<p><span class="math notranslate nohighlight">\(f(x) = \dfrac{1}{x-2}\)</span> has domain <span class="math notranslate nohighlight">\(\mathbb{R} \setminus \{2\}\)</span> and range <span class="math notranslate nohighlight">\(\mathbb{R} \setminus \{0\}\)</span>.</p>
+<section id="practical-checklist">
+<h2>Practical checklist<a class="headerlink" href="#practical-checklist" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Identify the vector field <span class="math notranslate nohighlight">\(\mathbf{F}\)</span>.</p></li>
+<li><p>Identify the curve <span class="math notranslate nohighlight">\(C\)</span> and its orientation.</p></li>
+<li><p>Compute <span class="math notranslate nohighlight">\(\nabla \times \mathbf{F}\)</span>.</p></li>
+<li><p>Choose the easier side of the theorem.</p></li>
+<li><p>If needed, replace the surface by any simpler surface with the same boundary.</p></li>
+<li><p>Check the orientation before integrating.</p></li>
+</ol>
 </section>
-<section id="notes">
-<h2>Notes<a class="headerlink" href="#notes" title="Link to this heading"></a></h2>
+<section id="worked-examples">
+<h2>Worked examples<a class="headerlink" href="#worked-examples" title="Link to this heading"></a></h2>
+<section id="example-1-closed-line-integral-on-a-circle">
+<h3>Example 1: closed line integral on a circle<a class="headerlink" href="#example-1-closed-line-integral-on-a-circle" title="Link to this heading"></a></h3>
+<p>Compute</p>
+<div class="math notranslate nohighlight">
+\[\oint_C (-y, x, 0) \cdot d\mathbf{r},\]</div>
+<p>where <span class="math notranslate nohighlight">\(C\)</span> is the unit circle <span class="math notranslate nohighlight">\(x^2 + y^2 = 1\)</span> in the plane <span class="math notranslate nohighlight">\(z=0\)</span>,
+oriented counterclockwise when viewed from above.</p>
+<p>Step 1. Choose the vector field:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{F}(x,y,z)=(-y,x,0).\]</div>
+<p>Step 2. Compute the curl:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\nabla \times \mathbf{F}
+=
+\begin{pmatrix}
+\partial_y 0 - \partial_z x \\
+\partial_z(-y) - \partial_x 0 \\
+\partial_x x - \partial_y(-y)
+\end{pmatrix}
+=
+(0,0,2).\end{split}\]</div>
+<p>Step 3. Choose the easiest surface with boundary <span class="math notranslate nohighlight">\(C\)</span>: the unit disk
+<span class="math notranslate nohighlight">\(D\)</span> in the plane <span class="math notranslate nohighlight">\(z=0\)</span>.</p>
+<p>Its upward unit normal is <span class="math notranslate nohighlight">\(\mathbf{n}=(0,0,1)\)</span>.</p>
+<p>Step 4. Apply Stokes’ theorem:</p>
+<div class="math notranslate nohighlight">
+\[\oint_C \mathbf{F}\cdot d\mathbf{r}
+=
+\iint_D (\nabla \times \mathbf{F})\cdot \mathbf{n}\, dS
+=
+\iint_D 2\, dA.\]</div>
+<p>Step 5. Integrate over the disk:</p>
+<div class="math notranslate nohighlight">
+\[\iint_D 2\, dA = 2 \cdot \text{Area}(D) = 2\pi.\]</div>
+<p>Therefore,</p>
+<div class="math notranslate nohighlight">
+\[\oint_C (-y, x, 0)\cdot d\mathbf{r} = 2\pi.\]</div>
+</section>
+<section id="example-2-triangle-in-an-oblique-plane">
+<h3>Example 2: triangle in an oblique plane<a class="headerlink" href="#example-2-triangle-in-an-oblique-plane" title="Link to this heading"></a></h3>
+<p>Compute</p>
+<div class="math notranslate nohighlight">
+\[\oint_C (z, x, y)\cdot d\mathbf{r},\]</div>
+<p>where <span class="math notranslate nohighlight">\(C\)</span> is the boundary of the triangle with vertices
+<span class="math notranslate nohighlight">\(A=(1,0,0)\)</span>, <span class="math notranslate nohighlight">\(B=(0,1,0)\)</span>, <span class="math notranslate nohighlight">\(C=(0,0,1)\)</span>,
+oriented in the order <span class="math notranslate nohighlight">\(A \to B \to C \to A\)</span>.</p>
+<p>Step 1. Choose the vector field:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{F}(x,y,z)=(z,x,y).\]</div>
+<p>Step 2. Compute the curl:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\nabla \times \mathbf{F}
+=
+\begin{pmatrix}
+\partial_y y - \partial_z x \\
+\partial_z z - \partial_x y \\
+\partial_x x - \partial_y z
+\end{pmatrix}
+=
+(1,1,1).\end{split}\]</div>
+<p>Step 3. Use the triangle itself as the surface.</p>
+<p>An oriented area vector for the triangle is</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{2}\big[(B-A)\times(C-A)\big].\]</div>
+<p>Now</p>
+<div class="math notranslate nohighlight">
+\[B-A = (-1,1,0), \qquad C-A = (-1,0,1),\]</div>
+<p>so</p>
+<div class="math notranslate nohighlight">
+\[(B-A)\times(C-A) = (1,1,1).\]</div>
+<p>Hence the oriented area vector is</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{2}(1,1,1).\]</div>
+<p>Step 4. Since the curl is constant, the surface integral is curl dot oriented area:</p>
+<div class="math notranslate nohighlight">
+\[\oint_C \mathbf{F}\cdot d\mathbf{r}
+=
+\iint_S (\nabla\times\mathbf{F})\cdot\mathbf{n}\, dS
+=
+(1,1,1)\cdot \frac{1}{2}(1,1,1).\]</div>
+<p>Step 5. Compute:</p>
+<div class="math notranslate nohighlight">
+\[(1,1,1)\cdot \frac{1}{2}(1,1,1)
+=
+\frac{1}{2}(1+1+1)
+=
+\frac{3}{2}.\]</div>
+<p>Therefore,</p>
+<div class="math notranslate nohighlight">
+\[\oint_C (z, x, y)\cdot d\mathbf{r} = \frac{3}{2}.\]</div>
+</section>
+<section id="example-3-use-stokes-in-the-reverse-direction">
+<h3>Example 3: use Stokes in the reverse direction<a class="headerlink" href="#example-3-use-stokes-in-the-reverse-direction" title="Link to this heading"></a></h3>
+<p>Compute</p>
+<div class="math notranslate nohighlight">
+\[\iint_S (\nabla \times \mathbf{F})\cdot \mathbf{n}\, dS,\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{F}(x,y,z)=(-y,x,z)\)</span>, and <span class="math notranslate nohighlight">\(S\)</span> is the upper hemisphere
+<span class="math notranslate nohighlight">\(x^2+y^2+z^2=9\)</span>, oriented with outward normal.</p>
+<p>Step 1. Identify the boundary of the hemisphere.</p>
+<p>The boundary curve is the circle</p>
+<div class="math notranslate nohighlight">
+\[x^2+y^2=9, \qquad z=0,\]</div>
+<p>oriented counterclockwise when viewed from above.</p>
+<p>Step 2. Apply Stokes’ theorem:</p>
+<div class="math notranslate nohighlight">
+\[\iint_S (\nabla \times \mathbf{F})\cdot \mathbf{n}\, dS
+=
+\oint_{\partial S} \mathbf{F}\cdot d\mathbf{r}.\]</div>
+<p>Step 3. Parametrize the boundary circle:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{r}(t)=(3\cos t, 3\sin t, 0), \qquad 0 \le t \le 2\pi.\]</div>
+<p>Then</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{r}'(t)=(-3\sin t, 3\cos t, 0).\]</div>
+<p>Step 4. Evaluate the vector field on the curve:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{F}(\mathbf{r}(t))=(-3\sin t, 3\cos t, 0).\]</div>
+<p>Step 5. Compute the dot product:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{F}(\mathbf{r}(t))\cdot \mathbf{r}'(t)
+=
+(-3\sin t)(-3\sin t) + (3\cos t)(3\cos t)
+=
+9.\]</div>
+<p>Step 6. Integrate:</p>
+<div class="math notranslate nohighlight">
+\[\oint_{\partial S} \mathbf{F}\cdot d\mathbf{r}
+=
+\int_0^{2\pi} 9\, dt
+=
+18\pi.\]</div>
+<p>Therefore,</p>
+<div class="math notranslate nohighlight">
+\[\iint_S (\nabla \times \mathbf{F})\cdot \mathbf{n}\, dS = 18\pi.\]</div>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading"></a></h2>
+<p>Stokes’ theorem is a method-selection tool:</p>
 <ul class="simple">
-<li><p>Composition: <span class="math notranslate nohighlight">\((g \circ f)(x) = g(f(x))\)</span> is defined where the output of <span class="math notranslate nohighlight">\(f\)</span> lies in the domain of <span class="math notranslate nohighlight">\(g\)</span>.</p></li>
-<li><p>Inverses: <span class="math notranslate nohighlight">\(f^{-1}\)</span> exists only if <span class="math notranslate nohighlight">\(f\)</span> is bijective on its domain.</p></li>
+<li><p>if the boundary curve is simple, use the line integral;</p></li>
+<li><p>if the curl and surface are simple, use the surface integral;</p></li>
+<li><p>if the original surface is complicated, replace it with an easier one having the
+same boundary and orientation.</p></li>
 </ul>
+<p>That is why the theorem is so effective for solving integrals in vector calculus.</p>
 </section>
 </section>
 
@@ -481,8 +668,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../physics/split_operator.html" class="btn btn-neutral float-left" title="Split-Operator Method (Quantum Time Propagation)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="limits.html" class="btn btn-neutral float-right" title="Limits" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="integrals.html" class="btn btn-neutral float-left" title="Integrals" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="residue_theorem.html" class="btn btn-neutral float-right" title="Residue Theorem" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

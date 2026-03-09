@@ -33,7 +33,7 @@ Personal Notes
        <ul>
          <li>Functions and limits</li>
          <li>Integrals and common techniques</li>
-         <li>Residue theorem</li>
+         <li>Residue and Stokes theorems</li>
        </ul>
      </a>
      <a class="landing-card" href="ds_ai/index.html">
@@ -41,9 +41,9 @@ Personal Notes
        <h2>DS, ML, and AI</h2>
        <p>Practical notes on models, metrics, training dynamics, and machine learning foundations.</p>
        <ul>
-         <li>Regression and classification</li>
-         <li>Bias, variance, and metrics</li>
-         <li>PCA, backpropagation, transformers</li>
+          <li>Regression and classification</li>
+          <li>Bias, variance, and metrics</li>
+         <li>PCA, backpropagation, transformers, genetic algorithms</li>
        </ul>
      </a>
    </section>
@@ -77,6 +77,7 @@ Personal Notes
    math/functions
    math/limits
    math/integrals
+   math/stokes_theorem
    math/residue_theorem
 
 .. toctree::
@@ -87,6 +88,7 @@ Personal Notes
    ds_ai/python
    ds_ai/linear_regression
    ds_ai/logistic_regression
+   ds_ai/genetic_algorithm
    ds_ai/bias_variance
    ds_ai/metrics
    ds_ai/backpropagation

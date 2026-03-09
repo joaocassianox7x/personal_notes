@@ -9,6 +9,7 @@
   <title>PPPM vs. Ewald (Long-Range Coulomb) &mdash; Personal Notes</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=65e9e8ab" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
@@ -49,30 +50,322 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Physics and Computational Physics</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="computational_derivatives.html">Computational Derivatives</a></li>
-<li class="toctree-l1"><a class="reference internal" href="force_fields.html">Force Fields : Water</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lammps.html">Molecular Dynamics with LAMMPS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="harmonic_oscillator.html">Quantum Harmonic Oscillator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="split_operator.html">Split-Operator Method (Quantum Time Propagation)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pppm_ewald.html">PPPM vs Ewald (Long-Range Coulomb)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#classical-ewald-summation">Classical Ewald Summation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#potential-decomposition">Potential Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#computational-cost">Computational Cost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#forces">Forces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#pppm-particleparticle-particlemesh">PPPM (Particle–Particle Particle–Mesh)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#decomposition-strategy">Decomposition Strategy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#mesh-based-long-range-calculation">Mesh-based Long-Range Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#id1">Computational Cost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#accuracy-control">Accuracy Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#practical-comparison">Practical Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#ewald-summation">Ewald Summation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#pppm-method">PPPM Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pppm_ewald.html#summary-table">Summary Table</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="double_pendulum.html">Double Pendulum via Lagrangian Mechanics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#geometry-and-coordinates">Geometry and coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#kinetic-and-potential-energy">Kinetic and potential energy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#equations-of-motion-standard-form">Equations of motion (standard form)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#numerical-simulation-recipe">Numerical simulation recipe</a></li>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#visualization-results">Visualization results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#how-to-reproduce-the-figures">How to reproduce the figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="double_pendulum.html#key-points-from-the-script">Key points from the script</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="computational_derivatives.html">Computational Derivatives</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#goal">Goal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#finite-differences-1d">Finite differences (1D)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#error-order-derivation-sketch">Error order derivation (sketch)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#visual-intuition">Visual intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#why-central-differences-are-better">Why central differences are better</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#second-derivatives">Second derivatives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#error-sources">Error sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#optimal-step-size-central-2nd-order">Optimal step size (central, 2nd order)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#practical-guidance">Practical guidance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#numpy-snippet-central-difference">NumPy snippet (central difference)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="computational_derivatives.html#extending-to-gradients">Extending to gradients</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="force_fields.html">Force Fields : Water</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#intermolecular-interactions-general-principles">Intermolecular Interactions: General Principles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#water-models-overview">Water Models Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#detailed-water-model-comparison">Detailed Water Model Comparison</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#spc-simple-point-charge">1. SPC (Simple Point Charge)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#spc-e-spc-extended">2. SPC/E (SPC Extended)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#tip3p-transferable-intermolecular-potential-3-site">3. TIP3P (Transferable Intermolecular Potential, 3-site)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#tip4p-transferable-intermolecular-potential-4-site">4. TIP4P (Transferable Intermolecular Potential, 4-site)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#tip4p-2005-tip4p-refined-2005">5. TIP4P/2005 (TIP4P Refined, 2005)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#tip4p-ice">6. TIP4P/Ice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#tip4p-ew-tip4p-with-ewald-summation">7. TIP4P/Ew (TIP4P with Ewald summation)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#spc-fw-spc-flexible-water">8. SPC/Fw (SPC Flexible Water)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#q-tip4p-f-quantum-tip4p-f">9. q-TIP4P/f (Quantum TIP4P/f)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#comparative-summary-table">Comparative Summary Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#hydrogen-bonding-in-water-models">Hydrogen Bonding in Water Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#choosing-a-water-model-for-your-simulation">Choosing a Water Model for Your Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#extensions-and-modern-developments">Extensions and Modern Developments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="force_fields.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lammps.html">Molecular Dynamics with LAMMPS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lammps.html#statistical-mechanics-foundations">Statistical Mechanics Foundations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lammps.html#integration-algorithms">Integration Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lammps.html#lennard-jones-potential">Lennard-Jones Potential</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lammps.html#energy-minimization">Energy Minimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lammps.html#basic-lammps-workflow">Basic LAMMPS Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lammps.html#simulation-example-lennard-jones-fluid">Simulation Example: Lennard-Jones Fluid</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lammps.html#calculating-thermodynamic-properties">Calculating Thermodynamic Properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lammps.html#visualization-and-animation">Visualization and Animation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lammps.html#complete-simulation-script">Complete Simulation Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lammps.html#expected-results">Expected Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lammps.html#advanced-topics">Advanced Topics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lammps.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="harmonic_oscillator.html">Quantum Harmonic Oscillator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="harmonic_oscillator.html#setup-and-potential">Setup and potential</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonic_oscillator.html#step-by-step-wavefunction-solution">Step-by-step wavefunction solution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonic_oscillator.html#step-by-step-ladder-operator-dirac-solution">Step-by-step ladder-operator (Dirac) solution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonic_oscillator.html#energy-levels-and-potential">Energy levels and potential</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonic_oscillator.html#eigenfunctions-first-six-levels">Eigenfunctions (first six levels)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="harmonic_oscillator.html#remarks">Remarks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="split_operator.html">Split-Operator Method (Quantum Time Propagation)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="split_operator.html#the-math-behind-it-trotter-strang">The math behind it (Trotter + Strang)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="split_operator.html#why-it-is-fast-fourier-diagonalizes-the-kinetic-term">Why it is fast (Fourier diagonalizes the kinetic term)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="split_operator.html#practical-notes">Practical notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="split_operator.html#animated-example-gaussian-wavepacket-in-a-harmonic-trap">Animated example (Gaussian wavepacket in a harmonic trap)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="split_operator.html#step-by-step-python-1d">Step-by-step Python (1D)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="split_operator.html#reproducibility">Reproducibility</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Math</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../math/residue_theorem.html">Residue Theorem</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../math/functions.html">Functions and Domains</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../math/functions.html#definition">Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/functions.html#example">Example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/functions.html#notes">Notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../math/limits.html">Limits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../math/limits.html#intuitive-view">Intuitive view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/limits.html#epsilondelta-definition">Epsilon–delta definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/limits.html#basic-facts">Basic facts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/limits.html#one-sided-limits">One-sided limits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/limits.html#common-limit-tricks">Common limit tricks</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../math/integrals.html">Integrals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../math/integrals.html#what-is-an-integral">What is an integral?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/integrals.html#most-common-methods">Most common methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/integrals.html#integration-by-parts-idv-vdi">Integration by parts (IDV-VDI)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../math/integrals.html#worked-examples-3">Worked examples (3)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../math/integrals.html#example-1-int-x-e-x-dx">Example 1: <span class="math notranslate nohighlight">\(\int x e^x\,dx\)</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../math/integrals.html#example-2-int-x-ln-x-dx">Example 2: <span class="math notranslate nohighlight">\(\int x\ln x\,dx\)</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../math/integrals.html#example-3-int-e-x-sin-x-dx">Example 3: <span class="math notranslate nohighlight">\(\int e^x\sin x\,dx\)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../math/integrals.html#substitution">Substitution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../math/integrals.html#id1">Worked examples (3)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../math/integrals.html#example-1-int-2x-cos-x-2-dx">Example 1: <span class="math notranslate nohighlight">\(\int 2x\cos(x^2)\,dx\)</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../math/integrals.html#example-2-int-frac-x-x-2-1-dx">Example 2: <span class="math notranslate nohighlight">\(\int \frac{x}{x^2+1}\,dx\)</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../math/integrals.html#example-3-int-3x-1-5-dx">Example 3: <span class="math notranslate nohighlight">\(\int (3x+1)^5\,dx\)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../math/integrals.html#trigonometric-substitution">Trigonometric substitution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../math/integrals.html#id2">Worked examples (3)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../math/integrals.html#example-1-int-frac-dx-sqrt-9-x-2">Example 1: <span class="math notranslate nohighlight">\(\int \frac{dx}{\sqrt{9-x^2}}\)</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../math/integrals.html#example-2-int-frac-dx-x-2-4">Example 2: <span class="math notranslate nohighlight">\(\int \frac{dx}{x^2+4}\)</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../math/integrals.html#example-3-int-frac-dx-sqrt-x-2-9">Example 3: <span class="math notranslate nohighlight">\(\int \frac{dx}{\sqrt{x^2-9}}\)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../math/integrals.html#polynomial-coefficients-partial-fractions">Polynomial coefficients (partial fractions)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../math/integrals.html#id3">Worked examples (3)</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../math/integrals.html#example-1-int-frac-3x-5-x-2-3x-2-dx">Example 1: <span class="math notranslate nohighlight">\(\int \frac{3x+5}{x^2+3x+2}\,dx\)</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../math/integrals.html#example-2-int-frac-5x-3-x-x-1-2-dx">Example 2: <span class="math notranslate nohighlight">\(\int \frac{5x+3}{x(x+1)^2}\,dx\)</span></a></li>
+<li class="toctree-l4"><a class="reference internal" href="../math/integrals.html#example-3-int-frac-2x-2-3x-4-x-x-2-1-dx">Example 3: <span class="math notranslate nohighlight">\(\int \frac{2x^2+3x+4}{x(x^2+1)}\,dx\)</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../math/residue_theorem.html">Residue Theorem</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../math/residue_theorem.html#summary-arfken">Summary (Arfken)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/residue_theorem.html#intuition-why-it-works">Intuition (why it works)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/residue_theorem.html#residue-formulas">Residue formulas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/residue_theorem.html#equivalent-identities-handy-in-practice">Equivalent identities (handy in practice)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/residue_theorem.html#fast-residue-methods-beyond-the-limit-formula">Fast residue methods (beyond the limit formula)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/residue_theorem.html#practical-checklist">Practical checklist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/residue_theorem.html#notes-on-contour-choices">Notes on contour choices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/residue_theorem.html#methodology">Methodology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../math/residue_theorem.html#worked-examples">Worked examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../math/residue_theorem.html#example-1-int-infty-infty-frac-dx-x-2-a-2">Example 1: <span class="math notranslate nohighlight">\(\int_{-\infty}^{\infty} \frac{dx}{x^2+a^2}\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../math/residue_theorem.html#example-2-int-0-infty-frac-cos-bx-x-2-a-2-dx">Example 2: <span class="math notranslate nohighlight">\(\int_0^{\infty} \frac{\cos(bx)}{x^2+a^2}\,dx\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../math/residue_theorem.html#example-3-int-0-2-pi-frac-d-theta-a-b-cos-theta">Example 3: <span class="math notranslate nohighlight">\(\int_0^{2\pi} \frac{d\theta}{a+b\cos\theta}\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../math/residue_theorem.html#example-4-int-0-2-pi-cos-2n-x-dx">Example 4: <span class="math notranslate nohighlight">\(\int_0^{2\pi} \cos^{2n}(x)\,dx\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../math/residue_theorem.html#example-5-keyhole-branch-cut-int-0-infty-frac-x-alpha-1-1-x-dx">Example 5 (keyhole/branch cut): <span class="math notranslate nohighlight">\(\int_0^{\infty} \frac{x^{\alpha-1}}{1+x}\,dx\)</span></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../math/residue_theorem.html#example-6-pole-on-the-integration-path-mathrm-pv-int-infty-infty-frac-sin-x-x-dx">Example 6 (pole on the integration path): <span class="math notranslate nohighlight">\(\mathrm{PV}\int_{-\infty}^{\infty} \frac{\sin x}{x}\,dx\)</span></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../math/residue_theorem.html#additional-examples-to-practice">Additional examples to practice</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">DS, ML, and AI</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../ds_ai/python.html">Python for Data Science</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ds_ai/linear_regression.html">Linear Regression</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ds_ai/logistic_regression.html">Logistic Regression</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ds_ai/bias_variance.html">Bias - Variance Decomposition</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ds_ai/metrics.html">Metrics for DS, ML, and AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ds_ai/backpropagation.html">Backpropagation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ds_ai/pca.html">Principal Component Analysis (PCA)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../ds_ai/transformers.html">Understanding Transformers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/python.html">Python for Data Science</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#development-environment">Development environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#variables-types-and-scope">Variables, types, and scope</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#basic-packages-and-imports">Basic packages and imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#conditional-logic-and-boolean-expressions">Conditional logic and boolean expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#sequences-lists-tuples-and-matrices">Sequences: lists, tuples, and matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#loops">Loops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#functions">Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#file-i-o">File I/O</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#lambda-and-comprehensions">Lambda and comprehensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#numerical-methods-in-pure-python">Numerical methods in pure Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#scientific-python-stack">Scientific Python stack</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ds_ai/python.html#matplotlib">Matplotlib</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ds_ai/python.html#numpy">NumPy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../ds_ai/python.html#scipy">SciPy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#python-updates-since-2020">Python updates since 2020</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/python.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/linear_regression.html">Linear Regression</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/linear_regression.html#core-idea">Core idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/linear_regression.html#model-and-loss">Model and loss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/linear_regression.html#normal-equations-closed-form">Normal equations (closed form)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/linear_regression.html#ridge-l2-regularized-solution">Ridge (L2-regularized) solution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/linear_regression.html#gradient-descent-update">Gradient descent update</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/linear_regression.html#under-the-hood-probabilistic-view">Under the hood: probabilistic view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/linear_regression.html#diagnostics">Diagnostics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/linear_regression.html#numpy-implementation">NumPy implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/linear_regression.html#visuals">Visuals</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/linear_regression.html#reproducibility-of-figures">Reproducibility of figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/linear_regression.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/logistic_regression.html">Logistic Regression</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/logistic_regression.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/logistic_regression.html#model-and-loss">Model and loss</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/logistic_regression.html#gradient-vectorized">Gradient (vectorized)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/logistic_regression.html#numpy-implementation-batch-gd">Numpy implementation (batch GD)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/logistic_regression.html#notes">Notes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/logistic_regression.html#figures">Figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/logistic_regression.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/bias_variance.html">Bias - Variance Decomposition</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#expected-prediction-error">Expected Prediction Error</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#expected-squared-error">Expected Squared Error</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#the-fundamental-bias-variance-decomposition">The Fundamental Bias-Variance Decomposition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#expected-test-error-integrated">Expected Test Error (Integrated)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#detailed-analysis-of-bias-and-variance">Detailed Analysis of Bias and Variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#bias-definition-and-interpretation">Bias: Definition and Interpretation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#variance-definition-and-interpretation">Variance: Definition and Interpretation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#relationship-between-bias-and-variance">Relationship Between Bias and Variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#bias-variance-in-different-contexts">Bias-Variance in Different Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#linear-regression">Linear Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#regularized-regression">Regularized Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#decision-trees-and-ensemble-methods">Decision Trees and Ensemble Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#cross-validation-and-bias-variance">Cross-Validation and Bias-Variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#leave-one-out-cross-validation-loocv">Leave-One-Out Cross-Validation (LOOCV)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#k-fold-cross-validation">K-Fold Cross-Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#learning-curves-diagnosing-bias-variance-problems">Learning Curves: Diagnosing Bias-Variance Problems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#model-complexity-examples">Model Complexity Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#practical-strategies-to-control-bias-variance">Practical Strategies to Control Bias-Variance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#reducing-bias-model-is-too-simple">Reducing Bias (Model is Too Simple)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#reducing-variance-model-is-too-complex">Reducing Variance (Model is Too Complex)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#the-bayes-error-ultimate-lower-bound">The Bayes Error: Ultimate Lower Bound</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#bias-variance-in-classification">Bias-Variance in Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#summary-table">Summary Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/bias_variance.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/metrics.html">Metrics for DS, ML, and AI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#confusion-matrix-and-notation-binary">Confusion matrix and notation (binary)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#visual-layout-binary">Visual layout (binary)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#core-metrics-binary">Core metrics (binary)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#thresholds-and-decision-rules">Thresholds and decision rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#when-to-use-which">When to use which</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#multi-class-and-multi-label">Multi-class and multi-label</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#worked-example-binary">Worked example (binary)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#choosing-a-metric-for-common-scenarios">Choosing a metric for common scenarios</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#roc-vs-pr-intuition">ROC vs PR intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#prevalence-effect-on-precision">Prevalence effect on precision</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#threshold-sweeps-practical">Threshold sweeps (practical)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#numpy-implementation">NumPy implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#attention-and-risks">Attention and risks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#practice-exercises">Practice exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/metrics.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/backpropagation.html">Backpropagation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/backpropagation.html#goal">Goal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/backpropagation.html#setup-two-layer-mlp">Setup: two-layer MLP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/backpropagation.html#chain-rule-scalar-view">Chain rule (scalar view)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/backpropagation.html#error-signals-and-shapes">Error signals and shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/backpropagation.html#gradient-flow-intuition">Gradient flow intuition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/backpropagation.html#numerical-stability-tips">Numerical stability tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/backpropagation.html#numpy-reference-implementation">NumPy reference implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/backpropagation.html#figures">Figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/backpropagation.html#reproduce-the-figures">Reproduce the figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/backpropagation.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/pca.html">Principal Component Analysis (PCA)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/pca.html#core-idea">Core Idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/pca.html#matrix-definition">Matrix Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/pca.html#algebraic-definition">Algebraic Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/pca.html#key-tests-and-definitions">Key Tests and Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/pca.html#optimal-number-of-dimensions">Optimal Number of Dimensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/pca.html#step-by-step-example-3d-to-1d">Step-by-Step Example: 3D to 1D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/pca.html#numpy-implementation">NumPy Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/pca.html#visualizations-and-interpretations">Visualizations and Interpretations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/pca.html#common-pitfalls-and-best-practices">Common Pitfalls and Best Practices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/pca.html#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/pca.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ds_ai/transformers.html">Understanding Transformers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#notation">Notation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#token-embedding">Token Embedding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#positional-encoding">Positional Encoding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#scaled-dot-product-attention">Scaled Dot-Product Attention</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#why-attention-works">Why Attention Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#multi-head-attention">Multi-Head Attention</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#layer-normalization">Layer Normalization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#residual-connections">Residual Connections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#position-wise-feed-forward-network">Position-wise Feed-Forward Network</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#full-transformer-block">Full Transformer Block</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#causal-decoder-masking">Causal (Decoder) Masking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#parameter-count-analysis">Parameter Count Analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#numpy-reference-implementation">NumPy Reference Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#training-walkthrough">Training walkthrough</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#computational-complexity">Computational Complexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#figures">Figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#reproduce-the-figures">Reproduce the figures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../ds_ai/transformers.html#references-and-further-reading">References and Further Reading</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -85,7 +378,7 @@
       </nav>
 
       <div class="wy-nav-content">
-        <div class="rst-content">
+        <div class="rst-content style-external-links">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
